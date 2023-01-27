@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://源/联机页面/PlayerLabel.cs" type="Script" id=1]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.145098, 0.145098, 0.145098, 1 )
+
+[node name="PlayerLabel" type="Label"]
+margin_right = 190.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+custom_styles/normal = SubResource( 2 )
+text = "莫安崇(1234567890)"
+valign = 1
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="mouse_entered" from="." to="." method="_on_PlayerLabel_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_PlayerLabel_mouse_exited"]

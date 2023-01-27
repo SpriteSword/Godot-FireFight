@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://源/游戏主管/GUI/棋子部署系统/预备部署棋子.cs" type="Script" id=1]
+[ext_resource path="res://assets/棋子/模板r.png" type="Texture" id=2]
+
+[node name="预备部署棋子" type="TextureRect"]
+margin_right = 36.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 36, 36 )
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+texture = ExtResource( 2 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

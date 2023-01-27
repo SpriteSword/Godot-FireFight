@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/棋子/堆叠阴影.png" type="Texture" id=1]
+[ext_resource path="res://源/游戏主管/棋子主管/PieceStack.cs" type="Script" id=2]
+
+[node name="PieceStack" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="阴影" type="Sprite" parent="."]
+texture = ExtResource( 1 )

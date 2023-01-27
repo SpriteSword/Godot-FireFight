@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "slA5S8vuA4yND4bCqmk24ezDwuu7sL+UIDEWaLh+utCVTfb0ZyMkSJYl5MNnKxrq4gauwvARRrQrdbxdzL7Z3A==",
+  "success": true,
+  "projectFilePath": "D:\\1\\Godot\\Demo\\火力战\\火力战.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\MO.LAPTOP-AI5MHJHP\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.2\\microsoft.netframework.referenceassemblies.1.0.2.nupkg.sha512",
+    "C:\\Users\\MO.LAPTOP-AI5MHJHP\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net472\\1.0.2\\microsoft.netframework.referenceassemblies.net472.1.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}

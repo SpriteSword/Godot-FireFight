@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://源/音乐/SoundMnger.cs" type="Script" id=1]
+
+[node name="SoundMnger" type="Node"]
+script = ExtResource( 1 )
+
+[node name="Music" type="Node" parent="."]
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="Music"]
+volume_db = -20.0
+
+[node name="Sound" type="Node" parent="."]
+
+[node name="SoundPlayer" type="AudioStreamPlayer" parent="Sound"]
+volume_db = -20.0
+
+[connection signal="finished" from="Music/MusicPlayer" to="." method="_on_MusicPlayer_finished"]
+[connection signal="finished" from="Sound/SoundPlayer" to="." method="_on_SoundPlayer_finished"]

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/棋子/堆叠阴影.png" type="Texture" id=1]
+
+[node name="堆叠阴影" type="Sprite"]
+texture = ExtResource( 1 )

@@ -1,0 +1,57 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\1\\Godot\\Demo\\火力战\\火力战.csproj": {}
+  },
+  "projects": {
+    "D:\\1\\Godot\\Demo\\火力战\\火力战.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\1\\Godot\\Demo\\火力战\\火力战.csproj",
+        "projectName": "火力战",
+        "projectPath": "D:\\1\\Godot\\Demo\\火力战\\火力战.csproj",
+        "packagesPath": "C:\\Users\\MO.LAPTOP-AI5MHJHP\\.nuget\\packages\\",
+        "outputPath": "D:\\1\\Godot\\Demo\\火力战\\.mono\\temp\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Users\\MO.LAPTOP-AI5MHJHP\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\MO.LAPTOP-AI5MHJHP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\MO.LAPTOP-AI5MHJHP\\AppData\\Roaming\\NuGet\\config\\Godot.Offline.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "targetAlias": "net472",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "dependencies": {
+            "Microsoft.NETFramework.ReferenceAssemblies": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.0.2, )",
+              "autoReferenced": true
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.405\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

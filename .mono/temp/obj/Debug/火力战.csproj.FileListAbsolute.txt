@@ -1,0 +1,9 @@
+D:\1\Godot\Demo\火力战\.mono\temp\bin\Debug\火力战.dll
+D:\1\Godot\Demo\火力战\.mono\temp\bin\Debug\火力战.pdb
+D:\1\Godot\Demo\火力战\.mono\temp\obj\Debug\火力战.AssemblyInfoInputs.cache
+D:\1\Godot\Demo\火力战\.mono\temp\obj\Debug\火力战.AssemblyInfo.cs
+D:\1\Godot\Demo\火力战\.mono\temp\obj\Debug\火力战.csproj.CoreCompileInputs.cache
+D:\1\Godot\Demo\火力战\.mono\temp\obj\Debug\火力战.dll
+D:\1\Godot\Demo\火力战\.mono\temp\obj\Debug\火力战.pdb
+D:\1\Godot\Demo\火力战\.mono\temp\obj\Debug\火力战.csproj.AssemblyReference.cache
+D:\1\Godot\Demo\火力战\.mono\temp\obj\Debug\火力战.GeneratedMSBuildEditorConfig.editorconfig

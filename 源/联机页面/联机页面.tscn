@@ -1,0 +1,210 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/主题.tres" type="Theme" id=1]
+[ext_resource path="res://源/联机页面/联机页面.cs" type="Script" id=2]
+[ext_resource path="res://源/联机页面/联机网络处理.cs" type="Script" id=3]
+[ext_resource path="res://源/GUI/询问框/询问框.tscn" type="PackedScene" id=4]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 1 )
+
+[node name="联机页面" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="HostBtn" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -38.0
+margin_top = -26.5
+margin_right = 38.0
+margin_bottom = -3.5
+text = "创建主机"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JoinBtn" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -38.0
+margin_top = 3.5
+margin_right = 38.0
+margin_bottom = 26.5
+text = "连接主机"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HostDialog" type="AcceptDialog" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -120.0
+margin_top = -77.0
+margin_right = 120.0
+margin_bottom = 77.0
+rect_min_size = Vector2( 240, 150 )
+popup_exclusive = true
+window_title = "注意！"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HostDialog"]
+anchor_right = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = 115.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PortHBox" type="HBoxContainer" parent="HostDialog/VBoxContainer"]
+margin_right = 224.0
+margin_bottom = 27.0
+
+[node name="Label" type="Label" parent="HostDialog/VBoxContainer/PortHBox"]
+margin_top = 5.0
+margin_right = 48.0
+margin_bottom = 22.0
+text = "端口："
+
+[node name="LineEdit" type="LineEdit" parent="HostDialog/VBoxContainer/PortHBox"]
+margin_left = 52.0
+margin_right = 224.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_horizontal = 3
+
+[node name="JoinDialog" type="AcceptDialog" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -120.0
+margin_top = -77.0
+margin_right = 120.0
+margin_bottom = 77.0
+rect_min_size = Vector2( 240, 150 )
+popup_exclusive = true
+window_title = "注意！"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="JoinDialog"]
+anchor_right = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = 115.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AddressHBox" type="HBoxContainer" parent="JoinDialog/VBoxContainer"]
+margin_right = 224.0
+margin_bottom = 27.0
+
+[node name="Label" type="Label" parent="JoinDialog/VBoxContainer/AddressHBox"]
+margin_top = 5.0
+margin_right = 48.0
+margin_bottom = 22.0
+text = "地址："
+
+[node name="LineEdit" type="LineEdit" parent="JoinDialog/VBoxContainer/AddressHBox"]
+margin_left = 52.0
+margin_right = 224.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_horizontal = 3
+text = "localhost"
+placeholder_text = "请输入主机的IP地址"
+
+[node name="PortHBox" type="HBoxContainer" parent="JoinDialog/VBoxContainer"]
+margin_top = 31.0
+margin_right = 224.0
+margin_bottom = 58.0
+
+[node name="Label" type="Label" parent="JoinDialog/VBoxContainer/PortHBox"]
+margin_top = 5.0
+margin_right = 48.0
+margin_bottom = 22.0
+text = "端口："
+
+[node name="LineEdit" type="LineEdit" parent="JoinDialog/VBoxContainer/PortHBox"]
+margin_left = 52.0
+margin_right = 224.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_horizontal = 3
+
+[node name="Info" type="TextEdit" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -319.0
+margin_right = 307.0
+readonly = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NameHBox" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -112.0
+margin_top = -260.0
+margin_right = 112.0
+margin_bottom = -233.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="NameHBox"]
+margin_top = 5.0
+margin_right = 64.0
+margin_bottom = 22.0
+text = "玩家名："
+
+[node name="LineEdit" type="LineEdit" parent="NameHBox"]
+margin_left = 68.0
+margin_right = 224.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_horizontal = 3
+
+[node name="联机网络处理" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="PlayerList" type="ScrollContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -200.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+custom_styles/bg = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayerList"]
+margin_right = 190.0
+rect_min_size = Vector2( 190, 0 )
+
+[node name="询问框" parent="." instance=ExtResource( 4 )]
+
+[connection signal="pressed" from="HostBtn" to="." method="_on_HostBtn_pressed"]
+[connection signal="pressed" from="JoinBtn" to="." method="_on_JoinBtn_pressed"]
+[connection signal="confirmed" from="HostDialog" to="." method="_on_HostDialog_confirmed"]
+[connection signal="confirmed" from="JoinDialog" to="." method="_on_JoinDialog_confirmed"]

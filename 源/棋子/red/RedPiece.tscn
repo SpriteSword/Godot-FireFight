@@ -1,0 +1,72 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/棋子/步兵3.png" type="Texture" id=1]
+[ext_resource path="res://assets/棋子/火箭.png" type="Texture" id=2]
+[ext_resource path="res://源/棋子/Piece.cs" type="Script" id=3]
+[ext_resource path="res://assets/字体/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 18, 18 )
+
+[sub_resource type="StreamTexture" id=3]
+load_path = "res://.import/红背景.png-693afdb218f8121e225b3eefcff50b95.stex"
+
+[sub_resource type="DynamicFont" id=2]
+size = 9
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+font_data = ExtResource( 4 )
+
+[node name="RedPiece" type="Node2D" groups=["red"]]
+script = ExtResource( 3 )
+CellPos = Vector2( 1, 1 )
+side = 1
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Node2D" parent="."]
+
+[node name="Bg" type="Sprite" parent="Sprite"]
+texture = SubResource( 3 )
+
+[node name="Body" type="TextureRect" parent="Sprite"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -18.0
+margin_top = -9.0
+margin_right = 18.0
+margin_bottom = 9.0
+rect_min_size = Vector2( 36, 18 )
+mouse_filter = 2
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Sprite"]
+margin_left = -18.0
+margin_top = 6.0
+margin_right = 18.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 36, 0 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "M60A2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Symbol" type="Sprite" parent="Sprite"]
+position = Vector2( 0, -12 )
+texture = ExtResource( 2 )
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_Area2D_mouse_exited"]
