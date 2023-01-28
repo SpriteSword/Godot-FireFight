@@ -198,6 +198,7 @@ public class 射击阶段Base : 游戏阶段
 
         ClearPiecesSelected();
         game_mnger.pieces_selected.Add(p_selected);
+        game_mnger.pieces_mnger.TopAPiece(p_selected);
         MarkPiecesSelected();
         DrawSightLine(true);
     }

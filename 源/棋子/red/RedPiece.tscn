@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/棋子/步兵3.png" type="Texture" id=1]
 [ext_resource path="res://assets/棋子/火箭.png" type="Texture" id=2]
 [ext_resource path="res://源/棋子/Piece.cs" type="Script" id=3]
 [ext_resource path="res://assets/字体/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://assets/棋子/状态/失火.png" type="Texture" id=5]
+[ext_resource path="res://assets/棋子/状态/压制.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 18, 18 )
@@ -67,6 +69,14 @@ __meta__ = {
 [node name="Symbol" type="Sprite" parent="Sprite"]
 position = Vector2( 0, -12 )
 texture = ExtResource( 2 )
+
+[node name="Sprite2" type="Sprite" parent="."]
+position = Vector2( -12, -24 )
+texture = ExtResource( 5 )
+
+[node name="Sprite3" type="Sprite" parent="."]
+position = Vector2( 0, -24 )
+texture = ExtResource( 6 )
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_Area2D_mouse_exited"]

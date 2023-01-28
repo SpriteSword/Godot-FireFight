@@ -232,6 +232,7 @@ public class 移动阶段 : 游戏阶段
         {
             ClearPiecesSelected();
             game_mnger.pieces_selected.Add(p_selected);
+            game_mnger.pieces_mnger.TopAPiece(p_selected);
             MarkPiecesSelected();
             game_mnger.path.Clear();
             game_mnger.path.Add(p_selected.CellPos);

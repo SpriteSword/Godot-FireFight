@@ -4,7 +4,7 @@ using System;
 public class Piece : Node2D
 {
     public enum PieceType : byte { 人, 坦克, APC };        //  该死的结算表还分 坦克/APC
-    public enum ZIndexInStack : byte { _ordinary_, _top_ = 1, _act_ = 2 };		//  普通棋子ZIndex==0，置顶的=1。在移动动画期间调为2，使其高于所有棋子。进入堆叠后会调回1。
+    public enum ZIndexInStack : byte { _ordinary_, _top_ = 1, _act_ = 2 };      //  普通棋子ZIndex==0，置顶的=1。在移动动画期间调为2，使其高于所有棋子。进入堆叠后会调回1。
 
     // [Signal] delegate void SelectMe(Piece me);		//  被鼠标选中。-->
     [Signal] delegate void MouseIn(Piece me);       //  -->PiecesMnger
@@ -61,6 +61,9 @@ public class Piece : Node2D
     // bool can_shoot = true;      //  可以射击敌方
     bool can_act = true;        //  可以行动
     public bool can_be_shot = true;        //  可以被敌方射击
+
+	//  状态。GameMnger.AttackResult 的值减一，null不算，分别为 是否被杀死；是否被压制，是否失去火力；是否失去移动力；是否失去导弹。
+    public bool[] states = new bool[5] { false, false, false, false, false };
 
     //  子节点
     public Node2D sprite;
