@@ -43,7 +43,7 @@ public class 移动动画 : 游戏阶段
     {
         int ind = game_mnger.path_node_index;
         int c = game_mnger.path.Count;
-        if (ind + 1 >= c)
+        if (ind + 1 >= c || game_mnger.mover.BeK || game_mnger.mover.BeKM)      //+++++++++++++++++=步兵被压制
         {
             Back2MoveStageQ();
             game_mnger.mover.CanAct = false;

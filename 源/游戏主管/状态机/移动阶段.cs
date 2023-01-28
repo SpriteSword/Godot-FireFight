@@ -91,7 +91,7 @@ public class 移动阶段 : 游戏阶段
             {
                 byte ind = 0;
 
-                if (piece.CanAct)
+                if (piece.CanAct && !piece.BeKM && !piece.BeK)      //++++++++++++++++++++++++beK不用判断。步兵被压制也不能移动
                 {
                     GD.Print("选择：", piece, " ", piece.id, " s: ", piece.side);
 
@@ -128,9 +128,7 @@ public class 移动阶段 : 游戏阶段
         if (!PathIsQualified())
         {
             Warn("路径错误！");
-
             DeselectPiece();
-
             return;
         }
 
@@ -200,8 +198,7 @@ public class 移动阶段 : 游戏阶段
         DrawPathLine(false);
     }
 
-    //——————————————————————————————————————————————————————————————  GUI
-    #region GUI
+    #region ——————————————————————————————————————————————————————————————  GUI
 
     //  处理键盘输入。game_mnger调用
     public override void HandleInputKey(uint scancode)

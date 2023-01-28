@@ -72,13 +72,13 @@ public class 攻击调度 : 游戏阶段
         {
             Piece piece = game_mnger.attackers[c - 1];
             //  能否行动
-            if (!piece.CanAct)
+            if (!piece.CanAct || piece.BeK || piece.BeKF)
             {
-                Warn("警告！" + piece.id.ToString() + "已执行过任务！");        //  只给攻击方看到
+                Warn("警告！" + piece.id.ToString() + "不能执行任务！");        //  只给攻击方看到
                 goto CanNotShoot;
             }
 
-            //  视线遮挡检查+++++++++++++++
+            //  视线遮挡检查+++++++++++++++++++++++++++++++++
 
 
             //  计算距离等级
@@ -94,6 +94,7 @@ public class 攻击调度 : 游戏阶段
             //  攻击结果        +++++++++++++++++++++++++++++++++++++++++++++++++=网络如何？
             var result = CalculateAttackResult(piece, d_l);
             GD.Print("攻击结果：", result);
+            game_mnger.defender.SetBeAttackedResult(result);
 
             //  满足条件可以攻击
             game_mnger.attacker = piece;
@@ -182,6 +183,9 @@ public class 攻击调度 : 游戏阶段
         if (att_level == -2) GD.PrintErr("获取攻击等级出错！ : 攻击调度");
         GD.Print("攻击等级：", att_level);
 
+        //  调整攻击等级
+        if (attacker.BeS) att_level -= 3;
+
         //  掷色子
         int point = Math.ThrowDice() + Math.ThrowDice();
         GD.Print("色子：", point);
@@ -190,7 +194,7 @@ public class 攻击调度 : 游戏阶段
         return JudgeAttackResult(is_personnel, att_level, point);
     }
 
-    //  判定攻击结果。查表。表：{色子:{攻击等级:结果}}
+    //  判定攻击结果。查表。表：{色子:{攻击等级:结果}}。++++++++++++++++++++++步兵被多次压制、车辆多次失动 = K。
     GameMnger.AttackResult JudgeAttackResult(bool is_personnel, int attack_level, int dice_result)      //  没有C++那样const，反正也只是修饰而已，无所谓
     {
         if (attack_level <= 0) return GameMnger.AttackResult._null_;
