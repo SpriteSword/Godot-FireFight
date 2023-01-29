@@ -132,9 +132,6 @@ margin_top = 9.0
 margin_right = 48.0
 margin_bottom = 23.0
 text = "id:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="CloseBtn" type="Button" parent="."]
 anchor_left = 1.0

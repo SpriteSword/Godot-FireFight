@@ -11,13 +11,37 @@ public class Piece : Node2D
 	[Signal] delegate void MouseOut(Piece me);
 	[Signal] delegate void PlaceMe(Piece me);     //  如果坐标改变，由PiecesMnger定位到正确格子上。-->PiecesMnger
 
-	// bool mouse_in = false;
-
-	// public const _Z_Index_Ordinary_
+	//-------------------------------------------------------
 
 	//  坐标
 	Vector2 hex_pos;       //  人用的
 	Vector2 cell_pos;       //  tilemap用
+
+	//  唯一标识
+	public uint id;
+
+	//  哪边
+	[Export] public GameMnger.Side side;        //  导出枚举不管你的标记PropertyHint
+
+	[Export] public PieceType type;     //  单位类型
+	public string model_name;       //  包括大小型号。像 "M60 A3"，M60大型号，A3小型号。
+
+
+	//  在 1 个回合内或移动或射击，只能执行 1 次行动（短停射击除外）
+	//  每个单位 每个阶段 只能被直射 1 次
+	//  射击
+	// bool can_shoot = true;      //  可以射击敌方
+	bool can_act = true;        //  可以行动
+	public bool can_be_shot = true;        //  可以被敌方射击
+
+	//  被攻击的结果。GameMnger.AttackResult 的值减一，null不算，分别为 是否被杀死；是否被压制，是否失去火力；是否失去移动力；是否失去导弹。
+	public bool[] be_attacked_result = new bool[5] { false, false, false, false, false };
+
+	//  子节点
+	public Node2D sprite;
+	AnimationPlayer anim_player;
+
+	#region ————————————————————————————————————————————————————————————————————————  Get Set
 
 	#region 坐标get set
 	[Export]
@@ -44,32 +68,6 @@ public class Piece : Node2D
 	}
 	#endregion
 
-	//-------------------------------------------------------
-	//  唯一标识
-	public uint id;
-
-	//  哪边
-	[Export] public GameMnger.Side side;        //  导出枚举不管你的标记PropertyHint
-
-	[Export] public PieceType type;     //  单位类型
-	public string model_name;       //  包括大小型号。像 "M60 A3"，M60大型号，A3小型号。
-
-
-	//  在 1 个回合内或移动或射击，只能执行 1 次行动（短停射击除外）
-	//  每个单位 每个阶段 只能被直射 1 次
-	//  射击
-	// bool can_shoot = true;      //  可以射击敌方
-	bool can_act = true;        //  可以行动
-	public bool can_be_shot = true;        //  可以被敌方射击
-
-	//  被攻击的结果。GameMnger.AttackResult 的值减一，null不算，分别为 是否被杀死；是否被压制，是否失去火力；是否失去移动力；是否失去导弹。
-	public bool[] be_attacked_result = new bool[5] { false, false, false, false, false };
-
-	//  子节点
-	public Node2D sprite;
-
-
-	#region ————————————————————————————————————————————————————————————————————————  Get Set
 	//  能否行动
 	public bool CanAct
 	{
@@ -133,6 +131,7 @@ public class Piece : Node2D
 	public override void _Ready()
 	{
 		sprite = GetNode<Node2D>("Sprite");
+		anim_player = GetNode<AnimationPlayer>("AnimationPlayer");
 	}
 
 
@@ -157,6 +156,13 @@ public class Piece : Node2D
 		if (result == GameMnger.AttackResult._null_) return;
 
 		be_attacked_result[(int)result - 1] = true;
+
+		if (result == GameMnger.AttackResult._k_)
+		{
+			anim_player.Play("die");
+			CanAct = false;
+		}
+
 	}
 
 

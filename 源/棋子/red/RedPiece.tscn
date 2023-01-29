@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://assets/棋子/步兵3.png" type="Texture" id=1]
 [ext_resource path="res://assets/棋子/火箭.png" type="Texture" id=2]
@@ -6,9 +6,15 @@
 [ext_resource path="res://assets/字体/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://assets/棋子/状态/失火.png" type="Texture" id=5]
 [ext_resource path="res://assets/棋子/状态/压制.png" type="Texture" id=6]
+[ext_resource path="res://源/shader/变黑白.gdshader" type="Shader" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 18, 18 )
+
+[sub_resource type="ShaderMaterial" id=4]
+resource_local_to_scene = true
+shader = ExtResource( 7 )
+shader_param/k = 0.0
 
 [sub_resource type="StreamTexture" id=3]
 load_path = "res://.import/红背景.png-693afdb218f8121e225b3eefcff50b95.stex"
@@ -19,6 +25,21 @@ outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
 font_data = ExtResource( 4 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "die"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:material:shader_param/k")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 2.21914, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
 
 [node name="RedPiece" type="Node2D" groups=["red"]]
 script = ExtResource( 3 )
@@ -31,11 +52,14 @@ side = 1
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Node2D" parent="."]
+material = SubResource( 4 )
 
 [node name="Bg" type="Sprite" parent="Sprite"]
+use_parent_material = true
 texture = SubResource( 3 )
 
 [node name="Body" type="TextureRect" parent="Sprite"]
+use_parent_material = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -62,21 +86,22 @@ custom_fonts/font = SubResource( 2 )
 text = "M60A2"
 align = 1
 valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Symbol" type="Sprite" parent="Sprite"]
+use_parent_material = true
 position = Vector2( 0, -12 )
 texture = ExtResource( 2 )
 
 [node name="Sprite2" type="Sprite" parent="."]
-position = Vector2( -12, -24 )
+position = Vector2( -12, -27 )
 texture = ExtResource( 5 )
 
 [node name="Sprite3" type="Sprite" parent="."]
-position = Vector2( 0, -24 )
+position = Vector2( 12, -27 )
 texture = ExtResource( 6 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/die = SubResource( 5 )
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_Area2D_mouse_exited"]

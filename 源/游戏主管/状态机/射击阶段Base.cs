@@ -97,7 +97,7 @@ public class 射击阶段Base : 游戏阶段
         {
             var stack = game_mnger.pieces_mnger.GetPieceStackByRectPos(mouse_pos);
 
-            if (stack != null)
+            if (stack != null && PiecesMnger.IsAgainst(stack.side, own_side))
             {
                 if (stack.pieces.Count > 1)        //  棋子数量大于1，则显示悬浮棋子信息栏来选择棋子
                 {
@@ -136,7 +136,7 @@ public class 射击阶段Base : 游戏阶段
             stack = game_mnger.pieces_mnger.GetPieceStackByRectPos(mouse_pos);
             if (stack != null)
             {
-                Piece piece = stack.GetTopPiece();GD.Print(piece.be_attacked_result);
+                Piece piece = stack.GetTopPiece(); GD.Print(piece.be_attacked_result);
 
                 if ((!Global.联机调试 && own_side == piece.side) || (Global.联机调试 && piece.side == game_mnger.local_player_side))
                 {
