@@ -51,7 +51,7 @@ public class 移动动画 : 游戏阶段
             return;
         }
         game_mnger.path_node_index++;
-        next_cell_pos = game_mnger.path[game_mnger.path_node_index];
+        next_cell_pos = game_mnger.path[game_mnger.path_node_index].cell_pos;
         next_pos = game_mnger.mark.HexGridCenter(next_cell_pos);
         game_mnger.mover.ZIndex = (int)Piece.ZIndexInStack._act_;       //  在动画期间调为2，使其高于所有棋子。进入堆叠后会调回1。
         game_mnger.pieces_mnger.RemovePieceFromStack(game_mnger.mover);

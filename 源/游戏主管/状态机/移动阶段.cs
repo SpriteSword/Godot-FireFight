@@ -96,7 +96,9 @@ public class 移动阶段 : 游戏阶段
                     GD.Print("选择：", piece, " ", piece.id, " s: ", piece.side);
 
                     game_mnger.pieces_selected.Add(piece);
-                    game_mnger.path.Add(piece.CellPos);
+
+                    PathPoint pp = new PathPoint(piece.CellPos, 0);
+                    game_mnger.path.Add(pp);
                     ind = 1;
 
                     MarkPiecesSelected();
@@ -132,6 +134,15 @@ public class 移动阶段 : 游戏阶段
             return;
         }
 
+        //  裁剪掉移动点数<0的点
+        for (int i = 0; i < game_mnger.path.Count; i++)
+        {
+            if (game_mnger.path[i].remaining_m_p < 0)
+            {
+                game_mnger.path.Resize(i);      //  i 已经超前1位了！
+            }
+        }
+
         game_mnger.mover = game_mnger.pieces_selected[0];
         game_mnger.path_node_index = 0;
 
@@ -144,16 +155,24 @@ public class 移动阶段 : 游戏阶段
     {
         if (game_mnger.pieces_selected.Count != 1) return;      //+++++++++++++++++
 
-        Vector2 mou_pos_cell = game_mnger.mark.WorldToMap(mouse_pos);
-        int ind = game_mnger.path.IndexOf(mou_pos_cell);
-        if (ind >= 0)
-        {
-            game_mnger.path.Resize(ind);
-        }
-        game_mnger.path.Add(mou_pos_cell);
+        Vector2 mou_cell_pos = game_mnger.mark.WorldToMap(mouse_pos);
 
-        // DrawPathLine(true);
-        // GD.Print(game_mnger.path);
+        int ind = -1;
+        for (int i = 0; i < game_mnger.path.Count; i++)
+        {
+            if (game_mnger.path[i].cell_pos == mou_cell_pos) { ind = i; break; }
+        }
+        //  路径中已有
+        if (ind >= 0) { game_mnger.path.Resize(ind); }      //  ==0也裁剪掉
+
+        if (game_mnger.path.Count > 0)
+        {
+            //  地形损耗
+            float loss = CalcMPLoss(game_mnger.pieces_selected[0], GetLastPPOf(game_mnger.path).cell_pos, mou_cell_pos);
+
+            game_mnger.path.Add(new PathPoint(mou_cell_pos, GetLastPPOf(game_mnger.path).remaining_m_p - loss));
+        }
+        else { game_mnger.path.Add(new PathPoint(mou_cell_pos, game_mnger.pieces_selected[0].m_p)); }
 
     }
 
@@ -161,7 +180,7 @@ public class 移动阶段 : 游戏阶段
     bool PathIsQualified()
     {
         //  检查起点。不用检查 棋子==null 了
-        if (game_mnger.pieces_selected[0].CellPos != game_mnger.path[0]) return false;      //+++++++++++++
+        if (game_mnger.pieces_selected[0].CellPos != game_mnger.path[0].cell_pos) return false;      //+++++++++++++
 
         //  检查中间点是否都连贯
         int c = game_mnger.path.Count;
@@ -172,14 +191,36 @@ public class 移动阶段 : 游戏阶段
 
             // GD.Print("cell: ", game_mnger.path[n], " hex: ", Math.Cell2HexCoord(game_mnger.path[n]));
 
-            Vector2 d = Math.Cell2HexCoord(game_mnger.path[n]) - Math.Cell2HexCoord(game_mnger.path[i]);
+            Vector2 d = Math.Cell2HexCoord(game_mnger.path[n].cell_pos) - Math.Cell2HexCoord(game_mnger.path[i].cell_pos);
 
             if (d == Vector2.Right || d == Vector2.One || d == Vector2.Down ||
                 d == Vector2.Left || d == -Vector2.One || d == Vector2.Up) { }
             else return false;
+
+            //++++++++++++++++++++++++++++++=检查路径损耗是否正确
         }
         return true;
     }
+
+    //  计算移动点数损耗。      +++++++++++++++++++++++++++++++++++++++++++++++++
+    float CalcMPLoss(Piece mover, Vector2 from, Vector2 to)
+    {
+        if (mover.type == Piece.PieceType.人)
+        {
+            // GD.Print(game_mnger.road.GetUsedCells());
+            return 1;
+        }
+
+        return 1;
+    }
+
+    public PathPoint GetLastPPOf(Array<PathPoint> array)
+    {
+        if (array == null || array.Count <= 0) return null;
+
+        return array[array.Count - 1];
+    }
+
 
     //-----------------------------------------------
     //  画路径线
@@ -232,7 +273,7 @@ public class 移动阶段 : 游戏阶段
             game_mnger.pieces_mnger.TopAPiece(p_selected);
             MarkPiecesSelected();
             game_mnger.path.Clear();
-            game_mnger.path.Add(p_selected.CellPos);
+            game_mnger.path.Add(new PathPoint(p_selected.CellPos, p_selected.m_p));
             DrawPathLine(true);
             GD.Print("选择：", p_selected, " ", p_selected.id, " s: ", p_selected.side);
             return;

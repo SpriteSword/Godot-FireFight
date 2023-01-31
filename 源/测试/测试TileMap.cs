@@ -9,6 +9,9 @@ public class 测试TileMap : HexTileMap
 		// GD.Print(-2%2);		//  -1 % 2 == -1 !!!
 		// int a = (int)(0.5 + 0.5);
 		// GD.Print(a);
+
+		GD.Print(GetUsedCellsById(2));
+		GD.Print(TileSet.GetTilesIds());
 	}
 
 	public override void _PhysicsProcess(float delta)
