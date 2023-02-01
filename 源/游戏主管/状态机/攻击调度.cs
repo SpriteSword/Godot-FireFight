@@ -218,11 +218,11 @@ public class 攻击调度 : 游戏阶段
         }
         switch (result)
         {
-            case "K": return GameMnger.AttackResult._k_;
-            case "S": return GameMnger.AttackResult._s_;
-            case "KF": return GameMnger.AttackResult._kf_;
-            case "KM": return GameMnger.AttackResult._km_;
-            case "KMS": return GameMnger.AttackResult._kms_;
+            case "K": return GameMnger.AttackResult.K;
+            case "S": return GameMnger.AttackResult.S;
+            case "KF": return GameMnger.AttackResult.KF;
+            case "KM": return GameMnger.AttackResult.KM;
+            case "KMS": return GameMnger.AttackResult.KMS;
             default: return GameMnger.AttackResult._null_;
         }
     }

@@ -155,7 +155,7 @@ public class 移动阶段 : 游戏阶段
     {
         if (game_mnger.pieces_selected.Count != 1) return;      //+++++++++++++++++
 
-        Vector2 mou_cell_pos = game_mnger.mark.WorldToMap(mouse_pos);
+        Vector2 mou_cell_pos = game_mnger.mark.DetermineCellOfHexGrid(mouse_pos);
 
         int ind = -1;
         for (int i = 0; i < game_mnger.path.Count; i++)
@@ -202,24 +202,55 @@ public class 移动阶段 : 游戏阶段
         return true;
     }
 
-    //  计算移动点数损耗。      +++++++++++++++++++++++++++++++++++++++++++++++++
+    //  计算移动点数损耗。用cell坐标      +++++++++++++++++++++++++++++++++++++++++++++++++
     float CalcMPLoss(Piece mover, Vector2 from, Vector2 to)
     {
         if (mover.type == Piece.PieceType.人)
         {
-            // GD.Print(game_mnger.road.GetUsedCells());
             return 1;
         }
+        //  车
+        int f_tile = game_mnger.road.GetCellv(from);
+        int t_tile = game_mnger.road.GetCellv(to);
+
+        if (f_tile >= 0 && t_tile >= 0)       //  公路
+        {
+            int f_dir = game_mnger._road_tile_direction_index_[f_tile];
+            int t_dir = game_mnger._road_tile_direction_index_[t_tile];
+
+            return 1;
+        }
+
+        if (game_mnger.train.GetCellv(from) >= 0 && game_mnger.train.GetCellv(to) >= 0)     //  铁路
+        {
+            return 1;
+        }
+
+
 
         return 1;
     }
 
+    //  返回Array<PathPoint>最后一位，只为了写短一点而已
     public PathPoint GetLastPPOf(Array<PathPoint> array)
     {
         if (array == null || array.Count <= 0) return null;
 
         return array[array.Count - 1];
     }
+
+    //  根据方向的索引查找道路tile的索引。没找到返回 -1.
+    int GetRoadTileIndexByDirection(int direction_index)
+    {
+        for (int i = 0; i < game_mnger._road_tile_direction_index_.Count; i++)
+        {
+            if (game_mnger._road_tile_direction_index_[i] == direction_index) { return i; }
+        }
+        return -1;
+    }
+
+
+
 
 
     //-----------------------------------------------

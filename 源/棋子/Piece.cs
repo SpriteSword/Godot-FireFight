@@ -85,46 +85,46 @@ public class Piece : Node2D
     //  是否被杀死
     public bool BeK
     {
-        get { return be_attacked_result[(int)GameMnger.AttackResult._k_ - 1]; }
+        get { return be_attacked_result[(int)GameMnger.AttackResult.K - 1]; }
         set
         {
-            be_attacked_result[(int)GameMnger.AttackResult._k_ - 1] = value;
+            be_attacked_result[(int)GameMnger.AttackResult.K - 1] = value;
         }
     }
     //  是否被压制
     public bool BeS
     {
-        get { return be_attacked_result[(int)GameMnger.AttackResult._s_ - 1]; }
+        get { return be_attacked_result[(int)GameMnger.AttackResult.S - 1]; }
         set
         {
-            be_attacked_result[(int)GameMnger.AttackResult._s_ - 1] = value;
+            be_attacked_result[(int)GameMnger.AttackResult.S - 1] = value;
         }
     }
     //  是否失去火力
     public bool BeKF
     {
-        get { return be_attacked_result[(int)GameMnger.AttackResult._kf_ - 1]; }
+        get { return be_attacked_result[(int)GameMnger.AttackResult.KF - 1]; }
         set
         {
-            be_attacked_result[(int)GameMnger.AttackResult._kf_ - 1] = value;
+            be_attacked_result[(int)GameMnger.AttackResult.KF - 1] = value;
         }
     }
     //  是否失动
     public bool BeKM
     {
-        get { return be_attacked_result[(int)GameMnger.AttackResult._km_ - 1]; }
+        get { return be_attacked_result[(int)GameMnger.AttackResult.KM - 1]; }
         set
         {
-            be_attacked_result[(int)GameMnger.AttackResult._km_ - 1] = value;
+            be_attacked_result[(int)GameMnger.AttackResult.KM - 1] = value;
         }
     }
     //  是否失去导弹
     public bool BeKMS
     {
-        get { return be_attacked_result[(int)GameMnger.AttackResult._kms_ - 1]; }
+        get { return be_attacked_result[(int)GameMnger.AttackResult.KMS - 1]; }
         set
         {
-            be_attacked_result[(int)GameMnger.AttackResult._kms_ - 1] = value;
+            be_attacked_result[(int)GameMnger.AttackResult.KMS - 1] = value;
         }
     }
 
@@ -159,7 +159,7 @@ public class Piece : Node2D
 
         be_attacked_result[(int)result - 1] = true;
 
-        if (result == GameMnger.AttackResult._k_)
+        if (result == GameMnger.AttackResult.K)
         {
             anim_player.Play("die");
             CanAct = false;

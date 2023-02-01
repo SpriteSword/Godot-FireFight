@@ -45,7 +45,7 @@ public class 想定 : 游戏阶段
             if (deploy_system.HasPicked())
             {
                 Vector2 pos = game_mnger.GetGlobalMousePosition();
-                Vector2 cell_pos = game_mnger.mark.WorldToMap(pos);
+                Vector2 cell_pos = game_mnger.mark.DetermineCellOfHexGrid(pos);
                 game_mnger.pieces_mnger.AddBluePiece(Math.Cell2HexCoord(cell_pos), deploy_system.selected_texture.piece_id);     //+++++
 
                 EmitSignal("Deployed");
