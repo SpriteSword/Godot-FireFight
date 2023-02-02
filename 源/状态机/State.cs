@@ -101,7 +101,6 @@ public abstract class 游戏阶段 : State
         if (Math.ThrowDice() % 2 == 0)
         {
             game_mnger.ActionableSide = GameMnger.Side.红;
-            GD.Print("先手：", game_mnger.ActionableSide);
             return;
         }
         game_mnger.ActionableSide = GameMnger.Side.蓝;

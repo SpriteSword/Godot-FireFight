@@ -137,7 +137,7 @@ public class PiecesMnger : MyTileMap
     {
         var p = scn_red_piece.Instance<Piece>();
         p.id = id;
-        p.type = Piece.PieceType.人;
+        p.type = Piece.PieceType.坦克;
         p.model_name = "TM";        //+++++++++++++++++++++++++++++++
 
         pieces.AddChild(p);

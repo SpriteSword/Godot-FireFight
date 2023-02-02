@@ -70,8 +70,7 @@ public class 移动阶段 : 游戏阶段
         DrawPathLine(false);
     }
 
-    //————————————————————————————————————————————————————————————————————————
-    #region 规划路径
+    #region ————————————————————————————————————————————————————————————————  规划路径
     //  处理选择己方单位
     void HandleSelectOwnSide()
     {
@@ -193,50 +192,48 @@ public class 移动阶段 : 游戏阶段
 
             Vector2 d = Math.Cell2HexCoord(game_mnger.path[n].cell_pos) - Math.Cell2HexCoord(game_mnger.path[i].cell_pos);
 
-            if (d == Vector2.Right || d == Vector2.One || d == Vector2.Down ||
-                d == Vector2.Left || d == -Vector2.One || d == Vector2.Up) { }
-            else return false;
+            if (!IsDirectionValid(d)) return false;
 
             //++++++++++++++++++++++++++++++=检查路径损耗是否正确
         }
         return true;
     }
 
+
     //  计算移动点数损耗。用cell坐标      +++++++++++++++++++++++++++++++++++++++++++++++++
     float CalcMPLoss(Piece mover, Vector2 from, Vector2 to)
     {
-        if (mover.type == Piece.PieceType.人)
-        {
-            return 1;
-        }
-        //  车
-        int f_tile = game_mnger.road.GetCellv(from);
-        int t_tile = game_mnger.road.GetCellv(to);
+        if (mover.type == Piece.PieceType.人) { return 1; }
 
-        if (f_tile >= 0 && t_tile >= 0)       //  公路
-        {
-            int f_dir = game_mnger._road_tile_direction_index_[f_tile];
-            int t_dir = game_mnger._road_tile_direction_index_[t_tile];
+        //  --------  车
+        //  有道路可无视地形
+        if (IsWayInterconnected(game_mnger.road, from, to)) { return 0.5f; }        //  公路
+        if (IsWayInterconnected(game_mnger.train, from, to)) { return 1; }        //  铁路
 
-            return 1;
-        }
-
-        if (game_mnger.train.GetCellv(from) >= 0 && game_mnger.train.GetCellv(to) >= 0)     //  铁路
-        {
-            return 1;
-        }
-
-
-
-        return 1;
+        return 2;
     }
 
-    //  返回Array<PathPoint>最后一位，只为了写短一点而已
-    public PathPoint GetLastPPOf(Array<PathPoint> array)
+    //  检查2个格是否道路互通。map 可以是公路图或铁路图，from、to 用cell坐标。必须是相邻2格的。
+    bool IsWayInterconnected(TileMap map, Vector2 from, Vector2 to)
     {
-        if (array == null || array.Count <= 0) return null;
+        int from_tile = map.GetCellv(from);
+        int to_tile = map.GetCellv(to);
 
-        return array[array.Count - 1];
+        if (from_tile >= 0 && to_tile >= 0)
+        {
+            //  检查移动方向在这2格里面有无对应的。不是相邻的都通过不了。
+            Vector2 d = Math.Cell2HexCoord(to) - Math.Cell2HexCoord(from);
+            if (game_mnger._directions_.Contains(d))
+            {
+                uint d_ind = (uint)(int)game_mnger._directions_[d];     //  无语了，一次转还不行
+                uint n_d_ind = (uint)(int)game_mnger._directions_[-d];       //  负方向
+                uint f_ind = game_mnger._road_tile_direction_index_[from_tile];
+                uint t_ind = game_mnger._road_tile_direction_index_[to_tile];
+
+                if ((d_ind & f_ind) > 0 && ((n_d_ind) & t_ind) > 0) { return true; }
+            }
+        }
+        return false;
     }
 
     //  根据方向的索引查找道路tile的索引。没找到返回 -1.
@@ -249,11 +246,16 @@ public class 移动阶段 : 游戏阶段
         return -1;
     }
 
+    //  检查某方向是否是六边形的6个法定方向。hex坐标。
+    bool IsDirectionValid(Vector2 hex_coord_direction)
+    {
+        foreach (Vector2 d in game_mnger._directions_.Keys)
+        {
+            if (d == hex_coord_direction) return true;
+        }
+        return false;
+    }
 
-
-
-
-    //-----------------------------------------------
     //  画路径线
     void DrawPathLine(bool draw)
     {
@@ -268,6 +270,14 @@ public class 移动阶段 : 游戏阶段
         ClearPiecesSelected();
         game_mnger.path.Clear();
         DrawPathLine(false);
+    }
+
+    //  返回Array<PathPoint>最后一位，只为了写短一点而已
+    public PathPoint GetLastPPOf(Array<PathPoint> array)
+    {
+        if (array == null || array.Count <= 0) return null;
+
+        return array[array.Count - 1];
     }
 
     #region ——————————————————————————————————————————————————————————————  GUI

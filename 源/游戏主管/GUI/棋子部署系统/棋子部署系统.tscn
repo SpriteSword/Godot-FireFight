@@ -208,9 +208,6 @@ margin_right = -299.0
 margin_bottom = 23.0
 disabled = true
 text = "移 动"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="FinishBtn" type="Button" parent="."]
 anchor_left = 1.0

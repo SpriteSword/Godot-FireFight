@@ -21,17 +21,24 @@ public class GameMnger : Node2D
 	public readonly Array<int> _distance_level_ =       //  攻击距离分级。上级别< 距离(m) <= 下1级别，返回 下1级别
 					new Array<int> { 0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 750, 1000, 1500, 2000, 2500, 3000 };       //  第一个0是自己加的，原规则无，为了好算。
 
-	//  六边形的6个方向。共占 6位bit，正右方是第1位，逆时针依次排下去。
-	public enum HexDirection : byte { E = 0b000001, NE = 0b000010, NW = 0b00_01_00, W = 0b00_10_00, SW = 0b01_00_00, SE = 0b10_00_00 }
+
+	//  六边形的6个方向。共占6位bit，正右方是第1位，顺时针依次排下去。
+	public enum DirectionIndex : byte { E = 1 << 0, SE = 1 << 1, SW = 1 << 2, W = 1 << 3, NW = 1 << 4, NE = 1 << 5 }
+
+	//  6个方向向量。用的是 hex 坐标。
+	public readonly Dictionary _directions_ = new Dictionary {
+			{ Vector2.Right, DirectionIndex.E }, { Vector2.One, DirectionIndex.SE }, { Vector2.Down, DirectionIndex.SW },
+			{ Vector2.Left, DirectionIndex.W }, { -Vector2.One, DirectionIndex.NW }, { Vector2.Up, DirectionIndex.NE }};
 
 	//  道路瓦片的索引，数组下标是图块号，存的是对应的方向。
-	public readonly Array<int> _road_tile_direction_index_ = new Array<int>
-					{ (int)HexDirection.E | (int)HexDirection.W, (int)HexDirection.SE | (int)HexDirection.NW,(int)HexDirection.NE | (int)HexDirection.SW,
-					(int)HexDirection.E | (int)HexDirection.NE, (int)HexDirection.SE | (int)HexDirection.SW, (int)HexDirection.NW | (int)HexDirection.W,
-					(int)HexDirection.E | (int)HexDirection.SE, (int)HexDirection.W | (int)HexDirection.SW, (int)HexDirection.NE | (int)HexDirection.NW,
-					(int)HexDirection.NE | (int)HexDirection.SE, (int)HexDirection.E | (int)HexDirection.SW,  (int)HexDirection.SE | (int)HexDirection.W,
-					(int)HexDirection.NW | (int)HexDirection.SW, (int)HexDirection.NE | (int)HexDirection.W, (int)HexDirection.E | (int)HexDirection.NW,
-					};
+	//  [9, 18, 36, 33, 6, 24, 3, 12, 48, 34, 5, 10, 20, 40, 17]
+	public readonly Array<uint> _road_tile_direction_index_ = new Array<uint>{
+				(uint)DirectionIndex.E | (uint)DirectionIndex.W, (uint)DirectionIndex.SE | (uint)DirectionIndex.NW,(uint)DirectionIndex.NE | (uint)DirectionIndex.SW,
+				(uint)DirectionIndex.E | (uint)DirectionIndex.NE, (uint)DirectionIndex.SE | (uint)DirectionIndex.SW, (uint)DirectionIndex.NW | (uint)DirectionIndex.W,
+				(uint)DirectionIndex.E | (uint)DirectionIndex.SE, (uint)DirectionIndex.W | (uint)DirectionIndex.SW, (uint)DirectionIndex.NE | (uint)DirectionIndex.NW,
+				(uint)DirectionIndex.NE | (uint)DirectionIndex.SE, (uint)DirectionIndex.E | (uint)DirectionIndex.SW,  (uint)DirectionIndex.SE | (uint)DirectionIndex.W,
+				(uint)DirectionIndex.NW | (uint)DirectionIndex.SW, (uint)DirectionIndex.NE | (uint)DirectionIndex.W, (uint)DirectionIndex.E | (uint)DirectionIndex.NW,
+				};
 
 
 	// const float _Hint_Wait_Time_ = 1;
@@ -105,7 +112,6 @@ public class GameMnger : Node2D
 	//  移动阶段的路径
 	//  储存路径节点坐标，cell 坐标。起点与棋子位置相同
 	public Array<PathPoint> path = new Array<PathPoint>();
-	// public Array<Vector2> path = new Array<Vector2>();
 	public int path_node_index = 0;        //  路径节点在数组中的索引
 
 
@@ -160,22 +166,21 @@ public class GameMnger : Node2D
 		// road.Visible = false;
 		// train.Visible = false;
 
+
 		InitSignal();
 		ReadNecessaryFile();
 
 
-
-		pieces_mnger.AddRedPiece(new Vector2(0, 2), 1);
-		pieces_mnger.AddBluePiece(new Vector2(0, 3), 2);
-		pieces_mnger.AddRedPiece(new Vector2(0, 2), 3);
-		pieces_mnger.AddBluePiece(new Vector2(0, 0), 4);
+		// pieces_mnger.AddRedPiece(new Vector2(0, 2), 1);
+		// pieces_mnger.AddBluePiece(new Vector2(0, 3), 2);
+		// pieces_mnger.AddRedPiece(new Vector2(0, 2), 3);
+		// pieces_mnger.AddBluePiece(new Vector2(0, 0), 4);
 
 		// AddBluePiece(new Vector2(0, 0), 5);
 		// AddBluePiece(new Vector2(0, 0), 6);
 		// AddBluePiece(new Vector2(0, 0), 7);
 		// AddBluePiece(new Vector2(0, 0), 8);
 
-		GD.Print(_road_tile_direction_index_);
 
 		//  发送准备好了
 		i_ready = true;

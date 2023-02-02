@@ -3,9 +3,6 @@ using Godot.Collections;
 
 public class 想定 : 游戏阶段
 {
-    [Signal] delegate void ShowDeploySystem(bool show);
-    [Signal] delegate void Deployed();
-    [Signal] delegate void WantEditPiece(bool want, uint id);
 
     Piece piece_selected;
 
@@ -15,13 +12,10 @@ public class 想定 : 游戏阶段
     {
         deploy_system = GetNode<棋子部署系统>("/root/GameMnger/画布层/GUI/棋子部署系统");
 
-        Connect("ShowDeploySystem", deploy_system, "_ShowUI");
-        Connect("Deployed", deploy_system, "_Deployed");
-        Connect("WantEditPiece", deploy_system, "_WantEditPiece");
         deploy_system.Connect("MovePiece", this, "_Redeploy");
         deploy_system.Connect("Finish", this, "_InquireFinish");
 
-        EmitSignal("ShowDeploySystem", false);
+
     }
 
 
@@ -29,9 +23,13 @@ public class 想定 : 游戏阶段
     public override void Enter()
     {
         base.Enter();
+        game_mnger.gui.piece_deployment_system.Hide();      //  由于初始化顺序写这里
 
-        EmitSignal("ShowDeploySystem", true);
-        //  根据游戏规则创建所有棋子一览表
+
+        //  ++++++++++++++++++++++++++++++根据游戏规则创建所有棋子一览表
+
+        game_mnger.gui.piece_deployment_system.Show();
+
 
     }
     public override void UpdatePhysicsProcess(float delta) { }
@@ -48,7 +46,7 @@ public class 想定 : 游戏阶段
                 Vector2 cell_pos = game_mnger.mark.DetermineCellOfHexGrid(pos);
                 game_mnger.pieces_mnger.AddBluePiece(Math.Cell2HexCoord(cell_pos), deploy_system.selected_texture.piece_id);     //+++++
 
-                EmitSignal("Deployed");
+                game_mnger.gui.piece_deployment_system.HavePlacedPiece();
             }
             else        //  点取地图上的棋子
             {
@@ -72,12 +70,15 @@ public class 想定 : 游戏阶段
 
             //  GUI显示信息+++++++++++
 
-            EmitSignal("WantEditPiece", true, piece_selected.id);
+            game_mnger.gui.piece_deployment_system.EditPieceOnTheMap(true, piece_selected.id);
+
 
             return;
         }
         piece_selected = null;
-        EmitSignal("WantEditPiece", false, 0);      //  参数竟然不能省
+
+        game_mnger.gui.piece_deployment_system.EditPieceOnTheMap(false);
+
     }
 
 

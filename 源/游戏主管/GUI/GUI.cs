@@ -9,6 +9,7 @@ public class GUI : Control		//  人类的所有输入都经这里分发！并负
     public 回合显示栏 round_display_bar;
     public 棋子信息栏 piece_info_bar;
     public 悬浮棋子信息栏 floating_piece_info_bar;
+    public 棋子部署系统  piece_deployment_system;
 
     Font default_font;
     Array<HUDString> hud_str_buffer = new Array<HUDString>();       //  绘制HUD文字的缓冲区
@@ -21,6 +22,7 @@ public class GUI : Control		//  人类的所有输入都经这里分发！并负
         round_display_bar = GetNode<回合显示栏>("回合显示栏");
         piece_info_bar = GetNode<棋子信息栏>("棋子信息栏");
         floating_piece_info_bar = GetNode<悬浮棋子信息栏>("悬浮棋子信息栏");
+        piece_deployment_system  =GetNode<棋子部署系统>("棋子部署系统");
 
         default_font = GetFont("font");
 
