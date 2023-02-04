@@ -13,7 +13,7 @@ public class 圆形进度条 : TextureProgress
 	}
 
 
-	void _Show(bool show, string text)
+	public void Show(bool show, string text)
 	{
 		if(show)
 		{

@@ -4,22 +4,22 @@ using Godot;
 using Godot.Collections;
 
 
-
+//  自己只处理一些通用的、刚从联机页面进入时的，细节的远程调用由各控制器分别写好。
 public class 游戏网络处理 : NetworkHandler
 {
-    [Signal] delegate void ShowProgressBar(bool show, string text);     //  显示进度条
     [Signal] delegate void Give2External(int id, Dictionary content);		//  交给控制的来调用函数
 
     GameMnger game_mnger;
-
-    TextureRect Loading_screen;
+    TextureRect loading_screen;
+    圆形进度条 progress_bar;
 
     public override void _Ready()
     {
         base._Ready();
 
         game_mnger = GetNode<GameMnger>("..");
-        Loading_screen = GetNode<TextureRect>("../画布层/GUI/加载画面");
+        loading_screen = GetNode<TextureRect>("../画布层/GUI/加载画面");
+        progress_bar = GetNode<圆形进度条>("../画布层/GUI/圆形进度条");
 
         if (Global.联机调试)
         {
@@ -125,10 +125,12 @@ public class 游戏网络处理 : NetworkHandler
     //  ————————————————————————————————————————————————————————————————————————————————————————————————
 
     //  显示加载页面
-    void ShowLoadingScreen(bool show)
+    void ShowLoadingScreen(bool show, string txt = "游戏加载中...")
     {
-        Loading_screen.Visible = show;
-        EmitSignal("ShowProgressBar", show, "游戏加载中...");        //+++++++++++++++++++++++degug
+        loading_screen.Visible = show;
+        progress_bar.Show(show, txt);
+
+  //+++++++++++++++++++++++degug
     }
 
     //  自己准备好后尝试开始

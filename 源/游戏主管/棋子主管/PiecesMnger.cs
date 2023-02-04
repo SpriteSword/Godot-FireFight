@@ -46,12 +46,6 @@ public class PiecesMnger : MyTileMap
         return null;
     }
 
-    // //
-    // public int GetPieceAmountInStack(PieceStack stack)
-    // {
-    //     return stack.pieces.Count;
-    // }
-
     //  根据直角坐标找棋子。坐标是以PiecesMnger的坐标原点。
     public Piece GetTopPieceByRectPos(Vector2 rect_pos)
     {
@@ -137,7 +131,7 @@ public class PiecesMnger : MyTileMap
     {
         var p = scn_red_piece.Instance<Piece>();
         p.id = id;
-        p.type = Piece.PieceType.坦克;
+        p.type = Piece.PieceType.人;
         p.model_name = "TM";        //+++++++++++++++++++++++++++++++
 
         pieces.AddChild(p);

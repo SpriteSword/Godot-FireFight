@@ -88,7 +88,7 @@ public class 移动阶段 : 游戏阶段
             //  如果是本地玩家棋子，则进行下去，画路径线
             if ((!Global.联机调试 && game_mnger.ActionableSide == stack.side) || (Global.联机调试 && piece.side == game_mnger.local_player_side))
             {
-                byte ind = 0;
+                byte ind = 0;       //  信息栏的参数
 
                 if (piece.CanAct && !piece.BeKM && !piece.BeK)      //++++++++++++++++++++++++beK不用判断。步兵被压制也不能移动
                 {

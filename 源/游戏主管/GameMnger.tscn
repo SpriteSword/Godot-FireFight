@@ -111,6 +111,7 @@ margin_bottom = 202.0
 
 [node name="加载画面" type="TextureRect" parent="画布层/GUI"]
 visible = false
+self_modulate = Color( 0, 0, 0, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 22 )
@@ -170,5 +171,4 @@ one_shot = true
 
 [connection signal="Warn" from="." to="画布层/GUI/警告框" method="_PopUp"]
 [connection signal="ready" from="." to="GameMngerStateMachine" method="_on_GameMnger_ready"]
-[connection signal="ShowProgressBar" from="游戏网络处理" to="画布层/GUI/圆形进度条" method="_Show"]
 [connection signal="timeout" from="HintTimer" to="." method="_on_HintTimer_timeout"]

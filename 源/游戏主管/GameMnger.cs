@@ -176,10 +176,6 @@ public class GameMnger : Node2D
 		// pieces_mnger.AddRedPiece(new Vector2(0, 2), 3);
 		// pieces_mnger.AddBluePiece(new Vector2(0, 0), 4);
 
-		// AddBluePiece(new Vector2(0, 0), 5);
-		// AddBluePiece(new Vector2(0, 0), 6);
-		// AddBluePiece(new Vector2(0, 0), 7);
-		// AddBluePiece(new Vector2(0, 0), 8);
 
 
 		//  发送准备好了
