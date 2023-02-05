@@ -1,5 +1,6 @@
 using Godot;
 using Godot.Collections;
+using MyException;
 
 //  给其它场景处理网络用
 public class NetworkHandler : Node
@@ -25,8 +26,7 @@ public class NetworkHandler : Node
         GD.Print(data);
 
         decode_json = null;
-        if (JSON.Parse(data).Result is Dictionary d)
-            decode_json = d;
+        if (JSON.Parse(data).Result is Dictionary d) { decode_json = d; }
 
         if (decode_json == null) return;
 
@@ -50,5 +50,8 @@ public class NetworkHandler : Node
 
     //  处理数据
     protected virtual void HandleData(int id, Dictionary content) { }
+
+
+
 
 }

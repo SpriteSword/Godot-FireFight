@@ -3,7 +3,7 @@ using Godot.Collections;
 
 public class Global : Node
 {
-    public readonly static bool 联机调试 = false;		//  这个纯粹是调试用！
+    public readonly static bool 联机调试 = true;		//  这个纯粹是调试用！
 
     public static int opposite_player_peer_id;      //  对手的客户端的id
 

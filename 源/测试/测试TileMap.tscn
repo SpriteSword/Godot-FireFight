@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://assets/地图/tileset_公路.tres" type="TileSet" id=1]
+[ext_resource path="res://assets/地图/tileset/tileset_公路.tres" type="TileSet" id=1]
 [ext_resource path="res://源/测试/测试TileMap.cs" type="Script" id=2]
 
 [node name="测试TileMap" type="TileMap"]

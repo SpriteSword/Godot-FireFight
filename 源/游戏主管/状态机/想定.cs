@@ -150,7 +150,7 @@ public class 想定 : 游戏阶段
     {
         Array _params = new Array();
         Dictionary d = new Dictionary();
-        d[1]=new Vector2(2,1);
+        d[1] = new Vector2(2, 1);
         _params.Add(d);       //  字典{棋子id : cell 坐标}
 
         game_mnger.Send(Global.opposite_player_peer_id, NetworkMnger.Data2JSON("SynDeploymentA", _params));
@@ -159,7 +159,19 @@ public class 想定 : 游戏阶段
     //  收到对方的部署数据 A
     void SynDeploymentA(Array _params)
     {
-        GD.Print(_params);
+        if (_params[0] is Dictionary dictionary)
+        {
+            foreach (var itm in dictionary.Keys)        //  itm 是string
+            {
+
+            }
+        }
+        else { GD.PrintErr("想定：SynDeploymentA：参数错误，不是Dictionary"); }
+
     }
+    /*
+    {"type":"data","func":"SynDeploymentA","params":[{"1":"(2, 1)"}]}
+    [{1:(2, 1)}]Godot.Collections.Dictionary
+    */
 
 }

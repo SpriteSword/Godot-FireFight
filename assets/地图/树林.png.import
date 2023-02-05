@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/地图.png-314003906f2d8dfe315fb5a437d56d8f.stex"
+path="res://.import/树林.png-efc0a0950f606025d0dce05d0df92618.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/地图/地图.png"
-dest_files=[ "res://.import/地图.png-314003906f2d8dfe315fb5a437d56d8f.stex" ]
+source_file="res://assets/地图/树林.png"
+dest_files=[ "res://.import/树林.png-efc0a0950f606025d0dce05d0df92618.stex" ]
 
 [params]
 
