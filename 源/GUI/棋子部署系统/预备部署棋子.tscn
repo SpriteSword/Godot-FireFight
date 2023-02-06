@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://源/游戏主管/GUI/棋子部署系统/预备部署棋子.cs" type="Script" id=1]
+[ext_resource path="res://源/GUI/棋子部署系统/预备部署棋子.cs" type="Script" id=1]
 [ext_resource path="res://assets/棋子/模板r.png" type="Texture" id=2]
 
 [node name="预备部署棋子" type="TextureRect"]

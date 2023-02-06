@@ -66,7 +66,7 @@ public class 想定 : 游戏阶段
     }
     public override void Exit()
     {
-        base.Exit();
+        base.Exit();        //  子类必须执行
     }
 
 
@@ -153,20 +153,6 @@ public class 想定 : 游戏阶段
         i_finished = true;
         SynDeploymentQ();
     }
-
-    // void Try2Start()
-    // {
-
-    //     if (game_mnger.IsAsServer() && client_ready)
-    //     {
-    //         StartS();
-    //         superior.ChangeTo<直射阶段>();
-    //     }
-    // }
-
-
-
-
 
     //——————————————————————————————————————————————————————————————————————————————————————————————————————  网络
     //  RPC分发

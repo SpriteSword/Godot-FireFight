@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/主题.tres" type="Theme" id=1]
-[ext_resource path="res://源/游戏主管/GUI/棋子部署系统/棋子部署系统.cs" type="Script" id=2]
-[ext_resource path="res://源/游戏主管/GUI/棋子部署系统/预备部署棋子.tscn" type="PackedScene" id=3]
+[ext_resource path="res://源/GUI/棋子部署系统/棋子部署系统.cs" type="Script" id=2]
+[ext_resource path="res://源/GUI/棋子部署系统/预备部署棋子.tscn" type="PackedScene" id=3]
 
 [node name="棋子部署系统" type="Panel"]
 anchor_left = 0.5

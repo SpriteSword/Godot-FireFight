@@ -25,13 +25,9 @@ public class 移动动画 : 游戏阶段
 
         InitAnimation();
     }
-    public override void UpdatePhysicsProcess(float delta) { }
-    public override void UpdateProcess(float delta) { }
-    public override void HandleInput(InputEvent _event) { }
-    public override void HandleUnhandledInput(InputEvent _event) { }
     public override void Exit()
     {
-        base.Exit();
+        base.Exit();        //  子类必须执行
         game_mnger.tween.Disconnect("tween_all_completed", this, "_TweenAllCompleted");
     }
 

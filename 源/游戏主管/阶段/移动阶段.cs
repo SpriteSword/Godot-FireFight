@@ -35,9 +35,6 @@ public class 移动阶段 : 游戏阶段
             else { DetermineFirstPlayer(); }
         }
     }
-    public override void UpdatePhysicsProcess(float delta) { }
-    public override void UpdateProcess(float delta) { }
-    public override void HandleInput(InputEvent _event) { }
     public override void HandleUnhandledInput(InputEvent _event)
     {
         if (_event is InputEventMouse)
@@ -48,9 +45,7 @@ public class 移动阶段 : 游戏阶段
 
             if (_event is InputEventMouseButton)        //  鼠标按键
             {
-                if (_event.IsActionPressed("click_left"))
-                {
-                }
+                if (_event.IsActionPressed("click_left")) { }
                 else if (_event.IsActionReleased("click_left"))
                 {
                     HandleSelectOwnSide();
@@ -272,6 +267,15 @@ public class 移动阶段 : 游戏阶段
         DrawPathLine(false);
     }
 
+    //  解除敌我所有棋子的 压制
+    void UnmarkAllSuppressed()
+    {
+        foreach (Piece p in game_mnger.pieces_mnger.pieces.GetChildren())
+        {
+            p.BeS = false;
+        }
+    }
+
     //  返回Array<PathPoint>最后一位，只为了写短一点而已
     public PathPoint GetLastPPOf(Array<PathPoint> array)
     {
@@ -280,7 +284,7 @@ public class 移动阶段 : 游戏阶段
         return array[array.Count - 1];
     }
 
-    #region ——————————————————————————————————————————————————————————————  GUI
+    #region ——————————————————————————————————————————————————————————————  交互 控制
 
     //  处理键盘输入。game_mnger调用
     public override void HandleInputKey(uint scancode)
@@ -350,9 +354,10 @@ public class 移动阶段 : 游戏阶段
         }
     }
 
-    //  进入下一阶段
+    //  进入下一阶段。结束本阶段。须解除所有棋子的压制标记。
     protected override void EnterNextStage()
     {
+        UnmarkAllSuppressed();
         superior.ChangeTo<间射阶段>();
         start = false;
     }
@@ -365,7 +370,6 @@ public class 移动阶段 : 游戏阶段
 
     #endregion
 
-    //++++++++++++++++++++++++++++++++++结束回合
 
 
     //————————————————————————————————————————————————————————————————————————————————————————————————————————————  网络

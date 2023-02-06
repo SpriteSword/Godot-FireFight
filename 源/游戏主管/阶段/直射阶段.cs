@@ -38,19 +38,7 @@ public class 直射阶段 : 射击阶段Base
             }
         }
     }
-
-    // public override void UpdatePhysicsProcess(float delta) { }
-    // public override void UpdateProcess(float delta) { }
-    // public override void HandleInput(InputEvent _event) { }
-    // public override void HandleUnhandledInput(InputEvent _event)
-    // {
-    //     base.HandleUnhandledInput(_event);
-    // }
-
-    // public override void Exit()
-    // {
-    //     base.Exit();
-    // }
+    // public override void Exit() { base.Exit(); }     //  可不写
 
     //————————————————————————————————————————————————————————————————————————————
 

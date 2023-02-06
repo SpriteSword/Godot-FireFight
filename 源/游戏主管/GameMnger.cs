@@ -7,7 +7,7 @@ public class GameMnger : Node2D
 	public enum Side : byte { 无, 红, 蓝 };        //  无 用来标记哪方打算结束本阶段。暂时 红色代表苏联，蓝色代表美国
 	public enum Stage : byte { 直射, 移动, 解除压制, 间射, 临机射击 };
 
-	//  攻击结果。NULL 无影响；K 被杀死；S 被压制suppressed；KF 失去火力；KM 失去移动力；KMS 失去导弹，间射火力才有！。
+	//  攻击结果。NULL 无影响；K 被杀死；S 被压制 suppressed；KF 失去火力；KM 失去移动力；KMS 失去导弹，间射火力才有！。
 	public enum AttackResult : byte { _null_, K, S, KF, KM, KMS };      //  专有名词不用管命名
 
 	//  必要的游戏战斗判定数据。++++++++++++++++++++++++++++++++++各种型号真的很烦人！我还要解析他们？大、小型号。没有小型号，就代表所有该大型号的都通用
@@ -20,7 +20,6 @@ public class GameMnger : Node2D
 
 	public readonly Array<int> _distance_level_ =       //  攻击距离分级。上级别< 距离(m) <= 下1级别，返回 下1级别
 					new Array<int> { 0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 750, 1000, 1500, 2000, 2500, 3000 };       //  第一个0是自己加的，原规则无，为了好算。
-
 
 	//  六边形的6个方向。共占6位bit，正右方是第1位，顺时针依次排下去。
 	public enum DirectionIndex : byte { E = 1 << 0, SE = 1 << 1, SW = 1 << 2, W = 1 << 3, NW = 1 << 4, NE = 1 << 5 }
@@ -40,15 +39,12 @@ public class GameMnger : Node2D
 				(uint)DirectionIndex.NW | (uint)DirectionIndex.SW, (uint)DirectionIndex.NE | (uint)DirectionIndex.W, (uint)DirectionIndex.E | (uint)DirectionIndex.NW,
 				};
 
-
 	// const float _Hint_Wait_Time_ = 1;
+	// [Export(PropertyHint.File, "后缀名")] string s;
 
 	//  信号
 	[Signal] delegate void Inquire(string qusetion, IC command);      // -> 询问框._PopUp
 	[Signal] delegate void Warn(string text);       //  -> 警告框，面板连好
-
-	// [Export(PropertyHint.File, "后缀名")] string s;
-
 
 	//  坐标、几何
 	public const float _hex_side_len_ = 26;       //  六边形边长
@@ -60,10 +56,33 @@ public class GameMnger : Node2D
 	public const uint _map_h_ = 38;
 
 
-
 	//  --------------------------------------------------资源
+	//---------------------------------------------------
 
 
+	#region ————————————————————————————————————————————————————————  节点
+	//  子节点
+	public Camera2D camera;
+	public PiecesMnger pieces_mnger;
+	public Mark mark;
+	public GUI gui;
+	询问框 inquiry_box;
+	public 游戏网络处理 network_handler;
+	public GameMngerStateMachine state_machine;
+
+	public Tween tween;
+	Timer hint_timer;
+
+	//  数据查询用
+	public TileMap road;
+	public TileMap train;
+
+	//  当前阶段
+	public 游戏阶段 current_stage;
+
+	#endregion
+
+	#region ————————————————————————————————————————————————————————  当全局变量
 	//----------------------------------------------------网络
 	public bool i_ready = false;
 	public bool client_ready = false;
@@ -81,31 +100,8 @@ public class GameMnger : Node2D
 	public Vector2 mouse_cell_pos;
 	public Vector2 mouse_cell_old_pos;
 
-	//---------------------------------------------------
-
-
-	#region ————————————————————————————————————————————————————————  节点
-	//  子节点
-	public Camera2D camera;
-	public PiecesMnger pieces_mnger;
-	public Mark mark;
-	public GUI gui;
-	询问框 inquiry_box;
-	public 游戏网络处理 network_handler;
-	public GameMngerStateMachine state_machine;
-
-	//  数据查询用
-	public TileMap road;
-	public TileMap train;
-
-	public Tween tween;
-	Timer hint_timer;
-
-	//  当前阶段
-	public 游戏阶段 current_stage;
-	Stage current_stage_index;
-	#endregion
-
+	int round;		//  当前回合
+	Stage current_stage_index;		//  当前阶段的索引
 	Side actionable_side;       //  当前活动的一方
 	public Side local_player_side = Side.无;      //  本地玩家属于哪一方。不联网就是 无
 	public Side end_stage_side = Side.无;     //  用来标记哪方打算结束本阶段
@@ -115,8 +111,6 @@ public class GameMnger : Node2D
 	public Array<PathPoint> path = new Array<PathPoint>();
 	public int path_node_index = 0;        //  路径节点在数组中的索引
 
-
-	//-----------------------------------------当全局变量用
 	public Array<Piece> pieces_selected = new Array<Piece>();     //  被选中的棋子们
 	public PieceStack stack_selected;
 
@@ -124,6 +118,8 @@ public class GameMnger : Node2D
 	public Array<Piece> attackers = new Array<Piece>();
 	public Piece defender;
 	public Piece mover;     //  进入移动动画时使用
+
+	#endregion
 
 	#region get set
 
@@ -147,12 +143,21 @@ public class GameMnger : Node2D
 		}
 	}
 
+	public int Round
+	{
+		get { return round; }
+		set
+		{
+			round = value;
+			gui.round_display_bar.SetRoundLabel(value);
+		}
+	}
+
 	#endregion
 
 	//----------------------------------------------------------
 	public override void _Ready()
 	{
-
 		camera = GetNode<Camera2D>("Camera2D");
 		pieces_mnger = GetNode<PiecesMnger>("PiecesMnger");
 		mark = GetNode<Mark>("Mark");
@@ -172,6 +177,7 @@ public class GameMnger : Node2D
 
 		InitSignal();
 		ReadNecessaryFile();
+		Round = 1;
 
 		//  发送准备好了
 		i_ready = true;
@@ -285,8 +291,6 @@ public class GameMnger : Node2D
 	}
 
 
-
-
 	//——————————————————————————————————————————————————————————————————————————————
 	//  信号初始化
 	void InitSignal()
@@ -304,7 +308,7 @@ public class GameMnger : Node2D
 		camera.ForceUpdateScroll();
 	}
 
-	//—————————————————————————————————————————————————————————————————————————————  GUI
+	#region  —————————————————————————————————————————————————————————————————————————————  GUI
 	#region 棋子信息栏
 
 	//  棋子信息栏变灰。棋子信息卡丧失选择
@@ -328,6 +332,7 @@ public class GameMnger : Node2D
 	}
 
 	#endregion
+
 	#region 悬浮棋子信息栏
 
 	//  处理信息卡被选择。被信息栏调用
@@ -348,6 +353,7 @@ public class GameMnger : Node2D
 		else { hint_timer.Stop(); }
 	}
 
+	#endregion
 
 	#region 玩法相关
 	#endregion

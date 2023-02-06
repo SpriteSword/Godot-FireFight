@@ -29,14 +29,13 @@ public class 攻击动画 : 游戏阶段
     public override void HandleUnhandledInput(InputEvent _event) { }
     public override void Exit()
     {
-        base.Exit();
+        base.Exit();        //  子类必须执行
 
         game_mnger.tween.Disconnect("tween_all_completed", this, "_TweenAllCompleted");
     }
 
 
     //-----------------------------------------------------------
-
     //  动画初始化
     void InitAnimation()
     {
@@ -92,7 +91,6 @@ public class 攻击动画 : 游戏阶段
     }
 
     //————————————————————————————————————————————————————————————————————  网络
-
     //  RPC分发
     protected override void _RPC(int id, Dictionary content)
     {

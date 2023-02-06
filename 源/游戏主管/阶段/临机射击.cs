@@ -20,22 +20,10 @@ public class 临机射击 : 射击阶段Base
         own_side = SwapRedBlue(game_mnger.mover.side);
         game_mnger.ActionableSide = own_side;       //+++++++++++++++++++++++++++结束了再反回来
     }
-    // public override void UpdatePhysicsProcess(float delta) { }
-    // public override void UpdateProcess(float delta) { }
-    // public override void HandleInput(InputEvent _event) { }
 
-    // public override void HandleUnhandledInput(InputEvent _event)        //  相同的继承，只用重写处理自己特殊的部分
-    // {
-    //     base.HandleUnhandledInput(_event);
-    // }
-
-    // public override void Exit()
-    // {
-    //     base.Exit();
-    // }
+    // public override void Exit() { base.Exit(); }     //  可不用写
 
     //——————————————————————————————————————————————————————————————————————————————————
-
     //  处理选择正在移动的敌人
     protected override void HandleSelectEnemySide()
     {

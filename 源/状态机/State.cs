@@ -178,7 +178,7 @@ public abstract class 游戏阶段 : State
         EnterNextStage();
     }
 
-    //  进入下一阶段
+    //  进入下一阶段。具体执行
     protected virtual void EnterNextStage() { }
     #endregion
 

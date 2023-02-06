@@ -1,23 +1,23 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://源/格/45x52.tres" type="TileSet" id=1]
-[ext_resource path="res://源/游戏主管/棋子主管/PiecesMnger.cs" type="Script" id=2]
-[ext_resource path="res://源/游戏主管/GUI/GUI.cs" type="Script" id=3]
+[ext_resource path="res://源/棋子主管/PiecesMnger.cs" type="Script" id=2]
+[ext_resource path="res://源/GUI/GUI.cs" type="Script" id=3]
 [ext_resource path="res://源/游戏主管/GameMnger.cs" type="Script" id=4]
-[ext_resource path="res://源/游戏主管/状态机/GameMngerStateMachine.cs" type="Script" id=5]
+[ext_resource path="res://源/游戏主管/阶段/GameMngerStateMachine.cs" type="Script" id=5]
 [ext_resource path="res://源/游戏主管/Mark.cs" type="Script" id=6]
-[ext_resource path="res://源/游戏主管/状态机/间射阶段.cs" type="Script" id=7]
-[ext_resource path="res://源/游戏主管/状态机/临机射击.cs" type="Script" id=8]
-[ext_resource path="res://源/游戏主管/状态机/攻击动画.cs" type="Script" id=9]
-[ext_resource path="res://源/游戏主管/状态机/移动动画.cs" type="Script" id=10]
-[ext_resource path="res://源/游戏主管/状态机/移动阶段.cs" type="Script" id=11]
-[ext_resource path="res://源/游戏主管/状态机/直射阶段.cs" type="Script" id=12]
+[ext_resource path="res://源/游戏主管/阶段/间射阶段.cs" type="Script" id=7]
+[ext_resource path="res://源/游戏主管/阶段/临机射击.cs" type="Script" id=8]
+[ext_resource path="res://源/游戏主管/阶段/攻击动画.cs" type="Script" id=9]
+[ext_resource path="res://源/游戏主管/阶段/移动动画.cs" type="Script" id=10]
+[ext_resource path="res://源/游戏主管/阶段/移动阶段.cs" type="Script" id=11]
+[ext_resource path="res://源/游戏主管/阶段/直射阶段.cs" type="Script" id=12]
 [ext_resource path="res://assets/主题.tres" type="Theme" id=13]
 [ext_resource path="res://源/GUI/询问框/询问框.tscn" type="PackedScene" id=14]
-[ext_resource path="res://源/游戏主管/状态机/想定.cs" type="Script" id=15]
-[ext_resource path="res://源/游戏主管/GUI/棋子部署系统/棋子部署系统.tscn" type="PackedScene" id=16]
+[ext_resource path="res://源/游戏主管/阶段/想定.cs" type="Script" id=15]
+[ext_resource path="res://源/GUI/棋子部署系统/棋子部署系统.tscn" type="PackedScene" id=16]
 [ext_resource path="res://源/GUI/上部UI/回合显示栏.tscn" type="PackedScene" id=17]
-[ext_resource path="res://源/游戏主管/状态机/攻击调度.cs" type="Script" id=18]
+[ext_resource path="res://源/游戏主管/阶段/攻击调度.cs" type="Script" id=18]
 [ext_resource path="res://源/GUI/警告框/警告框.tscn" type="PackedScene" id=19]
 [ext_resource path="res://源/游戏主管/游戏网络处理.cs" type="Script" id=20]
 [ext_resource path="res://源/GUI/进度条/圆形进度条.tscn" type="PackedScene" id=21]
@@ -28,6 +28,7 @@
 [ext_resource path="res://assets/地图/tileset/tileset_铁路.tres" type="TileSet" id=26]
 [ext_resource path="res://assets/地图/地图.png" type="Texture" id=27]
 [ext_resource path="res://assets/地图/tileset/tileset_地物.tres" type="TileSet" id=28]
+[ext_resource path="res://源/游戏主管/阶段/结束回合.cs" type="Script" id=29]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
@@ -171,6 +172,9 @@ script = ExtResource( 8 )
 
 [node name="间射阶段" type="Node" parent="GameMngerStateMachine"]
 script = ExtResource( 7 )
+
+[node name="结束回合" type="Node" parent="GameMngerStateMachine"]
+script = ExtResource( 29 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true

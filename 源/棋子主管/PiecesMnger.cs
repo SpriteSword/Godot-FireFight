@@ -21,7 +21,7 @@ public class PiecesMnger : MyTileMap
     {
         scn_red_piece = GD.Load<PackedScene>("res://源/棋子/red/RedPiece.tscn");
         scn_blue_piece = GD.Load<PackedScene>("res://源/棋子/blue/BluePiece.tscn");
-        scn_shadow = GD.Load<PackedScene>("res://源/游戏主管/棋子主管/PieceStack.tscn");
+        scn_shadow = GD.Load<PackedScene>("res://源/棋子主管/PieceStack.tscn");
 
         pieces = GetNode<Node>("Pieces");
         stacks = GetNode<Node>("Stack");

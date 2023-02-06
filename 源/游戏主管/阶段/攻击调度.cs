@@ -44,7 +44,7 @@ public class 攻击调度 : 游戏阶段
     public override void HandleUnhandledInput(InputEvent _event) { }
     public override void Exit()
     {
-        base.Exit();
+        base.Exit();        //  子类必须执行
     }
 
     //——————————————————————————————————————————————————————————————————————————

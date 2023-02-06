@@ -20,7 +20,7 @@ public class 棋子部署系统 : Panel
 
 	public override void _Ready()
 	{
-		scn_texture = GD.Load<PackedScene>("res://源/游戏主管/GUI/棋子部署系统/预备部署棋子.tscn");
+		scn_texture = GD.Load<PackedScene>("res://源/GUI/棋子部署系统/预备部署棋子.tscn");
 
 		piece_txtr_on_mouse = GetNode<TextureRect>("PickedUpPieceTexture");
 		container = GetNode<GridContainer>("ScrollContainer/GridContainer");
