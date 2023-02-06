@@ -7,8 +7,21 @@ public class 想定 : 游戏阶段
     棋子部署系统 deploy_system;
 
     //  网络
-    bool i_ready = false;
-    bool opps_ready = false;
+    bool i_finished = false;
+    bool oppo_finished = false;
+    bool client_ready = false;      //  自己结束部署为finished，同步了对方的叫ready
+
+    //  ---------  玩法
+    //  双方兵力总表summary。{id:"型号"}。id是否正确在读取文件时检查
+    public Dictionary red_piece_smry = new Dictionary {
+            { 1, "T62" }, { 2, "T62" }, { 3, "T62" },{ 4, "T62" }
+            };
+
+    public Dictionary blue_piece_smry = new Dictionary {
+            { 5, "M60 A1" }, { 6, "M60 A1" }, { 7, "M60 A1" },{ 8, "M60 A1" }, { 9, "M60 A1" }, { 10, "M60 A1" }, { 11, "M60 A1" },{ 12, "M60 A1" },
+            { 13, "M60 A1" }, { 14, "M60 A1" }, { 15, "M60 A1" },{ 16, "M60 A1" }, { 17, "M60 A1" }, { 18, "M60 A1" }, { 19, "M60 A1" },{ 20, "M60 A1" },
+            { 21, "M60 A1" }
+            };
 
 
     public override void _Ready()
@@ -26,9 +39,7 @@ public class 想定 : 游戏阶段
         deploy_system.Hide();      //  由于初始化顺序写这里
         deploy_system.ClearAll();
 
-        //  ++++++++++++++++++++++++++++++根据游戏规则创建所有棋子一览表
-        deploy_system.AddTexture(1);
-        deploy_system.AddTexture(2);
+        CreatePieceList();
 
         deploy_system.Show();
     }
@@ -43,7 +54,7 @@ public class 想定 : 游戏阶段
             {
                 Vector2 pos = game_mnger.GetGlobalMousePosition();
                 Vector2 cell_pos = game_mnger.mark.DetermineCellOfHexGrid(pos);
-                game_mnger.pieces_mnger.AddBluePiece(Math.Cell2HexCoord(cell_pos), deploy_system.piece_in_bar.piece_id);     //+++++
+                game_mnger.pieces_mnger.AddPiece(deploy_system.piece_in_bar.piece_id, cell_pos, game_mnger.local_player_side);   //+++++++++++++++++
 
                 deploy_system.HavePlacedPiece();
             }
@@ -64,7 +75,7 @@ public class 想定 : 游戏阶段
     void HandleSelectPiece()
     {
         var stack = game_mnger.pieces_mnger.GetPieceStackByRectPos(mouse_pos);
-        if (stack != null)
+        if (stack != null && (Global.联机调试 && stack.side == game_mnger.local_player_side))
         {
             piece_selected = stack.GetTopPiece();
             deploy_system.ShowUIIfClickPieceOnMap(true, piece_selected.id);
@@ -76,9 +87,25 @@ public class 想定 : 游戏阶段
         deploy_system.ShowUIIfClickPieceOnMap(false);
     }
 
+    //  创建棋子一览表
+    void CreatePieceList()
+    {
+        foreach (int itm in PieceSmryBySide(game_mnger.local_player_side).Keys)
+        {
+            deploy_system.AddTexture((uint)itm);
+        }
+    }
+
+    //  根据side 决定使用哪个字典。
+    Dictionary PieceSmryBySide(GameMnger.Side side)
+    {
+        if (side == GameMnger.Side.红) return red_piece_smry;
+        else return blue_piece_smry;
+    }
+
+
 
     //——————————————————————————————————————————————————————————————  棋子部署系统调用
-
     //  重新部署。移动已经摆放好的棋子
     public void Redeploy(uint id)
     {
@@ -116,15 +143,29 @@ public class 想定 : 游戏阶段
         }
     }
 
+    //——————————————————————————————————————————————————————————
 
     void Finish()
     {
         if (!Global.联机调试) return;
 
         deploy_system.Hide();
-        i_ready = true;
+        i_finished = true;
         SynDeploymentQ();
     }
+
+    // void Try2Start()
+    // {
+
+    //     if (game_mnger.IsAsServer() && client_ready)
+    //     {
+    //         StartS();
+    //         superior.ChangeTo<直射阶段>();
+    //     }
+    // }
+
+
+
 
 
     //——————————————————————————————————————————————————————————————————————————————————————————————————————  网络
@@ -139,6 +180,12 @@ public class 想定 : 游戏阶段
             case "SynDeploymentA":
                 SynDeploymentA(_params);        //  同步部署的数据
                 break;
+            case "ClientReadySA":        //  客户端同步完成
+                ClientReadySA();
+                break;
+            case "StartCA":
+                StartCA();
+                break;
             default:
                 GD.PrintErr("想定：没有找到函数：", content["func"]);
                 break;
@@ -150,9 +197,13 @@ public class 想定 : 游戏阶段
     {
         Array _params = new Array();
         Dictionary d = new Dictionary();
-        d[1] = new Vector2(2, 1);
-        _params.Add(d);       //  字典{棋子id : cell 坐标}
 
+        foreach (Piece p in game_mnger.pieces_mnger.pieces.GetChildren())
+        {
+            if (p.side == game_mnger.local_player_side) { d[p.id] = p.CellPos; }
+        }
+
+        _params.Add(d);       //  字典{棋子id : cell 坐标}
         game_mnger.Send(Global.opposite_player_peer_id, NetworkMnger.Data2JSON("SynDeploymentA", _params));
     }
 
@@ -161,17 +212,69 @@ public class 想定 : 游戏阶段
     {
         if (_params[0] is Dictionary dictionary)
         {
-            foreach (var itm in dictionary.Keys)        //  itm 是string
+            foreach (string itm in dictionary.Keys)        //  itm 是string
             {
+                var id = (itm).ToInt();
 
+                Dictionary oppo_smry = PieceSmryBySide(SwapRedBlue(game_mnger.local_player_side));
+                if (!oppo_smry.Contains(id)) continue;
+
+                string str_pos = (string)dictionary[itm];
+                Vector2 cell_pos;
+                try
+                {
+                    cell_pos = MyString.Decode2Vector(str_pos);
+                    game_mnger.pieces_mnger.AddPiece((uint)id, cell_pos, SwapRedBlue(game_mnger.local_player_side));
+                }
+                catch (MyException.DecodeException de)
+                {
+                    GD.PrintErr(de);
+                }
             }
         }
         else { GD.PrintErr("想定：SynDeploymentA：参数错误，不是Dictionary"); }
 
+        oppo_finished = true;
+
+
+        if (game_mnger.IsAsServer())
+        {
+            if (i_finished && oppo_finished && client_ready) { StartSQ(); }
+        }
+        else
+        {
+            ClientReadyCQ();     //  自己是客户端，发送已准备好，等待主机开始命令
+        }
     }
     /*
     {"type":"data","func":"SynDeploymentA","params":[{"1":"(2, 1)"}]}
     [{1:(2, 1)}]Godot.Collections.Dictionary
     */
+
+    //  部署完成，客户端发送
+    void ClientReadyCQ()
+    {
+        Array _params = new Array();
+        game_mnger.Send(Global.opposite_player_peer_id, NetworkMnger.Data2JSON("ClientReadySA", _params));
+    }
+    void ClientReadySA()
+    {
+        client_ready = true;
+        if (i_finished && oppo_finished && client_ready) { StartSQ(); }
+    }
+
+    //  服务器调用通知客户端开始。
+    void StartSQ()
+    {
+        Array _params = new Array();
+        game_mnger.Send(Global.opposite_player_peer_id, NetworkMnger.Data2JSON("StartCA", _params));
+
+        superior.ChangeTo<直射阶段>();
+    }
+    //  客户端开始
+    void StartCA()
+    {
+        superior.ChangeTo<直射阶段>();
+    }
 
 }

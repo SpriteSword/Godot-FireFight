@@ -1,7 +1,7 @@
 using Godot;
 using Godot.Collections;
 
-public class NetworkMnger : Node
+public class NetworkMnger : Node		//+++++++++++++++++++++++++++=  居然是不知道自己的peer_id？
 {
 	public const ushort _Default_Port_ = 12478;
 
@@ -43,7 +43,7 @@ public class NetworkMnger : Node
 		network_component = null;
 	}
 
-	//  是否是作为服务器？
+	//  是否是作为服务器
 	public bool IsAsServer()
 	{
 		return network_component is 服务端;

@@ -124,41 +124,61 @@ public class PiecesMnger : MyTileMap
     }
 
 
-
-
     //  添加棋子。游戏想定阶段调用。
-    public void AddRedPiece(Vector2 hex_pos, uint id)
+    public void AddPiece(uint id, Vector2 cell_pos, GameMnger.Side side, string model_name = "TM", bool visible = true)
     {
-        var p = scn_red_piece.Instance<Piece>();
+        var scn = (side == GameMnger.Side.红 ? scn_red_piece : scn_blue_piece);
+
+        var p = scn.Instance<Piece>();
         p.id = id;
-        p.type = Piece.PieceType.人;
-        p.model_name = "TM";        //+++++++++++++++++++++++++++++++
+        p.type = Piece.PieceType.人;        //+++++++++++++++++++++++++++++++型号对应
+        p.model_name = model_name;
+        p.Visible = visible;
 
         pieces.AddChild(p);
         p.Connect("PlaceMe", this, "_PlacePiece");
         p.Connect("MouseIn", this, "_PieceFocusIn");
         p.Connect("MouseOut", this, "_PieceFocusOut");
 
-        p.HexPos = hex_pos;
+        p.CellPos = cell_pos;
 
         AddPieceInStack(p);
     }
-    public void AddBluePiece(Vector2 hex_pos, uint id)
-    {
-        var p = scn_blue_piece.Instance<Piece>();
-        p.id = id;
-        p.type = Piece.PieceType.人;
-        p.model_name = "TM";
 
-        pieces.AddChild(p);
-        p.Connect("PlaceMe", this, "_PlacePiece");
-        p.Connect("MouseIn", this, "_PieceFocusIn");
-        p.Connect("MouseOut", this, "_PieceFocusOut");
 
-        p.HexPos = hex_pos;
+    //
+    // public void AddRedPiece(Vector2 hex_pos, uint id, string model_name = "TM")
+    // {
+    //     var p = scn_red_piece.Instance<Piece>();
+    //     p.id = id;
+    //     p.type = Piece.PieceType.人;        //+++++++++++++++++++++++++++++++
+    //     p.model_name = model_name;
 
-        AddPieceInStack(p);
-    }
+    //     pieces.AddChild(p);
+    //     p.Connect("PlaceMe", this, "_PlacePiece");
+    //     p.Connect("MouseIn", this, "_PieceFocusIn");
+    //     p.Connect("MouseOut", this, "_PieceFocusOut");
+
+    //     p.HexPos = hex_pos;
+
+    //     AddPieceInStack(p);
+    // }
+    // public void AddBluePiece(Vector2 hex_pos, uint id)
+    // {
+    //     var p = scn_blue_piece.Instance<Piece>();
+    //     p.id = id;
+    //     p.type = Piece.PieceType.人;
+    //     p.model_name = "TM";
+
+    //     pieces.AddChild(p);
+    //     p.Connect("PlaceMe", this, "_PlacePiece");
+    //     p.Connect("MouseIn", this, "_PieceFocusIn");
+    //     p.Connect("MouseOut", this, "_PieceFocusOut");
+
+    //     p.HexPos = hex_pos;
+
+    //     AddPieceInStack(p);
+    // }
 
 
 

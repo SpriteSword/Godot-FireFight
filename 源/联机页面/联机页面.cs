@@ -61,6 +61,7 @@ public class 联机页面 : Control		//+++++++++++++++++进行完后要断开连
 		join_port_box.Text = NetworkMnger._Default_Port_.ToString();
 
 		InitSignal();
+
 	}
 
 	//  信号初始化
@@ -152,6 +153,7 @@ public class 联机页面 : Control		//+++++++++++++++++进行完后要断开连
 				PackedScene game = GD.Load<PackedScene>("res://源/游戏主管/GameMnger.tscn");
 
 				Global.opposite_player_peer_id = opposite_player_peer_id;       //  .Instance<GameMnger>() 与正式游戏实例的不是同一个？
+				Global.player_name = player_name_box.Text;
 
 				GetTree().ChangeSceneTo(game);      //  可以通过viewport来更换！
 

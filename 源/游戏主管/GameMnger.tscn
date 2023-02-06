@@ -89,7 +89,6 @@ script = ExtResource( 6 )
 [node name="画布层" type="CanvasLayer" parent="."]
 
 [node name="GUI" type="Control" parent="画布层"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -185,5 +184,4 @@ script = ExtResource( 20 )
 one_shot = true
 
 [connection signal="Warn" from="." to="画布层/GUI/警告框" method="_PopUp"]
-[connection signal="ready" from="." to="GameMngerStateMachine" method="_on_GameMnger_ready"]
 [connection signal="timeout" from="HintTimer" to="." method="_on_HintTimer_timeout"]

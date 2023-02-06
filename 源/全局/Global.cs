@@ -7,7 +7,7 @@ public class Global : Node
 
     public static int opposite_player_peer_id;      //  对手的客户端的id
 
-
+    public static string player_name;
 
 }
 

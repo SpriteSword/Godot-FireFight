@@ -70,7 +70,7 @@ public class GameMnger : Node2D
 
 	//-----------------------------------------------------------
 	//  相机
-	float view_zoom = 1;        //  zoom 变焦
+	float view_zoom = 2.5f;        //  zoom 变焦
 	bool camera_drag = false;       //  相机是否拖拽
 	Vector2 camera_old_pos;
 
@@ -92,6 +92,7 @@ public class GameMnger : Node2D
 	public GUI gui;
 	询问框 inquiry_box;
 	public 游戏网络处理 network_handler;
+	public GameMngerStateMachine state_machine;
 
 	//  数据查询用
 	public TileMap road;
@@ -106,7 +107,7 @@ public class GameMnger : Node2D
 	#endregion
 
 	Side actionable_side;       //  当前活动的一方
-	public Side local_player_side;      //  本地玩家属于哪一方。不联网就是 无
+	public Side local_player_side = Side.无;      //  本地玩家属于哪一方。不联网就是 无
 	public Side end_stage_side = Side.无;     //  用来标记哪方打算结束本阶段
 
 	//  移动阶段的路径
@@ -158,30 +159,41 @@ public class GameMnger : Node2D
 		gui = GetNode<GUI>("画布层/GUI");
 		inquiry_box = GetNode<询问框>("画布层/GUI/询问框");
 		network_handler = GetNode<游戏网络处理>("游戏网络处理");
+		state_machine = GetNode<GameMngerStateMachine>("GameMngerStateMachine");
 		road = GetNode<TileMap>("Map/Road");
 		train = GetNode<TileMap>("Map/Train");
 		tween = GetNode<Tween>("Tween");
 		hint_timer = GetNode<Timer>("HintTimer");
 
-		// road.Visible = false;
-		// train.Visible = false;
-
+		road.Visible = false;
+		train.Visible = false;
+		camera.Position = new Vector2(_map_w_ * _cell_w_ / 2, _map_h_ * _cell_h_ / 2);
+		camera.Zoom = new Vector2(view_zoom, view_zoom);
 
 		InitSignal();
 		ReadNecessaryFile();
-
-
-		// pieces_mnger.AddRedPiece(new Vector2(0, 2), 1);
-		// pieces_mnger.AddBluePiece(new Vector2(0, 3), 2);
-		// pieces_mnger.AddRedPiece(new Vector2(0, 2), 3);
-		// pieces_mnger.AddBluePiece(new Vector2(0, 0), 4);
-
-
 
 		//  发送准备好了
 		i_ready = true;
 		network_handler.Try2Start();
 
+		gui.info_box.Text = "玩家：" + Global.player_name;
+
+		if (Global.联机调试)
+		{
+			if (IsAsServer())
+			{
+				local_player_side = GameMnger.Side.红;
+				gui.info_box.Text += " 红方\n";
+			}
+			else
+			{
+				local_player_side = GameMnger.Side.蓝;       //  +++++++++++++++++=暂且规定死}
+				gui.info_box.Text += " 蓝方\n";
+			}
+		}
+
+		state_machine.MngerReady();     //  联机在 网络处理 那设置state
 	}
 	public override void _Process(float delta)
 	{

@@ -90,7 +90,7 @@ public class 射击阶段Base : 游戏阶段
     {
         if (Global.联机调试)
         {   //  本地玩家非行动方
-            if (!IsLocalPlayerActionable()) return;
+            if (!IsLocalPlayerActionable()) {GD.Print("非本地玩家回合");return;}
         }
 
         if (game_mnger.pieces_mnger.pieces_focused.Count > 0 && game_mnger.pieces_selected.Count > 0)       //  pieces_focused 是敌方目标，pieces_selected是己方

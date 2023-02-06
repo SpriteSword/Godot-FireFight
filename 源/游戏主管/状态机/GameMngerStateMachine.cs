@@ -19,18 +19,22 @@ public class GameMngerStateMachine : Node       //  懒得继承了，反正也�
 
     public override void _UnhandledInput(InputEvent @event)
     {
+        if (current_state == null) return;
         current_state.HandleUnhandledInput(@event);
     }
     public override void _Input(InputEvent @event)
     {
+        if (current_state == null) return;
         current_state.HandleInput(@event);
     }
     public override void _PhysicsProcess(float delta)
     {
+        if (current_state == null) return;
         current_state.UpdatePhysicsProcess(delta);
     }
     public override void _Process(float delta)
     {
+        if (current_state == null) return;
         current_state.UpdateProcess(delta);
     }
 
@@ -47,7 +51,7 @@ public class GameMngerStateMachine : Node       //  懒得继承了，反正也�
     }
 
     //  GameMnger 初始化完才到各控制器
-    private void _on_GameMnger_ready()
+    public void MngerReady()
     {
         foreach (游戏阶段 itm in GetChildren())
         {
@@ -57,7 +61,6 @@ public class GameMngerStateMachine : Node       //  懒得继承了，反正也�
         // current_state = GetNode<直射阶段>("直射阶段");
         // current_state = GetNode<移动阶段>("移动阶段");
         current_state = GetNode<想定>("想定");
-
 
         current_state.Enter();
         game_mnger.current_stage = current_state;

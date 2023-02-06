@@ -13,11 +13,6 @@ public class 联机网络处理 : NetworkHandler      //  问了没答怎么办�
 
     //——————————————————————————————————————————————————————————————————————————————————————————
 
-    // protected override void _Receive(int id, string data)
-    // {
-    //     base._Receive(id, data);
-    // }
-
     //  处理错误
     protected override void HandleError(int id, Dictionary content)      //  只要有错误就退出！
     {
@@ -41,7 +36,7 @@ public class 联机网络处理 : NetworkHandler      //  问了没答怎么办�
         {
             //  服务端
             case "client_connected":
-                MyName_A(id);
+                RegisterQ(id);
                 GD.Print(id);
                 break;
             case "client_close_request": break;
@@ -51,7 +46,7 @@ public class 联机网络处理 : NetworkHandler      //  问了没答怎么办�
 
             //  客户端
             case "connection_established":
-                MyName_A(1);
+                RegisterQ(1);
                 break;
             case "server_close_request": break;
             case "connection_closed":
@@ -69,8 +64,8 @@ public class 联机网络处理 : NetworkHandler      //  问了没答怎么办�
 
         switch (content["func"])
         {
-            case "Register":
-                Register(id, _params);       //decode_json["params"] as Array
+            case "RegisterA":
+                RegisterA(id, _params);       //decode_json["params"] as Array
                 break;
             case "Ready2StartC":
                 Ready2StartC(id);
@@ -109,17 +104,16 @@ public class 联机网络处理 : NetworkHandler      //  问了没答怎么办�
         }
     }
 
-    //  让对方注册我的姓名
-    void MyName_A(int tar_id)
+    //  让对方注册我的姓名。Q发送
+    void RegisterQ(int tar_id)
     {
         Array p = new Array();
         p.Add(online_page.player_name_box.Text);        //  直接初始化时写会变数字？
-        network_mnger.Send(tar_id, NetworkMnger.Data2JSON("Register", p));
+        network_mnger.Send(tar_id, NetworkMnger.Data2JSON("RegisterA", p));
     }
 
-
-    //  注册信息
-    void Register(int id, Array _params)
+    //  注册信息。A收到的回应。
+    void RegisterA(int id, Array _params)
     {
         if (_params.Count < 1) return;
 
@@ -134,16 +128,18 @@ public class 联机网络处理 : NetworkHandler      //  问了没答怎么办�
         l.Connect("SelectMe", online_page, "_SelectPlayer");
     }
 
-    //  加载游戏准备开始
+    //  加载游戏准备开始。客户端
     void Ready2StartC(int id)
     {
         if (network_mnger.IsAsServer()) return;     //  不写也可？
         PackedScene game = GD.Load<PackedScene>("res://源/游戏主管/GameMnger.tscn");
         // GameMnger game_mnger = game.Instance<GameMnger>();
-        // game_mnger.opposite_player_peer_id = 1;
-        GetTree().ChangeSceneTo(game);
 
         Global.opposite_player_peer_id = 1;
+        Global.player_name = online_page.player_name_box.Text;
+
+
+        GetTree().ChangeSceneTo(game);
     }
 
 }

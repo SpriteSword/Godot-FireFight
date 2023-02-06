@@ -31,7 +31,6 @@ public class 游戏网络处理 : NetworkHandler
 
     //——————————————————————————————————————————————————————————————————————————————————————————
 
-
     //  处理错误
     protected override void HandleError(int id, Dictionary content)      //  只要有错误就退出！
     {
@@ -108,18 +107,12 @@ public class 游戏网络处理 : NetworkHandler
 
         //  自己开始
         ShowLoadingScreen(false);
-
-        //  确定玩家是哪一方
-        game_mnger.local_player_side = GameMnger.Side.红;
-
     }
 
     //  客户端收到正式开始信息，正式开始
     void StartC()
     {
         ShowLoadingScreen(false);
-        //  确定玩家是哪一方
-        game_mnger.local_player_side = GameMnger.Side.蓝;       //  暂且规定死
     }
 
     //  ————————————————————————————————————————————————————————————————————————————————————————————————

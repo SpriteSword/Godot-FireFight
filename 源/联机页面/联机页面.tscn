@@ -154,9 +154,6 @@ anchor_bottom = 1.0
 margin_top = -319.0
 margin_right = 307.0
 readonly = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="NameHBox" type="HBoxContainer" parent="."]
 anchor_left = 0.5
@@ -167,9 +164,6 @@ margin_left = -112.0
 margin_top = -260.0
 margin_right = 112.0
 margin_bottom = -233.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label" type="Label" parent="NameHBox"]
 margin_top = 5.0
