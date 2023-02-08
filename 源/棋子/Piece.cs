@@ -27,7 +27,7 @@ public class Piece : Node2D
     public string model_name;       //  包括大小型号。像 "M60 A3"，M60大型号，A3小型号。
 
     //  移动点数 movement point
-    public float m_p = 1;
+    public float m_p = 10;
 
 
     //  在 1 个回合内或移动或射击，只能执行 1 次行动（短停射击除外）

@@ -61,13 +61,13 @@ public static class Math
 
     //  返回与直线相交的六边形，用与六边形等面积的圆来简化相交的判断。
     //  输入头尾两个六边形的 hex 坐标，返回 六边形们的坐标（hex 坐标）。
-    public static Array<Vector2> GetHexsOnLine(Vector2 from, Vector2 to)
+    public static Array<Vector2> GetHexsOnLine(Vector2 from, Vector2 to)        //++++++++++++++++++++++有bug！！！坐标为负数就不对！
     {
         if (from == to) return new Array<Vector2>(from);
 
         Array<Vector2> array = new Array<Vector2>();
 
-        // //  3 个方向可以直接看出
+        //  3 个方向可以直接看出
         if (to.y == from.y || to.x == from.x || (to - from).x == (to - from).y)
         {
             Vector2 d = new Vector2(Mathf.Sign(to.x - from.x), Mathf.Sign(to.y - from.y));
@@ -80,7 +80,7 @@ public static class Math
             }
             return array;
         }
-
+        //  不是3个方向中的，用与六边形等面积的圆来简化相交的判断。
         //  直角坐标
         Vector2 f_rect = Hex2RectCoord(from);
         Vector2 t_rect = Hex2RectCoord(to);

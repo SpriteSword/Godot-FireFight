@@ -36,10 +36,10 @@ public class 测试TileMap : HexTileMap
 
 
 /*测试 图块与方向的索引是否一致
-                    Vector2 mou_cell_pos = game_mnger.mark.DetermineCellOfHexGrid(mouse_pos);
-                    // var r_c = game_mnger.road.GetCellv(mou_cell_pos);
+					Vector2 mou_cell_pos = game_mnger.mark.DetermineCellOfHexGrid(mouse_pos);
+					// var r_c = game_mnger.road.GetCellv(mou_cell_pos);
 
-                    var c = game_mnger.road.GetCellv(mou_cell_pos);
-                    GD.Print(c, " ",c >= 0 ?
-                    GetRoadTileIndexByDirection(game_mnger._road_tile_direction_index_[c]) : -1);
+					var c = game_mnger.road.GetCellv(mou_cell_pos);
+					GD.Print(c, " ",c >= 0 ?
+					GetRoadTileIndexByDirection(game_mnger._road_tile_direction_index_[c]) : -1);
 */

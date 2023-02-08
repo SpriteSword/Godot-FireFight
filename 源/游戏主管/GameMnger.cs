@@ -76,6 +76,7 @@ public class GameMnger : Node2D
 	//  数据查询用
 	public TileMap road;
 	public TileMap train;
+	public TileMap ground_feature;      //  地物
 
 	//  当前阶段
 	public 游戏阶段 current_stage;
@@ -100,8 +101,8 @@ public class GameMnger : Node2D
 	public Vector2 mouse_cell_pos;
 	public Vector2 mouse_cell_old_pos;
 
-	int round;		//  当前回合
-	Stage current_stage_index;		//  当前阶段的索引
+	int round;      //  当前回合
+	Stage current_stage_index;      //  当前阶段的索引
 	Side actionable_side;       //  当前活动的一方
 	public Side local_player_side = Side.无;      //  本地玩家属于哪一方。不联网就是 无
 	public Side end_stage_side = Side.无;     //  用来标记哪方打算结束本阶段
@@ -165,10 +166,12 @@ public class GameMnger : Node2D
 		inquiry_box = GetNode<询问框>("画布层/GUI/询问框");
 		network_handler = GetNode<游戏网络处理>("游戏网络处理");
 		state_machine = GetNode<GameMngerStateMachine>("GameMngerStateMachine");
-		road = GetNode<TileMap>("Map/Road");
-		train = GetNode<TileMap>("Map/Train");
 		tween = GetNode<Tween>("Tween");
 		hint_timer = GetNode<Timer>("HintTimer");
+
+		ground_feature = GetNode<TileMap>("Map/地物");
+		road = GetNode<TileMap>("Map/Road");
+		train = GetNode<TileMap>("Map/Train");
 
 		road.Visible = false;
 		train.Visible = false;
@@ -197,6 +200,11 @@ public class GameMnger : Node2D
 				local_player_side = GameMnger.Side.蓝;       //  +++++++++++++++++=暂且规定死}
 				gui.info_box.Text += " 蓝方\n";
 			}
+		}
+		else
+		{
+			pieces_mnger.AddRedPiece(new Vector2(35, 30), 1);
+			pieces_mnger.AddBluePiece(new Vector2(25, 30), 2);
 		}
 
 		state_machine.MngerReady();     //  联机在 网络处理 那设置state
@@ -357,13 +365,13 @@ public class GameMnger : Node2D
 
 	#region 玩法相关
 	#endregion
-	#region 文件
+	#region ————————————————————————————————————————————————————————————————————————————— 文件
 
 	//  必要文件读取
 	void ReadNecessaryFile()        //+++++++++++++++++++++++++++++++++++++++++如果失败了，游戏又将如何退出？
 	{
 		File file = new File();
-		file.Open("res://assets/data/反车辆战斗结果表.json", File.ModeFlags.Read);      //  反车辆战斗结果表
+		file.Open("res://data/反车辆战斗结果表.json", File.ModeFlags.Read);      //  反车辆战斗结果表
 		var s = file.GetAsText();
 		var json_rslt = JSON.Parse(s);
 
@@ -375,7 +383,7 @@ public class GameMnger : Node2D
 		file.Close();
 
 
-		file.Open("res://assets/data/反人员战斗结果表.json", File.ModeFlags.Read);      //  反人员战斗结果表
+		file.Open("res://data/反人员战斗结果表.json", File.ModeFlags.Read);      //  反人员战斗结果表
 		s = file.GetAsText();
 		json_rslt = JSON.Parse(s);
 
@@ -387,7 +395,7 @@ public class GameMnger : Node2D
 		file.Close();
 
 
-		file.Open("res://assets/data/美军对苏军车辆攻击等级表.json", File.ModeFlags.Read);      //  美军对苏军车辆攻击等级表
+		file.Open("res://data/美军对苏军车辆攻击等级表.json", File.ModeFlags.Read);      //  美军对苏军车辆攻击等级表
 		s = file.GetAsText();
 		json_rslt = JSON.Parse(s);
 
@@ -399,7 +407,7 @@ public class GameMnger : Node2D
 		file.Close();
 
 
-		file.Open("res://assets/data/美军对苏军人员攻击等级表.json", File.ModeFlags.Read);      //  美军对苏军人员攻击等级表
+		file.Open("res://data/美军对苏军人员攻击等级表.json", File.ModeFlags.Read);      //  美军对苏军人员攻击等级表
 		s = file.GetAsText();
 		json_rslt = JSON.Parse(s);
 
@@ -411,7 +419,7 @@ public class GameMnger : Node2D
 		file.Close();
 
 
-		file.Open("res://assets/data/苏军对美军车辆攻击等级表.json", File.ModeFlags.Read);      //  苏军对美军车辆攻击等级表
+		file.Open("res://data/苏军对美军车辆攻击等级表.json", File.ModeFlags.Read);      //  苏军对美军车辆攻击等级表
 		s = file.GetAsText();
 		json_rslt = JSON.Parse(s);
 
@@ -423,7 +431,7 @@ public class GameMnger : Node2D
 		file.Close();
 
 
-		file.Open("res://assets/data/苏军对美军人员攻击等级表.json", File.ModeFlags.Read);      //  苏军对美军人员攻击等级表
+		file.Open("res://data/苏军对美军人员攻击等级表.json", File.ModeFlags.Read);      //  苏军对美军人员攻击等级表
 		s = file.GetAsText();
 		json_rslt = JSON.Parse(s);
 

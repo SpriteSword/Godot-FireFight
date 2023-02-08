@@ -90,11 +90,13 @@ public class 射击阶段Base : 游戏阶段
     {
         if (Global.联机调试)
         {   //  本地玩家非行动方
-            if (!IsLocalPlayerActionable()) {GD.Print("非本地玩家回合");return;}
+            if (!IsLocalPlayerActionable()) { GD.Print("非本地玩家回合"); return; }
         }
 
         if (game_mnger.pieces_mnger.pieces_focused.Count > 0 && game_mnger.pieces_selected.Count > 0)       //  pieces_focused 是敌方目标，pieces_selected是己方
         {
+            if (!IsSightLineQualified()) { GD.Print("视线不合格"); return; }
+
             var stack = game_mnger.pieces_mnger.GetPieceStackByRectPos(mouse_pos);
 
             if (stack != null && PiecesMnger.IsAgainst(stack.side, own_side))
@@ -158,6 +160,38 @@ public class 射击阶段Base : 游戏阶段
             }
             return true;
         }
+    }
+
+    //  视线是否合格
+    protected bool IsSightLineQualified()
+    {
+        foreach (Piece p in game_mnger.pieces_selected)
+        {
+            var arr = Math.GetHexsOnLine(p.HexPos, Math.Cell2HexCoord(game_mnger.mark.DetermineCellOfHexGrid(mouse_pos)));
+            GD.Print(arr);
+
+            foreach (var h_pos in arr)
+            {
+                Vector2 c_pos = Math.Hex2CellCoord(h_pos);
+                int ind = game_mnger.ground_feature.GetCellv(c_pos);
+                // GD.Print("ind: ", ind);
+                if (ind >= 0) return false;     //++++++++++++++++++++++++++++ 暂且一有树林或城镇就不合格
+            }
+        }
+        return true;
+    }
+
+    bool IsSightLineQualified(Vector2 from_hex_pos, Vector2 to_hex_pos)
+    {
+        var arr = Math.GetHexsOnLine(from_hex_pos, to_hex_pos);
+        foreach (var h_pos in arr)
+        {
+            Vector2 c_pos = Math.Hex2CellCoord(h_pos);
+            int ind = game_mnger.ground_feature.GetCellv(c_pos);
+
+            if (ind >= 0) return false;     //++++++++++++++++++++++++++++ 暂且一有树林或城镇就不合格
+        }
+        return true;
     }
 
     #endregion 点选棋子

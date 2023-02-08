@@ -146,39 +146,39 @@ public class PiecesMnger : MyTileMap
     }
 
 
-    //
-    // public void AddRedPiece(Vector2 hex_pos, uint id, string model_name = "TM")
-    // {
-    //     var p = scn_red_piece.Instance<Piece>();
-    //     p.id = id;
-    //     p.type = Piece.PieceType.人;        //+++++++++++++++++++++++++++++++
-    //     p.model_name = model_name;
+    //  临时调试用
+    public void AddRedPiece(Vector2 hex_pos, uint id, string model_name = "TM")
+    {
+        var p = scn_red_piece.Instance<Piece>();
+        p.id = id;
+        p.type = Piece.PieceType.人;        //+++++++++++++++++++++++++++++++
+        p.model_name = model_name;
 
-    //     pieces.AddChild(p);
-    //     p.Connect("PlaceMe", this, "_PlacePiece");
-    //     p.Connect("MouseIn", this, "_PieceFocusIn");
-    //     p.Connect("MouseOut", this, "_PieceFocusOut");
+        pieces.AddChild(p);
+        p.Connect("PlaceMe", this, "_PlacePiece");
+        p.Connect("MouseIn", this, "_PieceFocusIn");
+        p.Connect("MouseOut", this, "_PieceFocusOut");
 
-    //     p.HexPos = hex_pos;
+        p.HexPos = hex_pos;
 
-    //     AddPieceInStack(p);
-    // }
-    // public void AddBluePiece(Vector2 hex_pos, uint id)
-    // {
-    //     var p = scn_blue_piece.Instance<Piece>();
-    //     p.id = id;
-    //     p.type = Piece.PieceType.人;
-    //     p.model_name = "TM";
+        AddPieceInStack(p);
+    }
+    public void AddBluePiece(Vector2 hex_pos, uint id)
+    {
+        var p = scn_blue_piece.Instance<Piece>();
+        p.id = id;
+        p.type = Piece.PieceType.人;
+        p.model_name = "TM";
 
-    //     pieces.AddChild(p);
-    //     p.Connect("PlaceMe", this, "_PlacePiece");
-    //     p.Connect("MouseIn", this, "_PieceFocusIn");
-    //     p.Connect("MouseOut", this, "_PieceFocusOut");
+        pieces.AddChild(p);
+        p.Connect("PlaceMe", this, "_PlacePiece");
+        p.Connect("MouseIn", this, "_PieceFocusIn");
+        p.Connect("MouseOut", this, "_PieceFocusOut");
 
-    //     p.HexPos = hex_pos;
+        p.HexPos = hex_pos;
 
-    //     AddPieceInStack(p);
-    // }
+        AddPieceInStack(p);
+    }
 
 
 
