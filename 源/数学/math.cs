@@ -61,66 +61,71 @@ public static class Math
 
     //  返回与直线相交的六边形，用与六边形等面积的圆来简化相交的判断。
     //  输入头尾两个六边形的 hex 坐标，返回 六边形们的坐标（hex 坐标）。
-    public static Array<Vector2> GetHexsOnLine(Vector2 from, Vector2 to)        //++++++++++++++++++++++有bug！！！坐标为负数就不对！
+    public static Array<Vector2> GetHexsOnLine(Vector2 hex_from, Vector2 hex_to)        //++++++++++++++++++++++有bug！！！坐标为负数就不对！
     {
-        if (from == to) return new Array<Vector2>(from);
+        if (hex_from == hex_to) return new Array<Vector2>(hex_from);
 
         Array<Vector2> array = new Array<Vector2>();
 
         //  3 个方向可以直接看出
-        if (to.y == from.y || to.x == from.x || (to - from).x == (to - from).y)
+        if (hex_to.y == hex_from.y || hex_to.x == hex_from.x || (hex_to - hex_from).x == (hex_to - hex_from).y)
         {
-            Vector2 d = new Vector2(Mathf.Sign(to.x - from.x), Mathf.Sign(to.y - from.y));
-            Vector2 i = from;
+            Vector2 d = new Vector2(Mathf.Sign(hex_to.x - hex_from.x), Mathf.Sign(hex_to.y - hex_from.y));
+            Vector2 i = hex_from;
             while (true)
             {
                 array.Add(i);
-                if (i == to) break;
+                if (i == hex_to) break;
                 i += d;
             }
             return array;
         }
         //  不是3个方向中的，用与六边形等面积的圆来简化相交的判断。
         //  直角坐标
-        Vector2 f_rect = Hex2RectCoord(from);
-        Vector2 t_rect = Hex2RectCoord(to);
+        Vector2 f_rect = Hex2RectCoord(hex_from);
+        Vector2 t_rect = Hex2RectCoord(hex_to);
         float k = 0, b;
 
         //  直线是否垂直
         bool is_vertical_in_rect = false;
-        if (t_rect.x - f_rect.x <= 0.000001) is_vertical_in_rect = true;
-        else k = (t_rect.y - f_rect.y) / (t_rect.x - f_rect.x);     //  直线斜率
+        if (IsEqual(t_rect.x - f_rect.x, 0)) { is_vertical_in_rect = true; }
+        else { k = (t_rect.y - f_rect.y) / (t_rect.x - f_rect.x); }     //  直线斜率
 
         b = f_rect.y - k * f_rect.x;        //  直线截距
 
         //  遍历
-        int dx = Mathf.Sign(to.x - from.x);
-        int dy = Mathf.Sign(to.y - from.y);
-        for (int x = (int)from.x; ; x += dx)
+        int dx = Mathf.Sign(hex_to.x - hex_from.x);     //  是hex坐标的增量。整数
+        int dy = Mathf.Sign(hex_to.y - hex_from.y);
+        for (int x = (int)hex_from.x; ; x += dx)
         {
-            for (int y = (int)from.y; ; y += dy)
+            for (int y = (int)hex_from.y; ; y += dy)
             {
-                Vector2 temp = new Vector2(x, y);
-                Vector2 temp_rect = Hex2RectCoord(temp);
+                Vector2 hex = new Vector2(x, y);
+                Vector2 o_rt_pos = Hex2RectCoord(hex);     //  圆心的直角坐标
                 if (is_vertical_in_rect)
                 {
-                    if (Mathf.Abs(temp_rect.x - f_rect.x) < _Equal_Area_Circle_R_) array.Add(temp);
+                    if (Mathf.Abs(o_rt_pos.x - f_rect.x) < _Equal_Area_Circle_R_) { array.Add(hex); }
                 }
                 else        //  二次方程的 Δ。Δ>=0，有交点
                 {
                     // GD.Print(Mathf.Pow((-2 * temp_rect.x + 2 * k * (b - temp_rect.y)), 2) - 4 * (1 + k * k) * (Mathf.Pow(temp_rect.x, 2) + Mathf.Pow((b - temp_rect.y), 2) - _Equal_Area_Circle_R_ * _Equal_Area_Circle_R_));
-                    if (Mathf.Pow((-2 * temp_rect.x + 2 * k * (b - temp_rect.y)), 2) - 4 * (1 + k * k) * (Mathf.Pow(temp_rect.x, 2) + Mathf.Pow((b - temp_rect.y), 2) - _Equal_Area_Circle_R_ * _Equal_Area_Circle_R_) >= 0)
-                        array.Add(temp);
+                    if (Mathf.Pow((-2 * o_rt_pos.x + 2 * k * (b - o_rt_pos.y)), 2) - 4 * (1 + k * k) * (Mathf.Pow(o_rt_pos.x, 2) + Mathf.Pow((b - o_rt_pos.y), 2) - _Equal_Area_Circle_R_ * _Equal_Area_Circle_R_) >= 0)
+                        array.Add(hex);
                 }
 
-                if (y == to.y) break;
+                if (y == hex_to.y) break;       //  整数直接写==没事
             }
 
-            if (x == to.x) break;
+            if (x == hex_to.x) break;
         }
         return array;
     }
 
+    //  两个数是否相等
+    public static bool IsEqual(float l, float r, float ep = 0.000_001f)     //  为什么1e-50的精度都可以？
+    {
+        return Mathf.Abs(r - l) < ep;
+    }
 
     //  判断点是否在矩形内，point,  rect 都要同坐标系！
     public static bool IsPointInRect(Vector2 point, Rect2 rect)
@@ -130,6 +135,7 @@ public static class Math
         if (Mathf.Abs(distance.x) > Mathf.Abs(rect.Size.x) || Mathf.Abs(distance.y) > Mathf.Abs(rect.Size.y)) return false;
         return true;
     }
+
 
     // --------------------------------------------------------- 概率
     //  掷色子

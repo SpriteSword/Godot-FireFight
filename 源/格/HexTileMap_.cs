@@ -1,10 +1,6 @@
 using Godot;
 
-
-
-
-
-public class HexTileMap : TileMap
+public class HexTileMap_m : TileMap
 {
     float side_l = 26;       //  六边形边长
     float cell_w = 45;

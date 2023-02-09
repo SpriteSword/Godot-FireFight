@@ -1,7 +1,7 @@
 using Godot;
 using Godot.Collections;
 
-public class PiecesMnger : MyTileMap
+public class PiecesMnger : HexTileMap
 {
     //  资源
     PackedScene scn_red_piece;

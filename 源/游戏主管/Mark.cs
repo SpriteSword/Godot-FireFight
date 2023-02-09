@@ -3,7 +3,7 @@ using Godot;
 using Godot.Collections;
 using System;
 
-public class Mark : MyTileMap
+public class Mark : HexTileMap
 {
     Vector2 mouse_pos = new Vector2(200, 200);
 

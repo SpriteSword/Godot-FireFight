@@ -1,6 +1,6 @@
 using Godot;
 
-public class MyTileMap : TileMap
+public class HexTileMap : TileMap
 {
     //  hex格子中心的直角坐标
     public Vector2 HexGridCenter(Vector2 cell_pos)
