@@ -6,6 +6,7 @@ using System;
 public class Mark : HexTileMap
 {
     Vector2 mouse_pos = new Vector2(200, 200);
+    Vector2 mouse_cell = new Vector2(0, 0);
 
     //  绘制选框
     public bool draw_select_box = false;
@@ -34,6 +35,8 @@ public class Mark : HexTileMap
     {
         mouse_pos = GetGlobalMousePosition();
 
+        DrawMouseBox();
+
         Update();
     }
 
@@ -45,6 +48,14 @@ public class Mark : HexTileMap
     }
 
     //-------------------------------------------------------------------
+
+    //  绘制鼠标指示框
+    void DrawMouseBox()
+    {
+        SetCellv(mouse_cell, -1);
+        mouse_cell = DetermineCellOfHexGrid(mouse_pos);
+        SetCellv(mouse_cell, 3);
+    }
 
     //  绘制选框
     void DrawSelectBox()

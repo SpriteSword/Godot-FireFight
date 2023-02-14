@@ -94,7 +94,9 @@ public class 攻击调度 : 游戏阶段
             //  攻击结果        +++++++++++++++++++++++++++++++++++++++++++++++++=网络如何？
             var result = CalculateAttackResult(piece, d_l);
             GD.Print("攻击结果：", result);
-            game_mnger.defender.SetBeAttackedResult(result);
+            SynPieceAttackRsltQ(result);
+
+            // game_mnger.defender.SetBeAttackedResult(result);
 
             //  满足条件可以攻击
             game_mnger.attacker = piece;
@@ -254,6 +256,7 @@ public class 攻击调度 : 游戏阶段
         return null;
     }
 
+
     #endregion
 
     //——————————————————————————————————————————————————————————————————————————  网络
@@ -272,6 +275,9 @@ public class 攻击调度 : 游戏阶段
             case "FinishA":
                 FinishA();
                 break;
+            case "SynPieceAttackRsltA":
+                SynPieceAttackRsltA(_params);
+                break;
             default:
                 GD.PrintErr("攻击调度：没有找到函数：", content["func"]);
                 break;
@@ -289,6 +295,30 @@ public class 攻击调度 : 游戏阶段
     {
         been_attacked = true;
         superior.ChangeTo<攻击动画>();
+    }
+
+    //  同步守方棋子被攻击结果，本地也执行
+    void SynPieceAttackRsltQ(GameMnger.AttackResult result)
+    {
+        game_mnger.defender.SetBeAttackedResult(result);
+
+        Array _params = new Array();
+        _params.Add((int)result);
+        game_mnger.Send(Global.opposite_player_peer_id, NetworkMnger.Data2JSON("SynPieceAttackRsltA", _params));
+    }
+    void SynPieceAttackRsltA(Array _params)
+    {
+        if (_params == null) return;
+        if (_params.Count != 1) return;
+
+        if (_params[0] is int ind)
+        {
+            if (ind <= 5 && ind >= 0)
+            {
+                game_mnger.defender.SetBeAttackedResult((GameMnger.AttackResult)ind);
+            }
+            else { GD.PrintErr("攻击调度：SynPieceAttackRsltA：索引不匹配: ", ind); }
+        }
     }
 
     //  通知结束

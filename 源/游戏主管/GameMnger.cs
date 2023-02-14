@@ -62,7 +62,7 @@ public class GameMnger : Node2D
 
 	#region ————————————————————————————————————————————————————————  节点
 	//  子节点
-	public Camera2D camera;
+	public MyCamera camera;
 	public PiecesMnger pieces_mnger;
 	public Mark mark;
 	public GUI gui;
@@ -89,15 +89,10 @@ public class GameMnger : Node2D
 	public bool client_ready = false;
 
 	//-----------------------------------------------------------
-	//  相机
-	float view_zoom = 2.5f;        //  zoom 变焦
-	bool camera_drag = false;       //  相机是否拖拽
-	Vector2 camera_old_pos;
-
 	//  鼠标
-	Vector2 mouse_pos;
-	Vector2 mouse_screen_pos;
-	Vector2 mouse_screen_old_pos;
+	// Vector2 mouse_pos;
+	// Vector2 mouse_screen_pos;
+	// Vector2 mouse_screen_old_pos;
 	public Vector2 mouse_cell_pos;
 	public Vector2 mouse_cell_old_pos;
 
@@ -159,7 +154,7 @@ public class GameMnger : Node2D
 	//----------------------------------------------------------
 	public override void _Ready()
 	{
-		camera = GetNode<Camera2D>("Camera2D");
+		camera = GetNode<MyCamera>("MyCamera");
 		pieces_mnger = GetNode<PiecesMnger>("PiecesMnger");
 		mark = GetNode<Mark>("Mark");
 		gui = GetNode<GUI>("画布层/GUI");
@@ -176,7 +171,6 @@ public class GameMnger : Node2D
 		road.Visible = false;
 		train.Visible = false;
 		camera.Position = new Vector2(_map_w_ * _cell_w_ / 2, _map_h_ * _cell_h_ / 2);
-		camera.Zoom = new Vector2(view_zoom, view_zoom);
 
 		InitSignal();
 		ReadNecessaryFile();
@@ -211,55 +205,10 @@ public class GameMnger : Node2D
 	}
 	public override void _Process(float delta)
 	{
-		if (camera_drag)
-		{
-			camera.Position = camera_old_pos - (mouse_screen_pos - mouse_screen_old_pos) * view_zoom;
-		}
 	}
 	public override void _UnhandledInput(InputEvent @event)     //  通用的写这里
 	{
-		if (@event is InputEventMouse m)
-		{
-			mouse_pos = GetGlobalMousePosition();        //  用gui的get_global_mouse_position()会以其画布层为原点！GetLocalMousePosition(), GetGlobalMousePosition()现在是一样的
-			mouse_screen_pos = m.Position;
-			mouse_cell_old_pos = mouse_cell_pos;
-			mouse_cell_pos = mark.DetermineCellOfHexGrid(mouse_pos);
-
-			HandleHintTimer();
-
-			if (m is InputEventMouseButton mb)        //  鼠标按键
-			{
-				switch (mb.ButtonIndex)
-				{
-					case (int)ButtonList.WheelDown:     //  滚轮向下(后)缩小
-						if (mb.Pressed && view_zoom < 2.5)
-						{
-							view_zoom += 0.1f;
-							Zoom(mouse_pos, view_zoom);
-						}
-						break;
-
-					case (int)ButtonList.WheelUp:       //  向上(前)放大
-						if (mb.Pressed && view_zoom > 0.6)
-						{
-							view_zoom -= 0.1f;
-							Zoom(mouse_pos, view_zoom);
-						}
-						break;
-
-					case (int)ButtonList.Middle:        //  滚轮按下拖拽视角。坐标移动在_Process
-						if (mb.Pressed)
-						{
-							camera_drag = true;
-							mouse_screen_old_pos = mouse_screen_pos;
-							camera_old_pos = camera.Position;
-						}
-						else { camera_drag = false; }
-						break;
-				}
-			}
-		}//  InputEventMouse
-		else if (@event is InputEventKey key)
+		if (@event is InputEventKey key)
 		{
 			if (key.Pressed)
 			{
@@ -356,7 +305,7 @@ public class GameMnger : Node2D
 	{
 		if (mouse_cell_old_pos == mouse_cell_pos)
 		{
-			if (hint_timer.IsStopped() && !camera_drag) { hint_timer.Start(hint_timer.WaitTime); }
+			if (hint_timer.IsStopped() && !camera.camera_drag) { hint_timer.Start(hint_timer.WaitTime); }
 		}
 		else { hint_timer.Stop(); }
 	}

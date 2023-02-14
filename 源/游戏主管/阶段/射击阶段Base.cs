@@ -168,13 +168,11 @@ public class 射击阶段Base : 游戏阶段
         foreach (Piece p in game_mnger.pieces_selected)
         {
             var arr = Math.GetHexsOnLine(p.HexPos, Math.Cell2HexCoord(game_mnger.mark.DetermineCellOfHexGrid(mouse_pos)));
-            GD.Print(arr);
 
             foreach (var h_pos in arr)
             {
                 Vector2 c_pos = Math.Hex2CellCoord(h_pos);
                 int ind = game_mnger.ground_feature.GetCellv(c_pos);
-                // GD.Print("ind: ", ind);
                 if (ind >= 0) return false;     //++++++++++++++++++++++++++++ 暂且一有树林或城镇就不合格
             }
         }

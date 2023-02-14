@@ -61,7 +61,6 @@ public class 联机页面 : Control		//+++++++++++++++++进行完后要断开连
 		join_port_box.Text = NetworkMnger._Default_Port_.ToString();
 
 		InitSignal();
-
 	}
 
 	//  信号初始化
