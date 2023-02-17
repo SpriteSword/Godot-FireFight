@@ -35,7 +35,7 @@ public class Mark : HexTileMap
     {
         mouse_pos = GetGlobalMousePosition();
 
-        DrawMouseBox();
+        DrawMouseHex();
 
         Update();
     }
@@ -49,8 +49,8 @@ public class Mark : HexTileMap
 
     //-------------------------------------------------------------------
 
-    //  绘制鼠标指示框
-    void DrawMouseBox()
+    //  设置鼠标指示格
+    void DrawMouseHex()
     {
         SetCellv(mouse_cell, -1);
         mouse_cell = DetermineCellOfHexGrid(mouse_pos);

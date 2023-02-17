@@ -30,6 +30,5 @@ public class 测试过直线Hex : HexTileMap
 
 		DrawLine(HexGridCenter(Vector2.Zero), HexGridCenter(Math.Hex2CellCoord(target)), Colors.Beige);
 
-
 	}
 }

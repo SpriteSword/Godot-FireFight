@@ -195,7 +195,7 @@ public class 移动阶段 : 游戏阶段
     }
 
 
-    //  计算移动点数损耗。用cell坐标      +++++++++++++++++++++++++++++++++++++++++++++++++
+    //  计算移动点数损耗。用cell坐标。必须相邻2格。      +++++++++++++++++++++++++++++++++++++++++++++++++
     float CalcMPLoss(Piece mover, Vector2 from, Vector2 to)
     {
         if (mover.type == Piece.PieceType.人) { return 1; }
@@ -203,9 +203,12 @@ public class 移动阶段 : 游戏阶段
         //  --------  车
         //  有道路可无视地形
         if (IsWayInterconnected(game_mnger.road, from, to)) { return 0.5f; }        //  公路
-        if (IsWayInterconnected(game_mnger.train, from, to)) { return 1; }        //  铁路
+        if (IsWayInterconnected(game_mnger.railway, from, to)) { return 1; }        //  铁路
 
-        return 2;
+        float loss = (MPLossByGroundFeature(from) + MPLossByGroundFeature(to)) / 2;
+        if (IsCrossRiver(game_mnger.river.data, from, to)) { loss += 1; }
+
+        return loss;
     }
 
     //  检查2个格是否道路互通。map 可以是公路图或铁路图，from、to 用cell坐标。必须是相邻2格的。
@@ -240,6 +243,32 @@ public class 移动阶段 : 游戏阶段
         }
         return -1;
     }
+
+    //  是否过河。都用cell坐标
+    bool IsCrossRiver(Array<Array<int>> river, Vector2 from, Vector2 to)
+    {
+        foreach (var itm in river)
+        {
+            if (itm.Count == 4)
+            {
+                Vector2 c1 = new Vector2(itm[0], itm[1]);
+                Vector2 c2 = new Vector2(itm[2], itm[3]);
+                if ((c1 == from && c2 == to) || (c1 == to && c2 == from)) { return true; }
+            }
+        }
+        return false;
+    }
+
+    //  1格的地形对移动点数的损耗
+    float MPLossByGroundFeature(Vector2 cell_pos)
+    {
+        int ind = game_mnger.ground_feature.GetCellv(cell_pos);
+        if (ind < 0) return 1;
+        else if (ind == 0) return 2;        //  树林
+        else if (ind == 1) return 3;       //  城镇
+        else return -1;
+    }
+
 
     //  检查某方向是否是六边形的6个法定方向。hex坐标。
     bool IsDirectionValid(Vector2 hex_coord_direction)

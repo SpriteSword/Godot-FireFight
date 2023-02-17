@@ -75,8 +75,9 @@ public class GameMnger : Node2D
 
 	//  数据查询用
 	public TileMap road;
-	public TileMap train;
+	public TileMap railway;
 	public TileMap ground_feature;      //  地物
+	public River river;
 
 	//  当前阶段
 	public 游戏阶段 current_stage;
@@ -166,11 +167,13 @@ public class GameMnger : Node2D
 
 		ground_feature = GetNode<TileMap>("Map/地物");
 		road = GetNode<TileMap>("Map/Road");
-		train = GetNode<TileMap>("Map/Train");
+		railway = GetNode<TileMap>("Map/Railway");
+		river = GetNode<River>("Map/River");
 
 		road.Visible = false;
-		train.Visible = false;
+		railway.Visible = false;
 		camera.Position = new Vector2(_map_w_ * _cell_w_ / 2, _map_h_ * _cell_h_ / 2);
+
 
 		InitSignal();
 		ReadNecessaryFile();

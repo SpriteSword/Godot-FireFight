@@ -2,7 +2,7 @@ using Godot;
 
 public class HexTileMap : TileMap
 {
-    //  hex格子中心的直角坐标
+    //  六边形格子中心的直角坐标
     public Vector2 HexGridCenter(Vector2 cell_pos)
     {
         return MapToWorld(cell_pos) + GameMnger._hex_center_offset_;
