@@ -96,6 +96,7 @@ public static class Math
         //  遍历
         int dx = Mathf.Sign(hex_to.x - hex_from.x);     //  是hex坐标的增量。整数
         int dy = Mathf.Sign(hex_to.y - hex_from.y);
+
         for (int x = (int)hex_from.x; ; x += dx)
         {
             for (int y = (int)hex_from.y; ; y += dy)
@@ -108,8 +109,8 @@ public static class Math
                 }
                 else        //  二次方程的 Δ。Δ>=0，有交点
                 {
-                    // GD.Print(Mathf.Pow((-2 * temp_rect.x + 2 * k * (b - temp_rect.y)), 2) - 4 * (1 + k * k) * (Mathf.Pow(temp_rect.x, 2) + Mathf.Pow((b - temp_rect.y), 2) - _Equal_Area_Circle_R_ * _Equal_Area_Circle_R_));
-                    if (Mathf.Pow((-2 * o_rt_pos.x + 2 * k * (b - o_rt_pos.y)), 2) - 4 * (1 + k * k) * (Mathf.Pow(o_rt_pos.x, 2) + Mathf.Pow((b - o_rt_pos.y), 2) - _Equal_Area_Circle_R_ * _Equal_Area_Circle_R_) >= 0)
+                    if (hex == hex_from || hex == hex_to) { array.Add(hex); }
+                    else if (Mathf.Pow((-2 * o_rt_pos.x + 2 * k * (b - o_rt_pos.y)), 2) - 4 * (1 + k * k) * (Mathf.Pow(o_rt_pos.x, 2) + Mathf.Pow((b - o_rt_pos.y), 2) - _Equal_Area_Circle_R_ * _Equal_Area_Circle_R_) >= 0)
                         array.Add(hex);
                 }
 

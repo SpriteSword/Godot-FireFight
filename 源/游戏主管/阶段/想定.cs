@@ -54,7 +54,8 @@ public class 想定 : 游戏阶段
             {
                 Vector2 pos = game_mnger.GetGlobalMousePosition();
                 Vector2 cell_pos = game_mnger.mark.DetermineCellOfHexGrid(pos);
-                game_mnger.pieces_mnger.AddPiece(deploy_system.piece_in_bar.piece_id, cell_pos, game_mnger.local_player_side);   //+++++++++++++++++
+
+                AddPiece(deploy_system.piece_in_bar.piece_id, cell_pos, game_mnger.local_player_side);
 
                 deploy_system.HavePlacedPiece();
             }
@@ -101,6 +102,23 @@ public class 想定 : 游戏阶段
     {
         if (side == GameMnger.Side.红) return red_piece_smry;
         else return blue_piece_smry;
+    }
+
+    //  添加棋子
+    void AddPiece(uint id, Vector2 cell_pos, GameMnger.Side side)
+    {
+        string model_name;
+        if (side == GameMnger.Side.红) { model_name = "T62"; }
+        else { model_name = "M60 A1"; }
+
+        game_mnger.pieces_mnger.AddPiece(
+            id,
+            cell_pos,
+            side,
+            Piece.PieceType.坦克,
+            model_name
+            );   //+++++++++++++++++
+
     }
 
 
@@ -210,7 +228,8 @@ public class 想定 : 游戏阶段
                 try
                 {
                     cell_pos = MyString.Decode2Vector(str_pos);
-                    game_mnger.pieces_mnger.AddPiece((uint)id, cell_pos, SwapRedBlue(game_mnger.local_player_side));
+
+                    AddPiece((uint)id, cell_pos, SwapRedBlue(game_mnger.local_player_side));
                 }
                 catch (MyException.DecodeException de)
                 {

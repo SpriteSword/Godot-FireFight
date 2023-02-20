@@ -125,14 +125,14 @@ public class PiecesMnger : HexTileMap
 
 
     //  添加棋子。游戏想定阶段调用。
-    public void AddPiece(uint id, Vector2 cell_pos, GameMnger.Side side, string model_name = "TM", bool visible = true)
+    public void AddPiece(uint id, Vector2 cell_pos, GameMnger.Side side, Piece.PieceType piece_type, string model_name = "TM", bool visible = true)
     {
         var scn = (side == GameMnger.Side.红 ? scn_red_piece : scn_blue_piece);
 
         var p = scn.Instance<Piece>();
         p.id = id;
-        p.type = Piece.PieceType.人;        //+++++++++++++++++++++++++++++++型号对应
-        p.model_name = model_name;
+        p.type = piece_type;
+        p.ModelName = model_name;
         p.Visible = visible;
 
         pieces.AddChild(p);
@@ -152,7 +152,7 @@ public class PiecesMnger : HexTileMap
         var p = scn_red_piece.Instance<Piece>();
         p.id = id;
         p.type = Piece.PieceType.APC;        //+++++++++++++++++++++++++++++++
-        p.model_name = model_name;
+        p.ModelName = model_name;
 
         pieces.AddChild(p);
         p.Connect("PlaceMe", this, "_PlacePiece");
@@ -168,7 +168,7 @@ public class PiecesMnger : HexTileMap
         var p = scn_blue_piece.Instance<Piece>();
         p.id = id;
         p.type = Piece.PieceType.人;
-        p.model_name = "TM";
+        p.ModelName = "TM";
 
         pieces.AddChild(p);
         p.Connect("PlaceMe", this, "_PlacePiece");
@@ -179,6 +179,7 @@ public class PiecesMnger : HexTileMap
 
         AddPieceInStack(p);
     }
+
 
 
 

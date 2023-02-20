@@ -167,10 +167,14 @@ public class 射击阶段Base : 游戏阶段
     {
         foreach (Piece p in game_mnger.pieces_selected)
         {
-            var arr = Math.GetHexsOnLine(p.HexPos, Math.Cell2HexCoord(game_mnger.mark.DetermineCellOfHexGrid(mouse_pos)));
+            Vector2 hex_from = p.HexPos;
+            Vector2 hex_to = Math.Cell2HexCoord(game_mnger.mark.DetermineCellOfHexGrid(mouse_pos));
+            var arr = Math.GetHexsOnLine(hex_from, hex_to);
 
             foreach (var h_pos in arr)
             {
+                if (h_pos == hex_from || h_pos == hex_to) { continue; }
+
                 Vector2 c_pos = Math.Hex2CellCoord(h_pos);
                 int ind = game_mnger.ground_feature.GetCellv(c_pos);
                 if (ind >= 0) return false;     //++++++++++++++++++++++++++++ 暂且一有树林或城镇就不合格
@@ -179,18 +183,18 @@ public class 射击阶段Base : 游戏阶段
         return true;
     }
 
-    bool IsSightLineQualified(Vector2 from_hex_pos, Vector2 to_hex_pos)
-    {
-        var arr = Math.GetHexsOnLine(from_hex_pos, to_hex_pos);
-        foreach (var h_pos in arr)
-        {
-            Vector2 c_pos = Math.Hex2CellCoord(h_pos);
-            int ind = game_mnger.ground_feature.GetCellv(c_pos);
+    // bool IsSightLineQualified(Vector2 from_hex_pos, Vector2 to_hex_pos)
+    // {
+    //     var arr = Math.GetHexsOnLine(from_hex_pos, to_hex_pos);
+    //     foreach (var h_pos in arr)
+    //     {
+    //         Vector2 c_pos = Math.Hex2CellCoord(h_pos);
+    //         int ind = game_mnger.ground_feature.GetCellv(c_pos);
 
-            if (ind >= 0) return false;     //++++++++++++++++++++++++++++ 暂且一有树林或城镇就不合格
-        }
-        return true;
-    }
+    //         if (ind >= 0) return false;
+    //     }
+    //     return true;
+    // }
 
     #endregion 点选棋子
 

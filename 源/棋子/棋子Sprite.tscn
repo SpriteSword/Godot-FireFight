@@ -37,9 +37,6 @@ margin_bottom = 9.0
 rect_min_size = Vector2( 36, 18 )
 mouse_filter = 2
 texture = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label" type="Label" parent="."]
 margin_left = -18.0
@@ -52,9 +49,6 @@ custom_fonts/font = SubResource( 2 )
 text = "M60A2"
 align = 1
 valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Symbol" type="Sprite" parent="."]
 position = Vector2( 0, -12 )

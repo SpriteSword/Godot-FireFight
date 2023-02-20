@@ -149,7 +149,7 @@ public class 攻击调度 : 游戏阶段
                 table = game_mnger._blue_attack_red_personnel_level_;
             }
 
-            var key = MatchModelName(table, attacker.model_name);
+            var key = MatchModelName(table, attacker.ModelName);
             if (key != null && table[key] is Dictionary dist_dict)
             {
                 att_level = (int)(float)(dist_dict[dist_level.ToString()]);
@@ -172,7 +172,7 @@ public class 攻击调度 : 游戏阶段
                 table = game_mnger._blue_attack_red_vehicles_level_;
             }
 
-            var key = MatchModelName(table, attacker.model_name);       //  +++++++++++++++++++ LAW dragon RPG7 都是是什么啊？
+            var key = MatchModelName(table, attacker.ModelName);       //  +++++++++++++++++++ LAW dragon RPG7 都是是什么啊？
             if (key != null && table[key] is Dictionary table1)
             {
                 var key1 = MatchModelName(table1, defender_model_n);

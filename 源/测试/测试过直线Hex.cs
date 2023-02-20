@@ -3,7 +3,7 @@ using System;
 
 public class 测试过直线Hex : HexTileMap
 {
-	Vector2 target = new Vector2(9, -8);
+	Vector2 target = new Vector2(-9, -8);
 
 	public override void _Ready()
 	{
@@ -23,7 +23,7 @@ public class 测试过直线Hex : HexTileMap
 				Control control = new Control();
 				Font default_font = control.GetFont("font");
 
-				DrawString(default_font, rect_pos, hex_pos.ToString());
+				DrawString(default_font, rect_pos - new Vector2(20, 0), hex_pos.ToString());
 
 			}
 		}
