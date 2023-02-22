@@ -162,7 +162,7 @@ public class 射击阶段Base : 游戏阶段
         }
     }
 
-    //  视线是否合格
+    //  视线是否合格。只要有一条不合格都不行。
     protected bool IsSightLineQualified()
     {
         foreach (Piece p in game_mnger.pieces_selected)
@@ -182,19 +182,6 @@ public class 射击阶段Base : 游戏阶段
         }
         return true;
     }
-
-    // bool IsSightLineQualified(Vector2 from_hex_pos, Vector2 to_hex_pos)
-    // {
-    //     var arr = Math.GetHexsOnLine(from_hex_pos, to_hex_pos);
-    //     foreach (var h_pos in arr)
-    //     {
-    //         Vector2 c_pos = Math.Hex2CellCoord(h_pos);
-    //         int ind = game_mnger.ground_feature.GetCellv(c_pos);
-
-    //         if (ind >= 0) return false;
-    //     }
-    //     return true;
-    // }
 
     #endregion 点选棋子
 

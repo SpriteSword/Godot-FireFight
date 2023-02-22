@@ -151,7 +151,7 @@ public class PiecesMnger : HexTileMap
     {
         var p = scn_red_piece.Instance<Piece>();
         p.id = id;
-        p.type = Piece.PieceType.APC;        //+++++++++++++++++++++++++++++++
+        p.type = Piece.PieceType.人;        //+++++++++++++++++++++++++++++++
         p.ModelName = model_name;
 
         pieces.AddChild(p);

@@ -177,7 +177,6 @@ public class Piece : Node2D
 			anim_player.Play("die");
 			CanAct = false;
 		}
-
 	}
 
 

@@ -78,26 +78,6 @@ public class 攻击调度 : 游戏阶段
                 goto CanNotShoot;
             }
 
-            //  视线遮挡检查+++++++++++++++++++++++++++++++++
-
-
-            //  计算距离等级
-            float d = Math.Hex2RectCoord(game_mnger.defender.HexPos - piece.HexPos).Length() * 50;      //  1格50m
-            int d_l = JudgeDistanceLevel(d);
-            if (d_l == -1)      //  太远就不用算了。没有消耗行动力。
-            {
-                Warn("警告！目标距离过远");
-                goto CanNotShoot;
-            }
-            GD.Print("距离：", d, " m", "，距离级别：", d_l);
-
-            //  攻击结果        +++++++++++++++++++++++++++++++++++++++++++++++++=网络如何？
-            var result = CalculateAttackResult(piece, d_l);
-            GD.Print("攻击结果：", result);
-            SynPieceAttackRsltQ(result);
-
-            // game_mnger.defender.SetBeAttackedResult(result);
-
             //  满足条件可以攻击
             game_mnger.attacker = piece;
             game_mnger.attackers.RemoveAt(c - 1);       //  不用管c了，反正return
@@ -112,150 +92,6 @@ public class 攻击调度 : 游戏阶段
         }
         return false;
     }
-
-    //  判断距离等级。太远的（>=3000）返回-1。
-    int JudgeDistanceLevel(float distance)
-    {
-        int last, next;
-        for (int i = 0; i < game_mnger._distance_level_.Count; i++)
-        {
-            if (i == game_mnger._distance_level_.Count - 1)
-                return -1;
-
-            last = game_mnger._distance_level_[i];
-            next = game_mnger._distance_level_[i + 1];
-
-            if (distance > last && distance <= next) return next;
-        }
-        return -1;      //  其实到不了这步
-    }
-
-    //  计算攻击结果。输入( Piece 攻击者, int 距离等级)
-    GameMnger.AttackResult CalculateAttackResult(Piece attacker, int dist_level)
-    {
-        bool is_personnel = (game_mnger.defender.type == Piece.PieceType.人);
-
-        //  获取攻击强度等级
-        int att_level = -2;     //  没有 0 等级，-1 是无效，-2是错误！
-        if (is_personnel)      //  敌方是人员。{攻击单位:{距离:等级}}
-        {
-            Dictionary table;
-            if (attacker.side == GameMnger.Side.红)      //  攻方是红军
-            {
-                table = game_mnger._red_attack_blue_personnel_level_;
-            }
-            else        //  攻方是蓝军
-            {
-                table = game_mnger._blue_attack_red_personnel_level_;
-            }
-
-            var key = MatchModelName(table, attacker.ModelName);
-            if (key != null && table[key] is Dictionary dist_dict)
-            {
-                att_level = (int)(float)(dist_dict[dist_level.ToString()]);
-            }
-            else GD.PrintErr("棋子类型有误！ : 攻击调度");
-        }
-        else        //  敌方是车辆。{开火单位:{ 目标单位:{距离:等级} }}
-        {
-            string defender_model_n;
-            if (game_mnger.defender.type == Piece.PieceType.坦克) defender_model_n = "坦克";
-            else defender_model_n = "APC";
-
-            Dictionary table;
-            if (attacker.side == GameMnger.Side.红)      //  攻方是红军
-            {
-                table = game_mnger._red_attack_blue_vehicles_level_;
-            }
-            else
-            {
-                table = game_mnger._blue_attack_red_vehicles_level_;
-            }
-
-            var key = MatchModelName(table, attacker.ModelName);       //  +++++++++++++++++++ LAW dragon RPG7 都是是什么啊？
-            if (key != null && table[key] is Dictionary table1)
-            {
-                var key1 = MatchModelName(table1, defender_model_n);
-                if (key != null && table1[key1] is Dictionary dist_dict)
-                {
-                    att_level = (int)(float)(dist_dict[dist_level.ToString()]);
-                }
-            }
-        }
-        if (att_level == -2) GD.PrintErr("获取攻击等级出错！ : 攻击调度");
-        GD.Print("攻击等级：", att_level);
-
-        //  调整攻击等级
-        if (attacker.BeS) att_level -= 3;
-
-        //  掷色子
-        int point = Math.ThrowDice() + Math.ThrowDice();
-        GD.Print("色子：", point);
-
-        //  判定结果
-        return JudgeAttackResult(is_personnel, att_level, point);
-    }
-
-    //  判定攻击结果。查表。表：{色子:{攻击等级:结果}}。++++++++++++++++++++++步兵被多次压制、车辆多次失动 = K。
-    GameMnger.AttackResult JudgeAttackResult(bool is_personnel, int attack_level, int dice_result)      //  没有C++那样const，反正也只是修饰而已，无所谓
-    {
-        if (attack_level <= 0) return GameMnger.AttackResult._null_;
-
-        string result = ".";
-        if (is_personnel)
-        {
-            if (game_mnger._anti_personnel_result_.Contains(attack_level.ToString()) &&
-                game_mnger._anti_personnel_result_[attack_level.ToString()] is Dictionary dict_p)
-            {
-                result = dict_p[dice_result.ToString()] as string;
-            }
-        }
-        else
-        {
-            if (game_mnger._anti_vehicle_result_.Contains(attack_level.ToString()) &&
-                game_mnger._anti_vehicle_result_[attack_level.ToString()] is Dictionary dict_v)
-            {
-                result = dict_v[dice_result.ToString()] as string;
-            }
-        }
-        switch (result)
-        {
-            case "K": return GameMnger.AttackResult.K;
-            case "S": return GameMnger.AttackResult.S;
-            case "KF": return GameMnger.AttackResult.KF;
-            case "KM": return GameMnger.AttackResult.KM;
-            case "KMS": return GameMnger.AttackResult.KMS;
-            default: return GameMnger.AttackResult._null_;
-        }
-    }
-
-    //  匹配类型名称。匹配上就返回 key 键名，否则返回 null。正常输入型号像："M60 20" "tow"。字典中的 key 只有像 "M60/APC" "M60 32"这两种形式，没有"M60/APC 31"这种。
-    static string MatchModelName(Dictionary dictionary, string model_name)
-    {
-        if (model_name == null || model_name.Empty()) return null;
-
-        foreach (string key in dictionary.Keys)
-        {
-            //  分解出大小型号
-            var ms = key.Split(" ", true);
-            var judged_ms = model_name.Split(" ");
-
-            var big_ms = ms[0].Split("/");		//  字典的大型号可能带"/"
-            foreach (var it in big_ms)
-            {
-                if (judged_ms[0] == it)
-                {
-                    //  字典的仅有一个大型号，说明包括了所有小型号
-                    if (ms.Length == 1) return key;
-
-                    //  目标有小型号并匹配
-                    if (judged_ms.Length > 1 && judged_ms[1] == ms[1]) return key;
-                }
-            }
-        }
-        return null;
-    }
-
 
     #endregion
 
@@ -275,9 +111,6 @@ public class 攻击调度 : 游戏阶段
             case "FinishA":
                 FinishA();
                 break;
-            case "SynPieceAttackRsltA":
-                SynPieceAttackRsltA(_params);
-                break;
             default:
                 GD.PrintErr("攻击调度：没有找到函数：", content["func"]);
                 break;
@@ -295,30 +128,6 @@ public class 攻击调度 : 游戏阶段
     {
         been_attacked = true;
         superior.ChangeTo<攻击动画>();
-    }
-
-    //  同步守方棋子被攻击结果，本地也执行
-    void SynPieceAttackRsltQ(GameMnger.AttackResult result)
-    {
-        game_mnger.defender.SetBeAttackedResult(result);
-
-        Array _params = new Array();
-        _params.Add((int)result);
-        game_mnger.Send(Global.opposite_player_peer_id, NetworkMnger.Data2JSON("SynPieceAttackRsltA", _params));
-    }
-    void SynPieceAttackRsltA(Array _params)
-    {
-        if (_params == null) return;
-        if (_params.Count != 1) return;
-
-        if (_params[0] is int ind)
-        {
-            if (ind <= 5 && ind >= 0)
-            {
-                game_mnger.defender.SetBeAttackedResult((GameMnger.AttackResult)ind);
-            }
-            else { GD.PrintErr("攻击调度：SynPieceAttackRsltA：索引不匹配: ", ind); }
-        }
     }
 
     //  通知结束
