@@ -200,8 +200,9 @@ public class GameMnger : Node2D
 		}
 		else
 		{
-			pieces_mnger.AddRedPiece(new Vector2(35, 30), 1);
-			pieces_mnger.AddBluePiece(new Vector2(25, 30), 2);
+			pieces_mnger.AddPiece(1, new Vector2(35, 30), Side.红, Piece.PieceType.人);
+			pieces_mnger.AddPiece(2, new Vector2(25, 30), Side.蓝, Piece.PieceType.人);
+
 		}
 
 		state_machine.MngerReady();     //  联机在 网络处理 那设置state

@@ -1,11 +1,9 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/棋子/步兵3.png" type="Texture" id=1]
 [ext_resource path="res://assets/棋子/火箭.png" type="Texture" id=2]
 [ext_resource path="res://源/棋子/Piece.cs" type="Script" id=3]
 [ext_resource path="res://assets/字体/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://assets/棋子/状态/失火.png" type="Texture" id=5]
-[ext_resource path="res://assets/棋子/状态/压制.png" type="Texture" id=6]
 [ext_resource path="res://源/shader/变黑白.gdshader" type="Shader" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -71,9 +69,6 @@ margin_bottom = 9.0
 rect_min_size = Vector2( 36, 18 )
 mouse_filter = 2
 texture = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label" type="Label" parent="Sprite"]
 margin_left = -18.0
@@ -91,14 +86,6 @@ valign = 1
 use_parent_material = true
 position = Vector2( 0, -12 )
 texture = ExtResource( 2 )
-
-[node name="Sprite2" type="Sprite" parent="."]
-position = Vector2( -12, -27 )
-texture = ExtResource( 5 )
-
-[node name="Sprite3" type="Sprite" parent="."]
-position = Vector2( 12, -27 )
-texture = ExtResource( 6 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/die = SubResource( 5 )

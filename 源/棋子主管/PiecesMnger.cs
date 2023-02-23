@@ -4,9 +4,10 @@ using Godot.Collections;
 public class PiecesMnger : HexTileMap
 {
     //  资源
-    PackedScene scn_red_piece;
-    PackedScene scn_blue_piece;
+    // PackedScene scn_red_piece;
+    // PackedScene scn_blue_piece;
     PackedScene scn_shadow;
+    PackedScene scn_piece;
 
     //  子节点
     public Node pieces;     //  其下子节点是敌我双方棋子
@@ -19,8 +20,10 @@ public class PiecesMnger : HexTileMap
 
     public override void _Ready()
     {
-        scn_red_piece = GD.Load<PackedScene>("res://源/棋子/red/RedPiece.tscn");
-        scn_blue_piece = GD.Load<PackedScene>("res://源/棋子/blue/BluePiece.tscn");
+        // scn_red_piece = GD.Load<PackedScene>("res://源/棋子/red/RedPiece.tscn");
+        // scn_blue_piece = GD.Load<PackedScene>("res://源/棋子/blue/BluePiece.tscn");
+        scn_piece = GD.Load<PackedScene>("res://源/棋子/Piece.tscn");
+
         scn_shadow = GD.Load<PackedScene>("res://源/棋子主管/PieceStack.tscn");
 
         pieces = GetNode<Node>("Pieces");
@@ -127,10 +130,9 @@ public class PiecesMnger : HexTileMap
     //  添加棋子。游戏想定阶段调用。
     public void AddPiece(uint id, Vector2 cell_pos, GameMnger.Side side, Piece.PieceType piece_type, string model_name = "TM", bool visible = true)
     {
-        var scn = (side == GameMnger.Side.红 ? scn_red_piece : scn_blue_piece);
-
-        var p = scn.Instance<Piece>();
+        var p = scn_piece.Instance<Piece>();
         p.id = id;
+        p.side = side;
         p.type = piece_type;
         p.ModelName = model_name;
         p.Visible = visible;
@@ -144,43 +146,6 @@ public class PiecesMnger : HexTileMap
 
         AddPieceInStack(p);
     }
-
-
-    //  临时调试用
-    public void AddRedPiece(Vector2 hex_pos, uint id, string model_name = "TM")
-    {
-        var p = scn_red_piece.Instance<Piece>();
-        p.id = id;
-        p.type = Piece.PieceType.人;        //+++++++++++++++++++++++++++++++
-        p.ModelName = model_name;
-
-        pieces.AddChild(p);
-        p.Connect("PlaceMe", this, "_PlacePiece");
-        p.Connect("MouseIn", this, "_PieceFocusIn");
-        p.Connect("MouseOut", this, "_PieceFocusOut");
-
-        p.HexPos = hex_pos;
-
-        AddPieceInStack(p);
-    }
-    public void AddBluePiece(Vector2 hex_pos, uint id)
-    {
-        var p = scn_blue_piece.Instance<Piece>();
-        p.id = id;
-        p.type = Piece.PieceType.人;
-        p.ModelName = "TM";
-
-        pieces.AddChild(p);
-        p.Connect("PlaceMe", this, "_PlacePiece");
-        p.Connect("MouseIn", this, "_PieceFocusIn");
-        p.Connect("MouseOut", this, "_PieceFocusOut");
-
-        p.HexPos = hex_pos;
-
-        AddPieceInStack(p);
-    }
-
-
 
 
 

@@ -11,6 +11,9 @@ public class Piece : Node2D
 	[Signal] delegate void MouseOut(Piece me);
 	[Signal] delegate void PlaceMe(Piece me);     //  如果坐标改变，由PiecesMnger定位到正确格子上。-->PiecesMnger
 
+	Texture txtur_sprite_red_bg;
+	Texture txtur_sprite_blue_bg;
+
 	//-------------------------------------------------------
 
 	//  坐标
@@ -40,7 +43,7 @@ public class Piece : Node2D
 	public bool[] be_attacked_result = new bool[5] { false, false, false, false, false };
 
 	//  子节点
-	public Node2D sprite;
+	public PieceSprite sprite;
 	AnimationPlayer anim_player;
 
 	#region ————————————————————————————————————————————————————————————————————————  Get Set
@@ -142,17 +145,19 @@ public class Piece : Node2D
 
 	public override void _Ready()
 	{
-		sprite = GetNode<Node2D>("Sprite");
+		txtur_sprite_red_bg = GD.Load<Texture>("res://assets/棋子/红背景.png");
+		txtur_sprite_blue_bg = GD.Load<Texture>("res://assets/棋子/蓝背景.png");
+
+		sprite = GetNode<PieceSprite>("PieceSprite");
 		anim_player = GetNode<AnimationPlayer>("AnimationPlayer");
 
-		sprite.GetNode<Label>("Label").Text = model_name;
-
+		InitSprite();
+		GD.Print(side);
 	}
 
 
 
 	//-------------------------------------------------------------------GUI
-
 
 	private void _on_Area2D_mouse_entered()
 	{
@@ -177,6 +182,14 @@ public class Piece : Node2D
 			anim_player.Play("die");
 			CanAct = false;
 		}
+	}
+
+	//  初始化Sprite
+	void InitSprite()
+	{
+		sprite.label.Text = model_name;
+		if (side == GameMnger.Side.红) { sprite.bg.Texture = txtur_sprite_red_bg; }
+		else { sprite.bg.Texture = txtur_sprite_blue_bg; }
 	}
 
 

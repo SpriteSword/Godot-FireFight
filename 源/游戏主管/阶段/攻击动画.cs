@@ -13,7 +13,6 @@ public class 攻击动画 : 游戏阶段
     int dice_point;     //  骰子点数
 
 
-
     public override void Enter()
     {
         base.Enter();
