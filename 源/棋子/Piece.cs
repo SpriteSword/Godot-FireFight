@@ -11,10 +11,11 @@ public class Piece : Node2D
 	[Signal] delegate void MouseOut(Piece me);
 	[Signal] delegate void PlaceMe(Piece me);     //  如果坐标改变，由PiecesMnger定位到正确格子上。-->PiecesMnger
 
-	Texture txtur_sprite_red_bg;
-	Texture txtur_sprite_blue_bg;
 
 	//-------------------------------------------------------
+
+	public Texture txtur_sprite_bg;       //  piece manager的资源的引用
+	public Texture txtur_sprite_body;
 
 	//  坐标
 	Vector2 hex_pos;       //  人用的
@@ -80,8 +81,11 @@ public class Piece : Node2D
 		set
 		{
 			can_act = value;
-			if (can_act) Modulate = new Color(1, 1, 1);
-			else Modulate = new Color(0.5f, 0.5f, 0.5f);
+			if (can_act) { Modulate = new Color(1, 1, 1); }
+			else
+			{
+				if (!BeK) { Modulate = new Color(0.5f, 0.5f, 0.5f); }
+			}
 		}
 	}
 
@@ -145,9 +149,6 @@ public class Piece : Node2D
 
 	public override void _Ready()
 	{
-		txtur_sprite_red_bg = GD.Load<Texture>("res://assets/棋子/红背景.png");
-		txtur_sprite_blue_bg = GD.Load<Texture>("res://assets/棋子/蓝背景.png");
-
 		sprite = GetNode<PieceSprite>("PieceSprite");
 		anim_player = GetNode<AnimationPlayer>("AnimationPlayer");
 
@@ -187,9 +188,13 @@ public class Piece : Node2D
 	//  初始化Sprite
 	void InitSprite()
 	{
-		sprite.label.Text = model_name;
-		if (side == GameMnger.Side.红) { sprite.bg.Texture = txtur_sprite_red_bg; }
-		else { sprite.bg.Texture = txtur_sprite_blue_bg; }
+		sprite.SetTexture(model_name, txtur_sprite_bg, txtur_sprite_body);
+	}
+
+	//  清理出地图。queue_free
+	public void CleanUp()
+	{
+		anim_player.Play("be_cleaned");
 	}
 
 

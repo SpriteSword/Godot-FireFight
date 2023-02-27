@@ -17,10 +17,13 @@ public class 棋子信息栏 : Panel		//+++++++++++++++++++++++++++++= 虽然不
 	int card_separation;        //  卡片的间隔
 
 
+    public override void _EnterTree()       //  资源，进入树就要加载
+    {
+		card_scn = GD.Load<PackedScene>("res://源/GUI/棋子信息栏/棋子信息卡.tscn");
+	}
+
 	public override void _Ready()
 	{
-		card_scn = GD.Load<PackedScene>("res://源/GUI/棋子信息栏/棋子信息卡.tscn");
-
 		scroll = GetNode<ScrollContainer>("ScrollContainer");
 		container = GetNode<VBoxContainer>("ScrollContainer/VBoxContainer");
 		gui = GetNode<GUI>("..");

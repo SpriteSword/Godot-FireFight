@@ -91,9 +91,12 @@ public class 想定 : 游戏阶段
     //  创建棋子一览表
     void CreatePieceList()
     {
-        foreach (int itm in PieceSmryBySide(game_mnger.local_player_side).Keys)
+        var dic = PieceSmryBySide(game_mnger.local_player_side);
+        foreach (int itm in dic.Keys)
         {
-            deploy_system.AddTexture((uint)itm);
+            // PieceSprite p_s = game_mnger.pieces_mnger.InstancePieceSprite(game_mnger.local_player_side, (string)dic[itm]);
+            deploy_system.AddPieceInBar((uint)itm, game_mnger.local_player_side, (string)dic[itm]);
+            // deploy_system.AddPieceInBar((uint)itm, p_s);
         }
     }
 

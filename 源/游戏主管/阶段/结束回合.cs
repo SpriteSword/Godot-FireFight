@@ -29,8 +29,16 @@ public class 结束回合 : 游戏阶段
     {
         foreach (Piece p in game_mnger.pieces_mnger.pieces.GetChildren())
         {
-            p.CanAct = true;
-            p.can_be_shot = true;
+            if (p.BeK)
+            {
+                p.CleanUp();
+                game_mnger.pieces_mnger.RemovePieceFromStack(p);
+            }
+            else
+            {
+                p.CanAct = true;
+                p.can_be_shot = true;
+            }
         }
     }
 

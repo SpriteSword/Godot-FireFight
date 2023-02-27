@@ -35,9 +35,13 @@ public class 联机页面 : Control		//+++++++++++++++++进行完后要断开连
 	int opposite_player_peer_id = -1;
 
 	//-------------------------------------------------------------
-	public override void _Ready()
+	public override void _EnterTree()
 	{
 		scn_player_label = GD.Load<PackedScene>("res://源/联机页面/PlayerLabel.tscn");
+	}
+
+	public override void _Ready()
+	{
 
 		network_handler = GetNode<联机网络处理>("联机网络处理");
 

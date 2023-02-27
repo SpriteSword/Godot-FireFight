@@ -24,7 +24,7 @@ public class 测试解析型号 : Node
 
     }
 
-    //  解析类型名称。匹配上就返回 key 键名，否则返回 null。正常输入型号像："M60 20" "tow"。字典中的 key 只有像 "M60/APC" "M60 32"这两种形式，没有"M60/APC 31"这种。
+    //  匹配类型名称。匹配上就返回 key 键名，否则返回 null。正常输入型号像："M60 20" "tow"。字典中的 key 只有像 "M60/APC" "M60 32"这两种形式，没有"M60/APC 31"这种。
     static string MatchModelName(Dictionary dictionary, string model_name)
     {
         if (model_name == null || model_name.Empty()) return null;

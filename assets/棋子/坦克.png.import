@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/坦克M60黄.png-2cdc77b6bbc8298671fb450079ef58d3.stex"
+path="res://.import/坦克.png-2b5c27d3b46dfd6cc64e4bbcedfaa35b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/棋子/坦克M60黄.png"
-dest_files=[ "res://.import/坦克M60黄.png-2cdc77b6bbc8298671fb450079ef58d3.stex" ]
+source_file="res://assets/棋子/坦克.png"
+dest_files=[ "res://.import/坦克.png-2b5c27d3b46dfd6cc64e4bbcedfaa35b.stex" ]
 
 [params]
 

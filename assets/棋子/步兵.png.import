@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/步兵4.png-5fef431e8ab3366c9ebc817c727ef360.stex"
+path="res://.import/步兵.png-6930a5ef3c25f17f1d5ca3a48f2dcc3d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/棋子/步兵4.png"
-dest_files=[ "res://.import/步兵4.png-5fef431e8ab3366c9ebc817c727ef360.stex" ]
+source_file="res://assets/棋子/步兵.png"
+dest_files=[ "res://.import/步兵.png-6930a5ef3c25f17f1d5ca3a48f2dcc3d.stex" ]
 
 [params]
 

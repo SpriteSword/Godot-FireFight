@@ -3,11 +3,24 @@ using Godot.Collections;
 
 public class PiecesMnger : HexTileMap
 {
+    //  各型号的属性
+    public readonly Dictionary _model_attribute_ = new Dictionary{
+        {Piece.PieceType.人, new Array<string>{"TM", "TM+"}},
+        {Piece.PieceType.坦克, new Array<string>{"T62", "M60"}},
+        {Piece.PieceType.APC, new Array<string>{"TOW"}}
+
+    };
+
     //  资源
-    // PackedScene scn_red_piece;
-    // PackedScene scn_blue_piece;
+    Texture txtur_p_sprite_bg_red;
+    Texture txtur_p_sprite_bg_blue;
+    Texture txtur_p_sprite_body_man;
+    Texture txtur_p_sprite_body_APC;
+    Texture txtur_p_sprite_body_tank;
+
     PackedScene scn_shadow;
     PackedScene scn_piece;
+    PackedScene scn_piece_sprite;
 
     //  子节点
     public Node pieces;     //  其下子节点是敌我双方棋子
@@ -18,16 +31,33 @@ public class PiecesMnger : HexTileMap
     // bool piece_is_focused = false;      //  鼠标停留在棋子上方，用来显示悬浮棋子信息栏
 
 
+    public override void _EnterTree()       //  资源，进入树就要加载
+    {
+        txtur_p_sprite_bg_red = GD.Load<Texture>("res://assets/棋子/红背景.png");
+        txtur_p_sprite_bg_blue = GD.Load<Texture>("res://assets/棋子/蓝背景.png");
+        txtur_p_sprite_body_man = GD.Load<Texture>("res://assets/棋子/步兵.png");
+        txtur_p_sprite_body_APC = GD.Load<Texture>("res://assets/棋子/APC.png");
+        txtur_p_sprite_body_tank = GD.Load<Texture>("res://assets/棋子/坦克.png");
+
+        scn_piece = GD.Load<PackedScene>("res://源/棋子/Piece.tscn");
+        scn_piece_sprite = GD.Load<PackedScene>("res://源/棋子/PieceSprite.tscn");
+        scn_shadow = GD.Load<PackedScene>("res://源/棋子主管/PieceStack.tscn");
+    }
+
     public override void _Ready()
     {
-        // scn_red_piece = GD.Load<PackedScene>("res://源/棋子/red/RedPiece.tscn");
-        // scn_blue_piece = GD.Load<PackedScene>("res://源/棋子/blue/BluePiece.tscn");
-        scn_piece = GD.Load<PackedScene>("res://源/棋子/Piece.tscn");
-
-        scn_shadow = GD.Load<PackedScene>("res://源/棋子主管/PieceStack.tscn");
-
         pieces = GetNode<Node>("Pieces");
         stacks = GetNode<Node>("Stack");
+
+        // GD.Print(GetPieceTypeBy("M60"));
+
+
+        // var p_s = InstancePieceSprite(GameMnger.Side.红, "T62");
+        // p_s.RectPosition = (new Vector2(100, 100));
+        // AddChild(p_s);
+        // AddChild(p_s);      //  add_child:无法将子“PieceSprite”添加到“PiecesMnger”，已具有父“PiecesMnger”。原来就是个指针！！
+
+        // p_s.QueueFree();
     }
 
 
@@ -126,7 +156,6 @@ public class PiecesMnger : HexTileMap
         }
     }
 
-
     //  添加棋子。游戏想定阶段调用。
     public void AddPiece(uint id, Vector2 cell_pos, GameMnger.Side side, Piece.PieceType piece_type, string model_name = "TM", bool visible = true)
     {
@@ -137,6 +166,9 @@ public class PiecesMnger : HexTileMap
         p.ModelName = model_name;
         p.Visible = visible;
 
+        p.txtur_sprite_bg = GetPieceSprBgTxturBy(side);
+        p.txtur_sprite_body = GetPieceSprBodyTxturBy((int)piece_type);
+
         pieces.AddChild(p);
         p.Connect("PlaceMe", this, "_PlacePiece");
         p.Connect("MouseIn", this, "_PieceFocusIn");
@@ -145,6 +177,54 @@ public class PiecesMnger : HexTileMap
         p.CellPos = cell_pos;
 
         AddPieceInStack(p);
+    }
+
+    //  实例化一个棋子纹理。big_model_name 必须正确！
+    public PieceSprite InstancePieceSprite(GameMnger.Side side, string model_name)
+    {
+        var spr = scn_piece_sprite.Instance<PieceSprite>();
+        spr.ReferenceChildNode();
+
+        var ms = model_name.Split(" ");     //  分离出大型号
+
+        int p_type = GetPieceTypeBy(ms[0]);
+        if (p_type == -1) GD.PrintErr("InstancePieceSprite(): big_model_name不合法！");
+
+        spr.body.Texture = GetPieceSprBodyTxturBy(p_type);      //  虽然会实例化多个节点但资源都只加载1个
+        spr.bg.Texture = GetPieceSprBgTxturBy(side);
+        spr.label.Text = model_name;
+
+        return spr;
+    }
+
+    //  根据型号名返回棋子类型。没找到返回 -1.
+    int GetPieceTypeBy(string big_model_name)
+    {
+        foreach (int key in _model_attribute_.Keys)
+        {
+            if (_model_attribute_[key] is Array arr)        ///  不能写Array<string>!
+            {
+                if (arr.Contains(big_model_name)) { return key; }
+            }
+        }
+        return -1;
+    }
+
+    //  根据棋子类型索引返回sprite的body 纹理
+    Texture GetPieceSprBodyTxturBy(int piece_type)
+    {
+        if (piece_type == (int)Piece.PieceType.人) { return txtur_p_sprite_body_man; }
+        else if (piece_type == (int)Piece.PieceType.APC) { return txtur_p_sprite_body_APC; }
+        else if (piece_type == (int)Piece.PieceType.坦克) { return txtur_p_sprite_body_tank; }
+
+        return null;
+    }
+
+    //  根据棋子类型索引返回sprite的背景 纹理
+    Texture GetPieceSprBgTxturBy(GameMnger.Side side)
+    {
+        if (side == GameMnger.Side.红) { return txtur_p_sprite_bg_red; }
+        else { return txtur_p_sprite_bg_blue; }
     }
 
 

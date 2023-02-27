@@ -11,30 +11,36 @@ public class 棋子部署系统 : Panel
 	PackedScene scn_texture;
 
 	//  节点
-	public 想定 controller;       //  由 想定 初始化
+	public GUI gui;
+	public 想定 controller;       //  为了方便的引用。由 想定 初始化
 	GridContainer container;
-	public 预备部署棋子 piece_in_bar;     //  用来指着当前编辑的棋子的图像
-	TextureRect piece_txtr_on_mouse;      //  用来附着在鼠标的棋子图像
 	Button move_btn;
 	Button finish_btn;
+	public 预备部署棋子 piece_in_bar;     //  用来指着当前编辑的棋子的图像
+	PieceSprite piece_spr_on_mouse;     //  用来附着在鼠标的棋子图像
 
-	public override void _Ready()
+
+	public override void _EnterTree()
 	{
 		scn_texture = GD.Load<PackedScene>("res://源/GUI/棋子部署系统/预备部署棋子.tscn");
+	}
+	public override void _Ready()
+	{
+		piece_spr_on_mouse = GetNode<PieceSprite>("PieceSpriteOnMouse");
 
-		piece_txtr_on_mouse = GetNode<TextureRect>("PickedUpPieceTexture");
+		gui = GetNode<GUI>("..");
 		container = GetNode<GridContainer>("ScrollContainer/GridContainer");
 		move_btn = GetNode<Button>("MoveBtn");
 		finish_btn = GetNode<Button>("FinishBtn");
 
-		piece_txtr_on_mouse.Visible = false;
+		piece_spr_on_mouse.Visible = false;
 		Hide();
 	}
 	public override void _Process(float delta)
 	{
 		if (IsHolding())
 		{
-			piece_txtr_on_mouse.RectGlobalPosition = GetGlobalMousePosition() - mouse_offset;
+			piece_spr_on_mouse.RectGlobalPosition = GetGlobalMousePosition() - mouse_offset;
 		}
 	}
 	public override void _Input(InputEvent @event)
@@ -43,7 +49,7 @@ public class 棋子部署系统 : Panel
 		{
 			if (IsHolding())
 			{
-				piece_txtr_on_mouse.Texture = null;
+				piece_spr_on_mouse.Hide();
 
 				ShowPiecePicked(false);
 
@@ -53,12 +59,15 @@ public class 棋子部署系统 : Panel
 		}
 	}
 
-
-
-	//  添加棋子图像。根据文件读入后，生成id、一览表
-	public void AddTexture(uint piece_id)
+	//  添加棋子图像。根据文件读入后，生成id、一览表。PieceSprite 是个节点，
+	public void AddPieceInBar(uint piece_id, GameMnger.Side side, string model_name)
 	{
+		PieceSprite p_s = gui.game_mnger.pieces_mnger.InstancePieceSprite(side, model_name);
+
 		var t = scn_texture.Instance<预备部署棋子>();
+		t.AddChild(p_s);
+		t.ReferenceChildNode();
+
 		t.piece_id = piece_id;
 		t.Connect("SelectMe", this, "_SelectTexture");
 
@@ -68,13 +77,14 @@ public class 棋子部署系统 : Panel
 	//  是否拾起了棋子
 	public bool IsHolding()
 	{
-		return piece_txtr_on_mouse.Visible;
+		return piece_spr_on_mouse.Visible;
 	}
 
 	//  显示栏中的棋子被拾取。true：拾取在鼠标上，false: 还在栏中
 	void ShowPiecePicked(bool picked)
 	{
-		piece_txtr_on_mouse.Visible = picked;
+		piece_spr_on_mouse.Visible = picked;
+
 		finish_btn.Disabled = picked;
 
 		if (picked)
@@ -103,13 +113,25 @@ public class 棋子部署系统 : Panel
 		foreach (预备部署棋子 itm in container.GetChildren()) { itm.QueueFree(); }
 	}
 
+	//  用一个PieceSprite给另一个赋值，为了其子节点的图像资源相同，当然target需要有子节点的引用，没有直接报错！
+	void Assign(PieceSprite target, PieceSprite resource)
+	{
+		if (target == null || resource == null) return;
+
+		target.bg.Texture = resource.bg.Texture;
+		target.body.Texture = resource.body.Texture;
+		target.label.Text = resource.label.Text;
+		target.symbol.Texture = resource.symbol.Texture;
+	}
+
+
 
 	#region  ————————————————————————————————————————————————————————————————  控制器 调用
 
 	//  已经将棋子放到地图上了
 	public void HavePlacedPiece()
 	{
-		piece_txtr_on_mouse.Visible = false;
+		piece_spr_on_mouse.Hide();
 		finish_btn.Disabled = false;
 	}
 
@@ -120,7 +142,6 @@ public class 棋子部署系统 : Panel
 		FindByID(id);
 	}
 
-
 	#endregion
 
 	//------------------------------------------------ 子节点信号
@@ -130,7 +151,8 @@ public class 棋子部署系统 : Panel
 		controller.Redeploy(piece_in_bar.piece_id);
 
 		move_btn.Disabled = true;
-		piece_txtr_on_mouse.Texture = piece_in_bar.Texture;
+		Assign(piece_spr_on_mouse, piece_in_bar.piece_sprite);
+
 		mouse_offset = new Vector2(18, 18);
 		ShowPiecePicked(true);
 	}
@@ -139,10 +161,8 @@ public class 棋子部署系统 : Panel
 	void _SelectTexture(预备部署棋子 who, Vector2 _mouse_offset)
 	{
 		piece_in_bar = who;
-
-		piece_txtr_on_mouse.Texture = who.Texture;
+		Assign(piece_spr_on_mouse, who.piece_sprite);
 		mouse_offset = _mouse_offset;
-
 		ShowPiecePicked(true);
 	}
 

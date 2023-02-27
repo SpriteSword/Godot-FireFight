@@ -9,9 +9,14 @@ public class 悬浮棋子信息栏 : Panel
 	GUI gui;
 	GridContainer container;
 
+
+    public override void _EnterTree()       //  资源，进入树就要加载
+    {
+		card_scn = GD.Load<PackedScene>("res://源/GUI/悬浮棋子信息栏/简要棋子信息卡.tscn");
+	}
+
 	public override void _Ready()
 	{
-		card_scn = GD.Load<PackedScene>("res://源/GUI/悬浮棋子信息栏/简要棋子信息卡.tscn");
 		container = GetNode<GridContainer>("ScrollContainer/GridContainer");
 
 		gui = GetNode<GUI>("..");
