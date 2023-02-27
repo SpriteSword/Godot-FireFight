@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using Godot.Collections;
 
 //  只显示己方的棋子

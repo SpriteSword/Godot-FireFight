@@ -1,6 +1,5 @@
 using Godot;
 using Godot.Collections;
-using System;
 
 public class GUI : Control		//  人类的所有输入都经这里分发！并负责 抬头显示(HUD) 的绘制
 {

@@ -1,5 +1,5 @@
 // using Godot;
-// using System;
+//
 
 // public class 临机询问 : 游戏阶段
 // {

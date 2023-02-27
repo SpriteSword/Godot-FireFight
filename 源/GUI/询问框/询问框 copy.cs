@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public class 询问框0 : ConfirmationDialog
 {

@@ -94,9 +94,7 @@ public class 想定 : 游戏阶段
         var dic = PieceSmryBySide(game_mnger.local_player_side);
         foreach (int itm in dic.Keys)
         {
-            // PieceSprite p_s = game_mnger.pieces_mnger.InstancePieceSprite(game_mnger.local_player_side, (string)dic[itm]);
             deploy_system.AddPieceInBar((uint)itm, game_mnger.local_player_side, (string)dic[itm]);
-            // deploy_system.AddPieceInBar((uint)itm, p_s);
         }
     }
 

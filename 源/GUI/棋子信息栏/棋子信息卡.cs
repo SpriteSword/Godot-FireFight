@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 
 public class 棋子信息卡 : Panel

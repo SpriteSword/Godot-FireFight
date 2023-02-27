@@ -1,5 +1,5 @@
 using Godot;
-using System;
+
 
 public class 圆形进度条 : TextureProgress
 {

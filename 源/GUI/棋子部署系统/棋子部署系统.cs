@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 //  游戏开始，所有的信息都在GameMnger，这里的图片跟其建立联系。经操作后（布子），生成棋子在 PieceMnger，棋子也是只有一张皮
 public class 棋子部署系统 : Panel

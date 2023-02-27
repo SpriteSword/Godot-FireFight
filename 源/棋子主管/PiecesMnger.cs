@@ -49,8 +49,6 @@ public class PiecesMnger : HexTileMap
         pieces = GetNode<Node>("Pieces");
         stacks = GetNode<Node>("Stack");
 
-        // GD.Print(GetPieceTypeBy("M60"));
-
 
         // var p_s = InstancePieceSprite(GameMnger.Side.红, "T62");
         // p_s.RectPosition = (new Vector2(100, 100));

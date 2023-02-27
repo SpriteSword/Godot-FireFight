@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public class 警告框 : Panel
 {
