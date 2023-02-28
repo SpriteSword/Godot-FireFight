@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://源/GUI/棋子部署系统/预备部署棋子.cs" type="Script" id=1]
+[ext_resource path="res://源/棋子/PieceSprite.tscn" type="PackedScene" id=2]
 
 [node name="预备部署棋子" type="TextureRect"]
 margin_right = 36.0
@@ -10,5 +11,4 @@ mouse_filter = 0
 mouse_default_cursor_shape = 2
 script = ExtResource( 1 )
 
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[node name="PieceSprite" parent="." instance=ExtResource( 2 )]

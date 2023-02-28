@@ -61,16 +61,12 @@ public class 棋子部署系统 : Panel
 	//  添加棋子图像。根据文件读入后，生成id、一览表。PieceSprite 是个节点，
 	public void AddPieceInBar(uint piece_id, GameMnger.Side side, string model_name)
 	{
-		PieceSprite p_s = gui.game_mnger.pieces_mnger.InstancePieceSprite(side, model_name);
-
 		var t = scn_texture.Instance<预备部署棋子>();
-		t.AddChild(p_s);
-		t.ReferenceChildNode();
+		container.AddChild(t);      //  AddChild 执行完即进入树且ready了。让它先进树就不用在这里手动 ReferenceChildNode() 了
 
 		t.piece_id = piece_id;
 		t.Connect("SelectMe", this, "_SelectTexture");
-
-		container.AddChild(t);
+		gui.game_mnger.pieces_mnger.AdaptPieceSpriteTo(t.piece_sprite, side, model_name);
 	}
 
 	//  是否拾起了棋子
@@ -112,16 +108,7 @@ public class 棋子部署系统 : Panel
 		foreach (预备部署棋子 itm in container.GetChildren()) { itm.QueueFree(); }
 	}
 
-	//  用一个PieceSprite给另一个赋值，为了其子节点的图像资源相同，当然target需要有子节点的引用，没有直接报错！
-	void Assign(PieceSprite target, PieceSprite resource)
-	{
-		if (target == null || resource == null) return;
 
-		target.bg.Texture = resource.bg.Texture;
-		target.body.Texture = resource.body.Texture;
-		target.label.Text = resource.label.Text;
-		target.symbol.Texture = resource.symbol.Texture;
-	}
 
 
 
@@ -150,7 +137,7 @@ public class 棋子部署系统 : Panel
 		controller.Redeploy(piece_in_bar.piece_id);
 
 		move_btn.Disabled = true;
-		Assign(piece_spr_on_mouse, piece_in_bar.piece_sprite);
+		gui.game_mnger.pieces_mnger.Assign(piece_spr_on_mouse, piece_in_bar.piece_sprite);
 
 		mouse_offset = new Vector2(18, 18);
 		ShowPiecePicked(true);
@@ -159,8 +146,10 @@ public class 棋子部署系统 : Panel
 	//  点选栏中的图像（棋子）后
 	void _SelectTexture(预备部署棋子 who, Vector2 _mouse_offset)
 	{
+		if (IsHolding()) return;		//  防止拾起了棋子又去点击栏中的
+
 		piece_in_bar = who;
-		Assign(piece_spr_on_mouse, who.piece_sprite);
+		gui.game_mnger.pieces_mnger.Assign(piece_spr_on_mouse, who.piece_sprite);
 		mouse_offset = _mouse_offset;
 		ShowPiecePicked(true);
 	}

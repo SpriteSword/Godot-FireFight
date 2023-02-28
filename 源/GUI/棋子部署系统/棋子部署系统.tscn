@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/主题.tres" type="Theme" id=1]
 [ext_resource path="res://源/GUI/棋子部署系统/棋子部署系统.cs" type="Script" id=2]
-[ext_resource path="res://源/GUI/棋子部署系统/预备部署棋子.tscn" type="PackedScene" id=3]
 [ext_resource path="res://源/棋子/PieceSprite.tscn" type="PackedScene" id=4]
 
 [node name="棋子部署系统" type="Panel"]
@@ -39,8 +38,6 @@ size_flags_vertical = 3
 custom_constants/vseparation = 8
 custom_constants/hseparation = 4
 columns = 16
-
-[node name="预备部署棋子33" parent="ScrollContainer/GridContainer" instance=ExtResource( 3 )]
 
 [node name="Tween" type="Tween" parent="ScrollContainer"]
 

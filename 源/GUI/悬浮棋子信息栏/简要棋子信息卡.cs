@@ -1,32 +1,26 @@
 using Godot;
 
-public class 简要棋子信息卡 : Panel
+public class 简要棋子信息卡 : PieceCard
 {
-	[Signal] delegate void SelectMe(简要棋子信息卡 me);      //  传给 信息栏
-
-	Label id_label;
-
-	public Piece piece;
+    [Signal] delegate void SelectMe(简要棋子信息卡 me);      //  传给 信息栏
 
 
-	public override void _Ready()
-	{
-		id_label = GetNode<Label>("IdLabel");
-	}
-
-	public override void _GuiInput(InputEvent @event)
-	{
-		if (@event.IsActionReleased("click_left"))
-		{
-			EmitSignal("SelectMe", this);
-		}
-	}
+    Label id_label;
 
 
-	//  更新棋子信息
-	public void UpdatePieceInfo(Piece p)
-	{
-		piece = p;
-		id_label.Text = "id: " + p.id.ToString();
-	}
+    //  EmitSignalSelectMe() 用父类的
+
+    //  引用子节点，使自己的变量初始化
+    public override void ReferenceChildNode()
+    {
+        base.ReferenceChildNode();
+        id_label = GetNode<Label>("IdLabel");
+    }
+
+    //  更新棋子信息
+    public void UpdatePieceInfo(Piece p)
+    {
+        piece = p;
+        id_label.Text = "id: " + p.id.ToString();
+    }
 }

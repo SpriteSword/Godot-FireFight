@@ -1,7 +1,7 @@
 using Godot;
 
 
-public class 棋子信息卡 : Panel
+public class 棋子信息卡 : PieceCard
 {
     [Signal] delegate void SelectMe(棋子信息卡 me);      //  传给 棋子信息栏
     [Signal] delegate void Close(棋子信息卡 me);     //  -> 棋子信息栏
@@ -11,7 +11,7 @@ public class 棋子信息卡 : Panel
     Label state_label;
 
     bool selected = false;
-    public Piece piece;     //  指向的棋子
+    // public Piece piece;     //  指向的棋子
 
     //  棋子信息
     // uint p_id;
@@ -33,16 +33,17 @@ public class 棋子信息卡 : Panel
         style = Get("custom_styles/panel") as StyleBoxFlat;     //  写死
         style.ResourceLocalToScene = true;
 
-        id_label = GetNode<Label>("IdLabel");
-        state_label = GetNode<Label>("StateLabel");
+        ReferenceChildNode();
     }
 
-    public override void _GuiInput(InputEvent @event)
+
+    //  EmitSignalSelectMe() 用父类的
+
+    //  引用子节点，使自己的变量初始化
+    public override void ReferenceChildNode()
     {
-        if (@event.IsActionPressed("click_left"))
-        {
-            EmitSignal("SelectMe", this);
-        }
+        id_label = GetNode<Label>("IdLabel");
+        state_label = GetNode<Label>("StateLabel");
     }
 
 

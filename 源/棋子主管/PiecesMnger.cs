@@ -195,6 +195,18 @@ public class PiecesMnger : HexTileMap
         return spr;
     }
 
+    //  使棋子sprite与side 、型号名相适应
+    public void AdaptPieceSpriteTo(PieceSprite piece_sprite, GameMnger.Side side, string model_name)
+    {
+        var ms = model_name.Split(" ");     //  分离出大型号
+        int p_type = GetPieceTypeBy(ms[0]);
+        if (p_type == -1) GD.PrintErr("AdaptPieceSpriteTo(): big_model_name不合法！");
+
+        piece_sprite.body.Texture = GetPieceSprBodyTxturBy(p_type);
+        piece_sprite.bg.Texture = GetPieceSprBgTxturBy(side);
+        piece_sprite.label.Text = model_name;
+    }
+
     //  根据型号名返回棋子类型。没找到返回 -1.
     int GetPieceTypeBy(string big_model_name)
     {
@@ -223,6 +235,17 @@ public class PiecesMnger : HexTileMap
     {
         if (side == GameMnger.Side.红) { return txtur_p_sprite_bg_red; }
         else { return txtur_p_sprite_bg_blue; }
+    }
+
+    //  用一个PieceSprite给另一个赋值，为了其子节点的图像资源相同，当然target需要有子节点的引用，没有直接报错！
+    public void Assign(PieceSprite target, PieceSprite resource)
+    {
+        if (target == null || resource == null) return;
+
+        target.bg.Texture = resource.bg.Texture;
+        target.body.Texture = resource.body.Texture;
+        target.label.Text = resource.label.Text;
+        target.symbol.Texture = resource.symbol.Texture;
     }
 
 
