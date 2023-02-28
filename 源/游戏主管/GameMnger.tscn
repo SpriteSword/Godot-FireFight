@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://源/格/45x52.tres" type="TileSet" id=1]
 [ext_resource path="res://源/棋子主管/PiecesMnger.cs" type="Script" id=2]
@@ -31,9 +31,58 @@
 [ext_resource path="res://源/游戏主管/阶段/结束回合.cs" type="Script" id=29]
 [ext_resource path="res://源/游戏主管/MyCamera.cs" type="Script" id=30]
 [ext_resource path="res://源/游戏主管/River.cs" type="Script" id=31]
+[ext_resource path="res://assets/效果/火焰摧毁.png" type="Texture" id=32]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 32 )
+region = Rect2( 0, 0, 58, 128 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 32 )
+region = Rect2( 58, 0, 58, 128 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 32 )
+region = Rect2( 116, 0, 58, 128 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 32 )
+region = Rect2( 174, 0, 58, 128 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 32 )
+region = Rect2( 232, 0, 58, 128 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 32 )
+region = Rect2( 0, 128, 58, 128 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 32 )
+region = Rect2( 58, 128, 58, 128 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 32 )
+region = Rect2( 116, 128, 58, 128 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 32 )
+region = Rect2( 174, 128, 58, 128 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 32 )
+region = Rect2( 232, 128, 58, 128 )
+
+[sub_resource type="SpriteFrames" id=12]
+animations = [ {
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
+"loop": false,
+"name": "explosion",
+"speed": 25.0
+} ]
 
 [node name="GameMnger" type="Node2D"]
 script = ExtResource( 4 )
@@ -198,5 +247,14 @@ script = ExtResource( 20 )
 [node name="HintTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="Effect" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 1216, 1003 )
+z_index = 10
+frames = SubResource( 12 )
+animation = "explosion"
+offset = Vector2( 0, -30 )
+
 [connection signal="Warn" from="." to="画布层/GUI/警告框" method="_PopUp"]
 [connection signal="timeout" from="HintTimer" to="." method="_on_HintTimer_timeout"]
+[connection signal="animation_finished" from="Effect" to="." method="_on_Effect_animation_finished"]

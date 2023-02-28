@@ -74,13 +74,13 @@ public class Mark : HexTileMap
                 //  绘制直线
                 var f_cell_pos = Math.Hex2CellCoord(hex_pos);       //   from
                 var t_cell_pos = DetermineCellOfHexGrid(mouse_pos);     //  to
-                DrwaLineByCellCoord(f_cell_pos, t_cell_pos, Colors.Cyan);       //  青色。好像还没用数字直观
+                DrwaLineByCellCoord(f_cell_pos, t_cell_pos,  Color.Color8(50, 0, 255));       //  青色。好像还没用数字直观
 
                 //  绘制距离数字
                 var t_hex_pos = Math.Cell2HexCoord(t_cell_pos);
                 float dist = Math.Hex2RectCoord(t_hex_pos - hex_pos).Length() * 50;
                 var pos = (HexGridCenter(f_cell_pos) + HexGridCenter(t_cell_pos)) / 2;      //  图上直线的中点
-                game_mnger.gui.DrawStringByGlobalPos(dist.ToString("0") + "m", pos, Colors.Cyan);
+                game_mnger.gui.DrawStringByGlobalPos(dist.ToString("0") + "m", pos, Color.Color8(50, 0, 200));
             }
         }
     }
@@ -101,7 +101,7 @@ public class Mark : HexTileMap
                     }
                     else
                     {
-                        DrwaLineByCellCoord(path_line[i].cell_pos, path_line[i + 1].cell_pos, Color.Color8(255, 200, 200), r_m_p.ToString(), 1);
+                        DrwaLineByCellCoord(path_line[i].cell_pos, path_line[i + 1].cell_pos, Color.Color8(255, 50, 50), r_m_p.ToString(), 1);
                     }
 
                 }

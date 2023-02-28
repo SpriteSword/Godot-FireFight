@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Multimedia Internet CD-Rom Flash Buttons Hard 22.wav-6b451bfc292d98f562314c882129a30b.sample"
+
+[deps]
+
+source_file="res://assets/声音/sound/Multimedia Internet CD-Rom Flash Buttons Hard 22.wav"
+dest_files=[ "res://.import/Multimedia Internet CD-Rom Flash Buttons Hard 22.wav-6b451bfc292d98f562314c882129a30b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

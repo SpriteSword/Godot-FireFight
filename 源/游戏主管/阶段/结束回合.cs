@@ -27,10 +27,12 @@ public class 结束回合 : 游戏阶段
     //  恢复所有棋子状态
     void RecoverAll()
     {
+        // bool have_dead = false;
         foreach (Piece p in game_mnger.pieces_mnger.pieces.GetChildren())
         {
             if (p.BeK)
             {
+                // have_dead = true;
                 p.CleanUp();
                 game_mnger.pieces_mnger.RemovePieceFromStack(p);
             }
@@ -40,6 +42,8 @@ public class 结束回合 : 游戏阶段
                 p.can_be_shot = true;
             }
         }
+
+        // if (have_dead) { game_mnger.sound_mnger.PlaySoundRes(game_mnger.sound_mnger.snd_be_killed); }
     }
 
 }

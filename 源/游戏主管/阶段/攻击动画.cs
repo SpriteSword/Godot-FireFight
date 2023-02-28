@@ -43,12 +43,17 @@ public class 攻击动画 : 游戏阶段
         attack_vector = (game_mnger.defender.Position - game_mnger.attacker.Position).Normalized();
         game_mnger.tween.InterpolateProperty(game_mnger.attacker, "position",
                                             game_mnger.attacker.Position, game_mnger.attacker.Position + attack_vector * 18,
-                                            0.15f, Tween.TransitionType.Quart, Tween.EaseType.Out);
+                                            0.20f, Tween.TransitionType.Quart, Tween.EaseType.Out);
         game_mnger.tween.InterpolateProperty(game_mnger.attacker, "position",
                                             game_mnger.attacker.Position + attack_vector * 18, game_mnger.attacker.Position,
-                                            0.2f, Tween.TransitionType.Linear, Tween.EaseType.InOut, 0.15f);
+                                            0.30f, Tween.TransitionType.Linear, Tween.EaseType.InOut, 0.15f);
         game_mnger.tween.Start();
         game_mnger.attacker.ZIndex = (int)Piece.ZIndexInStack._act_;
+
+        game_mnger.sound_mnger.PlaySoundRes(game_mnger.sound_mnger.snd_explosion);
+        game_mnger.effect.Position = game_mnger.defender.Position;
+        game_mnger.effect.Play();
+        game_mnger.effect.Visible = true;
     }
 
     //  返回攻击调度

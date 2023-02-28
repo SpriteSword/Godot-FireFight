@@ -60,6 +60,8 @@ public class GameMnger : Node2D
 
 
 	#region ————————————————————————————————————————————————————————  节点
+	public SoundMnger sound_mnger;
+
 	//  子节点
 	public MyCamera camera;
 	public PiecesMnger pieces_mnger;
@@ -71,6 +73,7 @@ public class GameMnger : Node2D
 
 	public Tween tween;
 	Timer hint_timer;
+	public AnimatedSprite effect;
 
 	//  数据查询用
 	public TileMap road;
@@ -154,6 +157,8 @@ public class GameMnger : Node2D
 	//----------------------------------------------------------
 	public override void _Ready()
 	{
+		sound_mnger = GetNode<SoundMnger>("/root/SoundMnger");
+
 		camera = GetNode<MyCamera>("MyCamera");
 		pieces_mnger = GetNode<PiecesMnger>("PiecesMnger");
 		mark = GetNode<Mark>("Mark");
@@ -163,6 +168,7 @@ public class GameMnger : Node2D
 		state_machine = GetNode<GameMngerStateMachine>("GameMngerStateMachine");
 		tween = GetNode<Tween>("Tween");
 		hint_timer = GetNode<Timer>("HintTimer");
+		effect = GetNode<AnimatedSprite>("Effect");
 
 		ground_feature = GetNode<TileMap>("Map/地物");
 		road = GetNode<TileMap>("Map/Road");
@@ -200,7 +206,7 @@ public class GameMnger : Node2D
 		else
 		{
 			pieces_mnger.AddPiece(1, new Vector2(35, 30), Side.红, Piece.PieceType.人);
-			pieces_mnger.AddPiece(2, new Vector2(25, 30), Side.蓝, Piece.PieceType.人);
+			pieces_mnger.AddPiece(2, new Vector2(30, 20), Side.蓝, Piece.PieceType.人);
 
 		}
 
@@ -248,6 +254,14 @@ public class GameMnger : Node2D
 	private void _on_HintTimer_timeout()
 	{
 		// gui.floating_piece_info_bar.Show(mouse_screen_pos);
+	}
+
+	//  特效结束
+	private void _on_Effect_animation_finished()
+	{
+		effect.Stop();
+		effect.Visible = false;
+		effect.Frame = 0;
 	}
 
 
