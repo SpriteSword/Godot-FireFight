@@ -41,6 +41,8 @@ public class 悬浮棋子信息栏 : Panel
 
         foreach (Piece piece in stack.pieces)
         {
+            if (piece.BeK) continue;
+
             简要棋子信息卡 card = card_scn.Instance<简要棋子信息卡>();
             container.AddChild(card);
 

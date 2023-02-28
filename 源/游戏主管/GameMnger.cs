@@ -313,6 +313,12 @@ public class GameMnger : Node2D
 		else { hint_timer.Stop(); }
 	}
 
+	//  打印信息
+	public void Print(string info)
+	{
+		gui.info_box.Text += info + "\n";
+	}
+
 	#endregion
 
 	#region 玩法相关

@@ -10,10 +10,10 @@ public class 预备部署棋子 : PieceCard
 	public uint piece_id;       //  在GameMnger的棋子信息的索引。文件-> 读入，生成id -> 一览表 -> 地图上棋子
 
 
-    protected override void EmitSignalSelectMe()
-    {
+	protected override void EmitSignalSelectMe()
+	{
 		EmitSignal("SelectMe", this, GetLocalMousePosition());
-    }
+	}
 }
 
 

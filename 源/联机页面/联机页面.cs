@@ -42,7 +42,6 @@ public class 联机页面 : Control		//+++++++++++++++++进行完后要断开连
 
 	public override void _Ready()
 	{
-
 		network_handler = GetNode<联机网络处理>("联机网络处理");
 
 		host_btn = GetNode<Button>("HostBtn");
@@ -66,7 +65,6 @@ public class 联机页面 : Control		//+++++++++++++++++进行完后要断开连
 
 		InitSignal();
 
-		GD.Print((GameMnger.AttackResult)1);
 	}
 
 	//  信号初始化

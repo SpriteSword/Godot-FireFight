@@ -185,7 +185,11 @@ public class 攻击动画 : 游戏阶段
         GD.Print("色子：", dice_point);
 
         //  判定结果
-        return JudgeAttackResult(is_personnel, att_level, dice_point);
+        var rt = JudgeAttackResult(is_personnel, att_level, dice_point);
+
+        game_mnger.Print("攻击结果：" + rt.ToString() + " " + "dice: " + dice_point);
+
+        return rt;
     }
 
     //  判定攻击结果。查表。表：{色子:{攻击等级:结果}}。++++++++++++++++++++++步兵被多次压制、车辆多次失动 = K。
@@ -328,6 +332,7 @@ public class 攻击动画 : 游戏阶段
         }
 
         GD.Print("攻击结果：", attack_result, " ", "dice: ", dice_point);
+        game_mnger.Print("攻击结果：" + attack_result.ToString() + " " + "dice: " + dice_point);
 
         StartAnim();
     }
