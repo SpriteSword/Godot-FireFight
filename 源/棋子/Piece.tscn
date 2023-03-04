@@ -1,11 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://源/棋子/PieceSprite.tscn" type="PackedScene" id=1]
 [ext_resource path="res://源/棋子/Piece.cs" type="Script" id=2]
 [ext_resource path="res://源/shader/变黑白.gdshader" type="Shader" id=3]
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 18, 18 )
 
 [sub_resource type="ShaderMaterial" id=6]
 resource_local_to_scene = true
@@ -41,6 +38,18 @@ tracks/1/keys = {
 "method": "queue_free"
 } ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.247059 ) ]
+}
 
 [sub_resource type="Animation" id=5]
 resource_name = "die"
@@ -58,15 +67,9 @@ tracks/0/keys = {
 }
 
 [node name="Piece" type="Node2D"]
-visible = false
 script = ExtResource( 2 )
 CellPos = Vector2( 1, 1 )
 side = 2
-
-[node name="Area2D" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 1 )
 
 [node name="PieceSprite" parent="." instance=ExtResource( 1 )]
 material = SubResource( 6 )
@@ -78,6 +81,3 @@ margin_bottom = 18.0
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/be_cleaned = SubResource( 7 )
 anims/die = SubResource( 5 )
-
-[connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
-[connection signal="mouse_exited" from="Area2D" to="." method="_on_Area2D_mouse_exited"]

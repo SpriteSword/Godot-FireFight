@@ -26,7 +26,7 @@ public class 简要棋子信息卡 : PieceCard
 	public void UpdatePieceInfo(Piece p)
 	{
 		piece = p;
-		id_label.Text = "id: " + p.id.ToString();
+		id_label.Text = "#" + p.id.ToString();
 
 		if (p.BeS) { be_s_symbol.Modulate = Colors.White; }
 		if (p.BeKF) { be_kf_symbol.Modulate = Colors.White; }

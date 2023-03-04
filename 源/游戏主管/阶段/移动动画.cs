@@ -7,7 +7,7 @@ public class 移动动画 : 游戏阶段
 {
     Vector2 next_cell_pos;
     Vector2 next_pos;
-    bool anim_finished;     //  担心对方已完成了我还没完成
+    // bool anim_finished;     //  担心对方已完成了我还没完成
     ///+++++++++++++++++++++++++++++++++++++++++++++临机射击被击毁又如何？
 
     public override void Enter()
@@ -49,15 +49,14 @@ public class 移动动画 : 游戏阶段
         game_mnger.path_node_index++;
         next_cell_pos = game_mnger.path[game_mnger.path_node_index].cell_pos;
         next_pos = game_mnger.mark.HexGridCenter(next_cell_pos);
-        game_mnger.mover.ZIndex = (int)Piece.ZIndexInStack._act_;       //  在动画期间调为2，使其高于所有棋子。进入堆叠后会调回1。
-        game_mnger.pieces_mnger.RemovePieceFromStack(game_mnger.mover);
+
+
 
         //  同步下一位置
-        SynPiecePosQ();     //  反正没联机也不会发出去
+        MovePieceQ();     //  反正没联机也不会发出去
 
-        anim_finished = false;
-        game_mnger.tween.InterpolateProperty(game_mnger.mover, "position", game_mnger.mover.Position, next_pos, 0.2f);
-        game_mnger.tween.Start();
+        // anim_finished = false;
+
     }
 
     //  临机询问发送给询问框。若本地已经结束阶段了，不需要临机询问！
@@ -119,7 +118,7 @@ public class 移动动画 : 游戏阶段
     //  补间动画完成
     void _TweenAllCompleted()
     {
-        anim_finished = true;
+        // anim_finished = true;
         game_mnger.mover.CellPos = next_cell_pos;
         game_mnger.pieces_mnger.AddPieceInStack(game_mnger.mover);        //  z index 自动为1。
 
@@ -152,8 +151,8 @@ public class 移动动画 : 游戏阶段
 
         switch (content["func"])
         {
-            case "SynPiecePosA":
-                SynPiecePosA(id, _params);
+            case "MovePieceAA":
+                MovePieceAA(id, _params);
                 break;
             case "NoShotA":
                 NoShotA();
@@ -170,17 +169,30 @@ public class 移动动画 : 游戏阶段
         }
     }
 
-    //  同步下一位置，发送 Q
-    void SynPiecePosQ()
+    //  移动棋子。真正的执行内容。
+    void MovePiece()
     {
-        Array _params = new Array();
-        _params.Add(next_cell_pos.x);
-        _params.Add(next_cell_pos.y);
-        game_mnger.Send(Global.opposite_player_peer_id, NetworkMnger.Data2JSON("SynPiecePosA", _params));
+        game_mnger.mover.ZIndex = (int)Piece.ZIndexInStack._act_;       //  在动画期间调为2，使其高于所有棋子。进入堆叠后会调回1。
+        game_mnger.pieces_mnger.RemovePieceFromStack(game_mnger.mover);
+
+        game_mnger.tween.InterpolateProperty(game_mnger.mover, "position", game_mnger.mover.Position, next_pos, 0.2f);
+        game_mnger.tween.Start();
     }
 
-    //  同步下一位置，RPC，接收 A。_params[x, y]
-    void SynPiecePosA(int id, Array _params)
+    //  移动棋子，执行动画，发送 Q。
+    void MovePieceQ()
+    {
+        if (Global.联机调试)
+        {
+            Array _params = new Array();
+            _params.Add(next_cell_pos.x);
+            _params.Add(next_cell_pos.y);
+            game_mnger.Send(Global.opposite_player_peer_id, NetworkMnger.Data2JSON("MovePieceAA", _params));
+        }
+        MovePiece();
+    }
+    //  收到移动棋子的命令，RPC，接收 A。_params[x, y]
+    void MovePieceAA(int id, Array _params)
     {
         if (_params == null || _params.Count != 2) return;
 
@@ -188,8 +200,7 @@ public class 移动动画 : 游戏阶段
         next_cell_pos.y = (float)_params[1];
         next_pos = game_mnger.mark.HexGridCenter(next_cell_pos);
 
-        game_mnger.tween.InterpolateProperty(game_mnger.mover, "position", game_mnger.mover.Position, next_pos, 0.2f);
-        game_mnger.tween.Start();
+        MovePiece();
     }
 
     //  告知移动方不进行临机射击
@@ -197,7 +208,6 @@ public class 移动动画 : 游戏阶段
     {
         game_mnger.Send(Global.opposite_player_peer_id, NetworkMnger.Data2JSON("NoShotA", null));
     }
-
     //  移动方收到不进行临机射击
     void NoShotA()
     {
@@ -209,7 +219,6 @@ public class 移动动画 : 游戏阶段
     {
         game_mnger.Send(Global.opposite_player_peer_id, NetworkMnger.Data2JSON("YesShotA", null));
     }
-
     //  收到对方进行临机射击
     void YesShotA()
     {

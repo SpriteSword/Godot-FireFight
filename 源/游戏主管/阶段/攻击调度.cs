@@ -139,7 +139,6 @@ public class 攻击调度 : 游戏阶段
     //  收到通知结束
     void FinishA()
     {
-        GD.Print("攻击调度回射击阶段");
         Back2ShotStage();
     }
 

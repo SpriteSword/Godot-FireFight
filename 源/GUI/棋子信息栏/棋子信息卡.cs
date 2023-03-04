@@ -6,7 +6,7 @@ public class 棋子信息卡 : PieceCard
     [Signal] delegate void SelectMe(棋子信息卡 me);      //  传给 棋子信息栏
     [Signal] delegate void Close(棋子信息卡 me);     //  -> 棋子信息栏
 
-    public StyleBoxFlat style;
+    // public StyleBoxFlat style;
     Label id_label;
     Label state_label;
 
@@ -23,17 +23,27 @@ public class 棋子信息卡 : PieceCard
         set
         {
             selected = value;
-            ChangeStyle();
+            Update();
         }
     }
 
 
     public override void _Ready()
     {
-        style = Get("custom_styles/panel") as StyleBoxFlat;     //  写死
-        style.ResourceLocalToScene = true;
+        // style = Get("custom_styles/panel") as StyleBoxFlat;     //  写死
+        // style.ResourceLocalToScene = true;
 
         ReferenceChildNode();
+    }
+    public override void _Draw()
+    {
+        if (selected)
+        {
+            DrawLine(new Vector2(0,0), new Vector2(RectSize.x, 0), Colors.Yellow, 2);
+            DrawLine(new Vector2(1,0), new Vector2(1, RectSize.y), Colors.Yellow, 2);
+            DrawLine(new Vector2(0, RectSize.y), RectSize, Colors.Yellow, 2);
+            DrawLine(new Vector2(RectSize.x, 0), RectSize, Colors.Yellow, 2);
+        }
     }
 
 
@@ -42,35 +52,36 @@ public class 棋子信息卡 : PieceCard
     //  引用子节点，使自己的变量初始化
     public override void ReferenceChildNode()
     {
+        base.ReferenceChildNode();
         id_label = GetNode<Label>("IdLabel");
         state_label = GetNode<Label>("StateLabel");
     }
 
 
     //  被选中后的效果。同时玩家视角会回到棋子上
-    public void ChangeStyle()
-    {
-        if (selected)
-        {
-            style.BorderColor = new Color(1, 1, 0);
-            style.BorderWidthBottom = 3;
-            style.BorderWidthLeft = 3;
-            style.BorderWidthRight = 3;
-            style.BorderWidthTop = 3;
-            return;
-        }
-        style.BorderColor = new Color(1, 1, 1);
-        style.BorderWidthBottom = 1;
-        style.BorderWidthLeft = 1;
-        style.BorderWidthRight = 1;
-        style.BorderWidthTop = 1;
-    }
+    // public void ChangeStyle()
+    // {
+    //     if (selected)
+    //     {
+    //         style.BorderColor = new Color(1, 1, 0);
+    //         style.BorderWidthBottom = 3;
+    //         style.BorderWidthLeft = 3;
+    //         style.BorderWidthRight = 3;
+    //         style.BorderWidthTop = 3;
+    //         return;
+    //     }
+    //     style.BorderColor = new Color(1, 1, 1);
+    //     style.BorderWidthBottom = 1;
+    //     style.BorderWidthLeft = 1;
+    //     style.BorderWidthRight = 1;
+    //     style.BorderWidthTop = 1;
+    // }
 
     //  更新棋子信息
     public void UpdatePieceInfo(Piece p)
     {
         piece = p;
-        id_label.Text = "id: " + p.id.ToString();
+        id_label.Text = "#" + p.id.ToString();
 
         if (piece.BeK) { state_label.Text = "已阵亡！"; }
         else

@@ -1,14 +1,15 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://源/棋子/PieceSprite.tscn" type="PackedScene" id=1]
 [ext_resource path="res://源/GUI/悬浮棋子信息栏/简要棋子信息卡.cs" type="Script" id=2]
 [ext_resource path="res://assets/棋子/状态/失动.png" type="Texture" id=3]
 [ext_resource path="res://assets/棋子/状态/压制.png" type="Texture" id=4]
 [ext_resource path="res://assets/棋子/状态/失火.png" type="Texture" id=5]
+[ext_resource path="res://assets/GUI/Panel/Cell01.png" type="Texture" id=6]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.15625, 0.15625, 0.15625, 1 )
-border_blend = true
+[sub_resource type="StyleBoxTexture" id=1]
+texture = ExtResource( 6 )
+region_rect = Rect2( 0, 0, 53, 53 )
 
 [node name="简要棋子信息卡" type="Panel"]
 margin_right = 40.0
@@ -19,11 +20,12 @@ script = ExtResource( 2 )
 
 [node name="PieceSprite" parent="." instance=ExtResource( 1 )]
 margin_left = 2.0
-margin_top = 1.0
+margin_top = 3.0
 margin_right = 38.0
-margin_bottom = 37.0
+margin_bottom = 39.0
 
 [node name="Label" type="Label" parent="."]
+visible = false
 margin_top = 50.0
 margin_right = 40.0
 margin_bottom = 64.0
@@ -40,24 +42,24 @@ valign = 1
 
 [node name="BeSSymbol" type="TextureRect" parent="."]
 modulate = Color( 0.501961, 0.501961, 0.501961, 1 )
-margin_left = 1.0
-margin_top = 67.0
-margin_right = 13.0
-margin_bottom = 79.0
+margin_left = 6.0
+margin_top = 52.0
+margin_right = 18.0
+margin_bottom = 64.0
 texture = ExtResource( 4 )
 
 [node name="BeKFSymbol" type="TextureRect" parent="."]
 modulate = Color( 0.501961, 0.501961, 0.501961, 1 )
-margin_left = 14.0
-margin_top = 67.0
-margin_right = 26.0
-margin_bottom = 79.0
+margin_left = 22.0
+margin_top = 52.0
+margin_right = 34.0
+margin_bottom = 64.0
 texture = ExtResource( 5 )
 
 [node name="BeKMSymbol" type="TextureRect" parent="."]
 modulate = Color( 0.501961, 0.501961, 0.501961, 1 )
-margin_left = 27.0
-margin_top = 67.0
-margin_right = 39.0
-margin_bottom = 79.0
+margin_left = 6.0
+margin_top = 66.0
+margin_right = 18.0
+margin_bottom = 78.0
 texture = ExtResource( 3 )

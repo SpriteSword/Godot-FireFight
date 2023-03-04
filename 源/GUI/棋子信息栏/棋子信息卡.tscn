@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
-[ext_resource path="res://源/GUI/棋子信息栏/棋子信息卡StyleBox.tres" type="StyleBox" id=2]
+[ext_resource path="res://assets/GUI/Panel/panel.stylebox" type="StyleBox" id=2]
+[ext_resource path="res://源/棋子/PieceSprite.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CSharpScript" id=4]
 script/source = "using Godot;
@@ -104,12 +105,13 @@ custom_styles/panel = ExtResource( 2 )
 script = SubResource( 4 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
+visible = false
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -65.0
-margin_top = 1.0
+margin_top = 4.0
 margin_right = -1.0
-margin_bottom = 65.0
+margin_bottom = 68.0
 grow_horizontal = 0
 rect_scale = Vector2( 0.6, 0.6 )
 texture = ExtResource( 1 )
@@ -123,25 +125,31 @@ rect_min_size = Vector2( 150, 32 )
 custom_styles/normal = SubResource( 2 )
 text = "jdjsfjdklsjflkds
 "
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="IdLabel" type="Label" parent="."]
 margin_left = 8.0
 margin_top = 9.0
 margin_right = 48.0
 margin_bottom = 23.0
-text = "id:"
+hint_tooltip = "id"
+text = "#"
 
 [node name="CloseBtn" type="Button" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -24.0
-margin_top = 1.0
+margin_top = 4.0
 margin_right = -1.0
-margin_bottom = 21.0
+margin_bottom = 24.0
 grow_horizontal = 0
-text = "c"
+text = "x"
+
+[node name="PieceSprite" parent="." instance=ExtResource( 3 )]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -64.0
+margin_top = 6.0
+margin_right = -28.0
+margin_bottom = 42.0
 
 [connection signal="pressed" from="CloseBtn" to="." method="_on_CloseBtn_pressed"]

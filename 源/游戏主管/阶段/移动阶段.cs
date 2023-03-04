@@ -78,7 +78,6 @@ public class 移动阶段 : 游戏阶段
             Piece piece = stack.GetTopPiece();
 
             //  GUI显示信息+++++++++++敌我双方信息都显示
-            GD.Print("棋子能否行动：", piece.CanAct);
 
             //  如果是本地玩家棋子，则进行下去，画路径线
             if ((!Global.联机调试 && game_mnger.ActionableSide == stack.side) || (Global.联机调试 && piece.side == game_mnger.local_player_side))
@@ -123,7 +122,7 @@ public class 移动阶段 : 游戏阶段
         //  如果路径不合格
         if (!PathIsQualified())
         {
-            Warn("路径错误！");
+            Warn("路径不合格！");
             DeselectPiece();
             return;
         }
@@ -174,20 +173,28 @@ public class 移动阶段 : 游戏阶段
     bool PathIsQualified()
     {
         //  检查起点。不用检查 棋子==null 了
-        if (game_mnger.pieces_selected[0].CellPos != game_mnger.path[0].cell_pos) return false;      //+++++++++++++
+        if (game_mnger.pieces_selected[0].CellPos != game_mnger.path[0].cell_pos) return false;
 
-        //  检查中间点是否都连贯
         int c = game_mnger.path.Count;
         for (int i = 0; i < c; i++)
         {
-            int n = i + 1;
+            int n = i + 1;      //  next
             if (n >= c) break;
 
+            Vector2 p_i = game_mnger.path[i].cell_pos;
+            Vector2 p_n = game_mnger.path[n].cell_pos;
+
+            //  检查中间点是否都连贯
             // GD.Print("cell: ", game_mnger.path[n], " hex: ", Math.Cell2HexCoord(game_mnger.path[n]));
+            Vector2 d = Math.Cell2HexCoord(p_n) - Math.Cell2HexCoord(p_i);
+            if (!IsDirectionValid(d)) { return false; }
 
-            Vector2 d = Math.Cell2HexCoord(game_mnger.path[n].cell_pos) - Math.Cell2HexCoord(game_mnger.path[i].cell_pos);
-
-            if (!IsDirectionValid(d)) return false;
+            //  检查路径上是否有敌人。有的规则允许有敌人。
+            var s = game_mnger.pieces_mnger.GetPieceStack(p_n);
+            if (s != null)
+            {
+                if (PiecesMnger.IsAgainst(s.side, game_mnger.pieces_selected[0].side)) return false;
+            }
 
             //++++++++++++++++++++++++++++++=检查路径损耗是否正确
         }
@@ -212,10 +219,10 @@ public class 移动阶段 : 游戏阶段
     }
 
     //  检查2个格是否道路互通。map 可以是公路图或铁路图，from、to 用cell坐标。必须是相邻2格的。
-    bool IsWayInterconnected(TileMap map, Vector2 from, Vector2 to)
+    bool IsWayInterconnected(TileMap way_map, Vector2 from, Vector2 to)
     {
-        int from_tile = map.GetCellv(from);
-        int to_tile = map.GetCellv(to);
+        int from_tile = way_map.GetCellv(from);
+        int to_tile = way_map.GetCellv(to);
 
         if (from_tile >= 0 && to_tile >= 0)
         {
@@ -349,7 +356,6 @@ public class 移动阶段 : 游戏阶段
             game_mnger.path.Clear();
             game_mnger.path.Add(new PathPoint(p_selected.CellPos, p_selected.m_p));
             DrawPathLine(true);
-            GD.Print("选择：", p_selected, " ", p_selected.id, " s: ", p_selected.side);
             return;
         }
         DeselectPiece();

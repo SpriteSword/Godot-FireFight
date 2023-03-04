@@ -36,6 +36,7 @@ public class 想定 : 游戏阶段
     {
         base.Enter();
 
+        game_mnger.gui.info_box.Hide();
         deploy_system.Hide();      //  由于初始化顺序写这里
         deploy_system.ClearAll();
 
@@ -168,6 +169,7 @@ public class 想定 : 游戏阶段
     {
         if (!Global.联机调试) return;
 
+        game_mnger.gui.info_box.Show();
         deploy_system.Hide();
         i_finished = true;
         SynDeploymentQ();

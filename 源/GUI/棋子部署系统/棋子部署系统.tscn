@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/主题.tres" type="Theme" id=1]
+[ext_resource path="res://assets/GUI/Panel/panel.stylebox" type="StyleBox" id=1]
 [ext_resource path="res://源/GUI/棋子部署系统/棋子部署系统.cs" type="Script" id=2]
+[ext_resource path="res://assets/GUI/theme/默认.theme" type="Theme" id=3]
 [ext_resource path="res://源/棋子/PieceSprite.tscn" type="PackedScene" id=4]
 
 [node name="棋子部署系统" type="Panel"]
@@ -13,7 +14,8 @@ margin_left = -512.0
 margin_top = -100.0
 margin_right = 512.0
 rect_min_size = Vector2( 1024, 100 )
-theme = ExtResource( 1 )
+theme = ExtResource( 3 )
+custom_styles/panel = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
@@ -24,9 +26,6 @@ margin_top = 8.0
 margin_right = -364.0
 margin_bottom = -8.0
 mouse_filter = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="GridContainer" type="GridContainer" parent="ScrollContainer"]
 margin_right = 652.0
@@ -45,8 +44,9 @@ columns = 16
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -351.0
+margin_top = 8.0
 margin_right = -299.0
-margin_bottom = 23.0
+margin_bottom = 31.0
 disabled = true
 text = "移 动"
 
@@ -54,16 +54,24 @@ text = "移 动"
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -92.0
-margin_bottom = 23.0
+margin_top = 8.0
+margin_bottom = 31.0
 text = " 完成部署 "
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="PieceSpriteOnMouse" parent="." instance=ExtResource( 4 )]
 visible = false
 margin_right = 36.0
 margin_bottom = 36.0
+
+[node name="VSeparator" type="VSeparator" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 153.0
+margin_top = -44.0
+margin_right = 157.0
+margin_bottom = 50.0
 
 [connection signal="pressed" from="MoveBtn" to="." method="_on_MoveBtn_pressed"]
 [connection signal="pressed" from="FinishBtn" to="." method="_on_FinishBtn_pressed"]

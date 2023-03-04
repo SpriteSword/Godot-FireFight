@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=47 format=2]
 
 [ext_resource path="res://源/格/45x52.tres" type="TileSet" id=1]
 [ext_resource path="res://源/棋子主管/PiecesMnger.cs" type="Script" id=2]
@@ -12,7 +12,7 @@
 [ext_resource path="res://源/游戏主管/阶段/移动动画.cs" type="Script" id=10]
 [ext_resource path="res://源/游戏主管/阶段/移动阶段.cs" type="Script" id=11]
 [ext_resource path="res://源/游戏主管/阶段/直射阶段.cs" type="Script" id=12]
-[ext_resource path="res://assets/主题.tres" type="Theme" id=13]
+[ext_resource path="res://assets/GUI/theme/默认.theme" type="Theme" id=13]
 [ext_resource path="res://源/GUI/询问框/询问框.tscn" type="PackedScene" id=14]
 [ext_resource path="res://源/游戏主管/阶段/想定.cs" type="Script" id=15]
 [ext_resource path="res://源/GUI/棋子部署系统/棋子部署系统.tscn" type="PackedScene" id=16]
@@ -32,9 +32,14 @@
 [ext_resource path="res://源/游戏主管/MyCamera.cs" type="Script" id=30]
 [ext_resource path="res://源/游戏主管/River.cs" type="Script" id=31]
 [ext_resource path="res://assets/效果/火焰摧毁.png" type="Texture" id=32]
+[ext_resource path="res://assets/GUI/Panel/panel.stylebox" type="StyleBox" id=33]
+[ext_resource path="res://assets/GUI/Panel/Panel01.jpg" type="Texture" id=34]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+[sub_resource type="StyleBoxTexture" id=13]
+resource_local_to_scene = true
+texture = ExtResource( 34 )
+region_rect = Rect2( 0, 0, 295, 44 )
+margin_top = 4.36936
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 32 )
@@ -157,11 +162,10 @@ script = ExtResource( 3 )
 [node name="InfoBox" type="RichTextLabel" parent="画布层/GUI"]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -300.0
-margin_right = 200.0
-rect_min_size = Vector2( 200, 300 )
-custom_styles/normal = SubResource( 1 )
-text = "精日大街上看到：4
+margin_top = -283.0
+margin_right = 206.0
+custom_styles/normal = ExtResource( 33 )
+text = "酷酷酷精日大街上看到：4
 打发打发：打发发
 "
 
@@ -175,6 +179,8 @@ margin_bottom = 202.0
 [node name="棋子信息栏" parent="画布层/GUI" instance=ExtResource( 23 )]
 
 [node name="棋子部署系统" parent="画布层/GUI" instance=ExtResource( 16 )]
+visible = false
+custom_styles/panel = SubResource( 13 )
 
 [node name="回合显示栏" parent="画布层/GUI" instance=ExtResource( 17 )]
 

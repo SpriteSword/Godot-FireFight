@@ -84,7 +84,6 @@ public class 直射阶段 : 射击阶段Base
 
     protected override void EnterNextStage()
     {
-        GD.Print("进入EnterNextStage ");
         superior.ChangeTo<移动阶段>();
         start = false;
     }

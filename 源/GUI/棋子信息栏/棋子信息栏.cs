@@ -12,12 +12,12 @@ public class 棋子信息栏 : Panel		//+++++++++++++++++++++++++++++= 虽然不
 	ScrollContainer scroll;
 	VBoxContainer container;
 
-	Vector2 card_size;      //  卡片大小
+	// Vector2 card_size;      //  卡片大小
 	int card_separation;        //  卡片的间隔
 
 
-    public override void _EnterTree()       //  资源，进入树就要加载
-    {
+	public override void _EnterTree()       //  资源，进入树就要加载
+	{
 		card_scn = GD.Load<PackedScene>("res://源/GUI/棋子信息栏/棋子信息卡.tscn");
 	}
 
@@ -55,13 +55,14 @@ public class 棋子信息栏 : Panel		//+++++++++++++++++++++++++++++= 虽然不
 			棋子信息卡 card = card_scn.Instance<棋子信息卡>();
 			container.AddChild(card);
 			card.UpdatePieceInfo(piece);
+			gui.game_mnger.pieces_mnger.Assign(card.piece_sprite, piece.sprite);
 			card.Selected = true;
 			card.Connect("SelectMe", this, "_ACardIsSelected");
 			card.Connect("Close", this, "_ACardClose");
 
 			container_h += card.RectSize.y + card_separation;
 		}
-		container_h -= card_separation;
+		// container_h -= card_separation;
 
 		AdjustHeight(container_h);
 	}
@@ -81,6 +82,7 @@ public class 棋子信息栏 : Panel		//+++++++++++++++++++++++++++++= 虽然不
 			棋子信息卡 card = card_scn.Instance<棋子信息卡>();
 			container.AddChild(card);
 			card.UpdatePieceInfo(piece);
+			gui.game_mnger.pieces_mnger.Assign(card.piece_sprite, piece.sprite);
 
 			if ((index == 2) || (index == 1 && piece.ZIndex == (int)Piece.ZIndexInStack._top_))
 			{
@@ -91,8 +93,9 @@ public class 棋子信息栏 : Panel		//+++++++++++++++++++++++++++++= 虽然不
 			card.Connect("Close", this, "_ACardClose");
 
 			container_h += card.RectSize.y + card_separation;
+			// card_size = card.RectSize;
 		}
-		container_h -= card_separation;
+		// container_h -= card_separation;
 
 		AdjustHeight(container_h);
 	}
@@ -109,13 +112,13 @@ public class 棋子信息栏 : Panel		//+++++++++++++++++++++++++++++= 虽然不
 	//  调整高度
 	void AdjustHeight(float container_height)
 	{
-		if (container_height < OS.WindowSize.y)
+		if (container_height < OS.WindowSize.y-30)
 		{
 			scroll.RectSize = new Vector2(scroll.RectSize.x, container_height);
 			return;
 		}
 
-		scroll.RectSize = new Vector2(scroll.RectSize.x, OS.WindowSize.y);
+		scroll.RectSize = new Vector2(scroll.RectSize.x, OS.WindowSize.y-30);
 	}
 
 
@@ -135,7 +138,11 @@ public class 棋子信息栏 : Panel		//+++++++++++++++++++++++++++++= 虽然不
 	//  信号。卡关闭时传来。主控把该棋子从列表中清除及与之相应的效果
 	void _ACardClose(棋子信息卡 card)
 	{
-		scroll.RectSize = new Vector2(scroll.RectSize.x, scroll.RectSize.y - card.RectSize.y - card_separation);
+		int count = container.GetChildCount()-1;
+		float container_h = count * (card.RectSize.y + card_separation);      //  容器高
+		AdjustHeight(container_h);
+
+		// scroll.RectSize = new Vector2(scroll.RectSize.x, scroll.RectSize.y - card.RectSize.y - card_separation);
 		gui.game_mnger.PieceInfoCardClosed(card.piece);
 	}
 

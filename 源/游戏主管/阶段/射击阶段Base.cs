@@ -93,24 +93,22 @@ public class 射击阶段Base : 游戏阶段
             if (!IsLocalPlayerActionable()) { GD.Print("非本地玩家回合"); return; }
         }
 
-        if (game_mnger.pieces_mnger.pieces_focused.Count > 0 && game_mnger.pieces_selected.Count > 0)       //  pieces_focused 是敌方目标，pieces_selected是己方
+        if (game_mnger.pieces_selected.Count <= 0) return;
+
+        var stack = game_mnger.pieces_mnger.GetPieceStackByRectPos(mouse_pos);
+        if (stack == null) return;
+        if (!PiecesMnger.IsAgainst(stack.side, own_side)) return;
+
+        if (!IsSightLineQualified()) { GD.Print("视线不合格"); return; }
+
+        if (stack.pieces.Count > 1)        //  棋子数量大于1，则显示悬浮棋子信息栏来选择棋子
         {
-            if (!IsSightLineQualified()) { GD.Print("视线不合格"); return; }
-
-            var stack = game_mnger.pieces_mnger.GetPieceStackByRectPos(mouse_pos);
-
-            if (stack != null && PiecesMnger.IsAgainst(stack.side, own_side))
-            {
-                if (stack.pieces.Count > 1)        //  棋子数量大于1，则显示悬浮棋子信息栏来选择棋子
-                {
-                    game_mnger.gui.floating_piece_info_bar.Show(mouse_screen_pos, stack);
-                }
-                else
-                {
-                    var enemy = stack.GetTopPiece();        //  有堆叠必有棋子
-                    if (PiecesMnger.IsAgainst(enemy.side, own_side)) { HandleSelectedEnemySide(enemy); }
-                }
-            }
+            game_mnger.gui.floating_piece_info_bar.Show(mouse_screen_pos, stack);
+        }
+        else
+        {
+            var enemy = stack.GetTopPiece();        //  有堆叠必有棋子
+            if (PiecesMnger.IsAgainst(enemy.side, own_side)) { HandleSelectedEnemySide(enemy); }
         }
     }
 
@@ -138,7 +136,7 @@ public class 射击阶段Base : 游戏阶段
             stack = game_mnger.pieces_mnger.GetPieceStackByRectPos(mouse_pos);
             if (stack != null)
             {
-                Piece piece = stack.GetTopPiece(); GD.Print(piece.side);
+                Piece piece = stack.GetTopPiece();
 
                 if ((!Global.联机调试 && own_side == piece.side) || (Global.联机调试 && piece.side == game_mnger.local_player_side))
                 {

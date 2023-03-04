@@ -5,9 +5,6 @@ public class Piece : Node2D
 	public enum PieceType : byte { 人, 坦克, APC };        //  该死的结算表还分 坦克/APC
 	public enum ZIndexInStack : byte { _ordinary_, _top_ = 1, _act_ = 2 };      //  普通棋子ZIndex==0，置顶的=1。在移动动画期间调为2，使其高于所有棋子。进入堆叠后会调回1。
 
-	// [Signal] delegate void SelectMe(Piece me);		//  被鼠标选中。-->
-	[Signal] delegate void MouseIn(Piece me);       //  -->PiecesMnger
-	[Signal] delegate void MouseOut(Piece me);
 	[Signal] delegate void PlaceMe(Piece me);     //  如果坐标改变，由PiecesMnger定位到正确格子上。-->PiecesMnger
 
 
@@ -84,6 +81,7 @@ public class Piece : Node2D
 			else
 			{
 				if (!BeK) { Modulate = new Color(0.5f, 0.5f, 0.5f); }
+				else { Modulate = new Color(1, 1, 1); }
 			}
 		}
 	}
@@ -152,36 +150,42 @@ public class Piece : Node2D
 		anim_player = GetNode<AnimationPlayer>("AnimationPlayer");
 
 		InitSprite();
-		GD.Print(side);
 	}
 
-
-
-	//-------------------------------------------------------------------GUI
-
-	private void _on_Area2D_mouse_entered()
-	{
-		EmitSignal("MouseIn", this);
-	}
-
-	private void _on_Area2D_mouse_exited()
-	{
-		EmitSignal("MouseOut", this);
-	}
 
 	//————————————————————————————————————————————————————————————————————————
+	//  设置be_attacked_result
+	void SetBeAttackedResultTrue(GameMnger.AttackResult result)
+	{
+		be_attacked_result[(int)result - 1] = true;
+	}
+
 	//  设置攻击结果
 	public void SetBeAttackedResult(GameMnger.AttackResult result)
 	{
 		if (result == GameMnger.AttackResult._null_) return;
 
-		be_attacked_result[(int)result - 1] = true;
+		if (result == GameMnger.AttackResult.K) { Die(); return; }
 
-		if (result == GameMnger.AttackResult.K)
+		if (this.type == PieceType.人)
 		{
-			anim_player.Play("die");
-			CanAct = false;
+			if (this.BeS && result == GameMnger.AttackResult.S) { Die(); }
 		}
+		else
+		{
+			if ((this.BeKM && result == GameMnger.AttackResult.KM) ||
+				this.BeKF && result == GameMnger.AttackResult.KF) { Die(); }
+		}
+
+		SetBeAttackedResultTrue(result);
+	}
+
+	//  死亡
+	void Die()
+	{
+		anim_player.Play("die");
+		SetBeAttackedResultTrue(GameMnger.AttackResult.K);
+		CanAct = false;
 	}
 
 	//  初始化Sprite

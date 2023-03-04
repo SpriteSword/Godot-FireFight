@@ -27,8 +27,7 @@ public class PiecesMnger : HexTileMap
     Node stacks;     //  其下子节点是各堆叠数据结构
 
     public PieceStack stack_focused;        //  正被鼠标指着的棋子堆叠
-    public Array<Piece> pieces_focused = new Array<Piece>();
-    // bool piece_is_focused = false;      //  鼠标停留在棋子上方，用来显示悬浮棋子信息栏
+    // public Array<Piece> pieces_focused = new Array<Piece>();
 
 
     public override void _EnterTree()       //  资源，进入树就要加载
@@ -137,7 +136,7 @@ public class PiecesMnger : HexTileMap
         else        //  == 1
         {
             var r = s.RemovePiece(piece);
-            if (!r) s.pieces[0].ZIndex = (int)Piece.ZIndexInStack._top_;        //  移除不成功则仍有棋子置顶
+            if (!r) { s.pieces[0].ZIndex = (int)Piece.ZIndexInStack._top_; }        //  移除不成功则仍有棋子置顶
         }
     }
 
@@ -169,30 +168,9 @@ public class PiecesMnger : HexTileMap
 
         pieces.AddChild(p);
         p.Connect("PlaceMe", this, "_PlacePiece");
-        p.Connect("MouseIn", this, "_PieceFocusIn");
-        p.Connect("MouseOut", this, "_PieceFocusOut");
-
         p.CellPos = cell_pos;
 
         AddPieceInStack(p);
-    }
-
-    //  实例化一个棋子纹理。big_model_name 必须正确！
-    public PieceSprite InstancePieceSprite(GameMnger.Side side, string model_name)
-    {
-        var spr = scn_piece_sprite.Instance<PieceSprite>();
-        spr.ReferenceChildNode();
-
-        var ms = model_name.Split(" ");     //  分离出大型号
-
-        int p_type = GetPieceTypeBy(ms[0]);
-        if (p_type == -1) GD.PrintErr("InstancePieceSprite(): big_model_name不合法！");
-
-        spr.body.Texture = GetPieceSprBodyTxturBy(p_type);      //  虽然会实例化多个节点但资源都只加载1个
-        spr.bg.Texture = GetPieceSprBgTxturBy(side);
-        spr.label.Text = model_name;
-
-        return spr;
     }
 
     //  使棋子sprite与side 、型号名相适应
@@ -257,16 +235,16 @@ public class PiecesMnger : HexTileMap
         piece.Position = HexGridCenter(piece.CellPos);     //+++++++++++++++++++++++++++++==随时更改stack数据
     }
 
-    //  鼠标正指向一个棋子
-    void _PieceFocusIn(Piece piece)     //  好像是如果重叠，先进（结点排在前面）先出
-    {
-        pieces_focused.Add(piece);
-        // stack_focused = GetPieceStack(piece.CellPos);        //  ++++++++++++++++++++++++++++++++++
-    }
-    void _PieceFocusOut(Piece piece)
-    {
-        pieces_focused.Remove(piece);
-    }
+    // //  鼠标正指向一个棋子
+    // void _PieceFocusIn(Piece piece)     //  好像是如果重叠，先进（结点排在前面）先出
+    // {
+    //     pieces_focused.Add(piece);
+    //     // stack_focused = GetPieceStack(piece.CellPos);        //  ++++++++++++++++++++++++++++++++++
+    // }
+    // void _PieceFocusOut(Piece piece)
+    // {
+    //     pieces_focused.Remove(piece);
+    // }
 
 
 

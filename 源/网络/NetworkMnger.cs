@@ -83,7 +83,6 @@ public class NetworkMnger : Node		//+++++++++++++++++++++++++++=  居然是不�
 		dictionary["func"] = method;
 		dictionary["params"] = _params;
 
-		// GD.Print(JSON.Print(dictionary));
 		return JSON.Print(dictionary);
 	}
 

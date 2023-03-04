@@ -32,15 +32,26 @@ public class 临机射击 : 射击阶段Base
             if (!IsLocalPlayerActionable()) return;
         }
 
+        if (game_mnger.pieces_selected.Count <= 0) return;
 
-        if (game_mnger.pieces_mnger.pieces_focused.Count > 0 && game_mnger.pieces_selected.Count > 0)
-        {
-            if (!IsSightLineQualified()) { GD.Print("视线不合格"); return; }
+        var stack = game_mnger.pieces_mnger.GetPieceStackByRectPos(mouse_pos);
+        if (stack == null) return;
+        if (!stack.pieces.Contains(game_mnger.mover)) return;
 
-            var stack = game_mnger.pieces_mnger.GetPieceStackByRectPos(mouse_pos);
+        if (!IsSightLineQualified()) { GD.Print("视线不合格"); return; }
 
-            if (stack.pieces.Contains(game_mnger.mover)) { HandleSelectedEnemySide(game_mnger.mover); }
-        }
+        HandleSelectedEnemySide(game_mnger.mover);
+
+
+
+        // if (game_mnger.pieces_mnger.pieces_focused.Count > 0 && game_mnger.pieces_selected.Count > 0)
+        // {
+        //     if (!IsSightLineQualified()) { GD.Print("视线不合格"); return; }
+
+        //     var stack = game_mnger.pieces_mnger.GetPieceStackByRectPos(mouse_pos);
+
+        //     if (stack.pieces.Contains(game_mnger.mover)) { HandleSelectedEnemySide(game_mnger.mover); }
+        // }
     }
 
     //  临机射击询问Yes。询问框返回的
@@ -84,7 +95,6 @@ public class 临机射击 : 射击阶段Base
     //  通知进入攻击调度。需要告诉其攻击者的id
     protected override void EnterAttackScheduleQ()
     {
-        GD.Print("linji的通知进入调度Q");
         Array _params = new Array();
         foreach (Piece piece in game_mnger.attackers)
         {
@@ -96,8 +106,6 @@ public class 临机射击 : 射击阶段Base
     //  收到通知进入攻击调度
     protected override void EnterAttackScheduleA(int id, Array _params)
     {
-        GD.Print("linji的通知进入调度A");
-
         if (_params == null) { GD.PrintErr("临机射击：EnterAttackScheduleA：参数不对"); return; }
         foreach (float p_id in _params)
         {
