@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://源/音乐/SoundMnger.cs" type="Script" id=1]
+[ext_resource path="res://assets/声音/music/Ultimate Assault (ordinary).wav" type="AudioStream" id=2]
 
 [node name="SoundMnger" type="Node"]
 script = ExtResource( 1 )
@@ -8,7 +9,9 @@ script = ExtResource( 1 )
 [node name="Music" type="Node" parent="."]
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource( 2 )
 volume_db = -20.0
+autoplay = true
 
 [node name="Sound" type="Node" parent="."]
 

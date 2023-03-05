@@ -19,8 +19,15 @@ public class PausePanel : ColorRect
 
 	private void _on_RtrnToMenuBtn_pressed()
 	{
+		if (!Global.联机调试) return;
 		gui.game_mnger.ExitGame();
 	}
 
+	private void _on_HelpBtn_pressed()
+	{
+		OS.Execute("CMD.exe", new string[] { "/C", OS.GetExecutablePath()+"/../火力战中文快速规则.pdf" }, true);
+	}
 
 }
+
+

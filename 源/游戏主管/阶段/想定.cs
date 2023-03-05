@@ -3,6 +3,8 @@ using Godot.Collections;
 
 public class 想定 : 游戏阶段
 {
+    public const GameMnger.Stage stage_index = GameMnger.Stage.想定;
+
     Piece piece_selected;
     棋子部署系统 deploy_system;
 
@@ -36,6 +38,7 @@ public class 想定 : 游戏阶段
     {
         base.Enter();
 
+        game_mnger.CurrentStageIndex = stage_index;
         game_mnger.gui.info_box.Hide();
         deploy_system.Hide();      //  由于初始化顺序写这里
         deploy_system.ClearAll();

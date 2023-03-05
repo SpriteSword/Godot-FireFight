@@ -70,5 +70,19 @@ margin_right = -9.0
 margin_bottom = -4.0
 text = "返回主菜单"
 
+[node name="HelpBtn" type="Button" parent="Panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -194.0
+margin_top = -17.5
+margin_right = -80.0
+margin_bottom = 17.5
+mouse_default_cursor_shape = 2
+text = "--更多帮助--"
+flat = true
+
 [connection signal="pressed" from="Panel/RtrnToGameBtn" to="." method="_on_RtrnToGameBtn_pressed"]
 [connection signal="pressed" from="Panel/RtrnToMenuBtn" to="." method="_on_RtrnToMenuBtn_pressed"]
+[connection signal="pressed" from="Panel/HelpBtn" to="." method="_on_HelpBtn_pressed"]

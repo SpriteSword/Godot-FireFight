@@ -4,7 +4,7 @@ using Godot.Collections;
 public class GameMnger : Node2D
 {
 	public enum Side : byte { 无, 红, 蓝 };        //  无 用来标记哪方打算结束本阶段。暂时 红色代表苏联，蓝色代表美国
-	public enum Stage : byte { 直射, 移动, 解除压制, 间射, 临机射击 };
+	public enum Stage : byte { 想定, 直射, 移动, 解除压制, 间射, 临机射击 };
 
 	//  攻击结果。NULL 无影响；K 被杀死；S 被压制 suppressed；KF 失去火力；KM 失去移动力；KMS 失去导弹，间射火力才有！。
 	public enum AttackResult : byte { _null_, K, S, KF, KM, KMS };      //  专有名词不用管命名

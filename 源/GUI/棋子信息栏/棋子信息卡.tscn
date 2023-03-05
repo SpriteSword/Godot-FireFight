@@ -152,4 +152,11 @@ margin_top = 6.0
 margin_right = -28.0
 margin_bottom = 42.0
 
+[node name="Label" type="Label" parent="."]
+margin_left = 9.0
+margin_top = 65.0
+margin_right = 49.0
+margin_bottom = 79.0
+text = "状态"
+
 [connection signal="pressed" from="CloseBtn" to="." method="_on_CloseBtn_pressed"]
