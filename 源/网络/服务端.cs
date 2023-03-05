@@ -42,13 +42,18 @@ public class 服务端 : 网络组件
         server.Stop();
     }
 
-
+    //  移除 id
     void RemoveConnectId(int id)
     {
         // if (connect_id.Contains(id))        //  直接remove也不会有什么问题的！
         connect_id.Remove(id);
     }
 
+    //  是否有此 id
+    public bool IsContain(int id)
+    {
+        return connect_id.Contains(id);
+    }
 
 
     //  通知程序其它节点

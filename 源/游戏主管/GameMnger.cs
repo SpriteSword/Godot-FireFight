@@ -61,6 +61,7 @@ public class GameMnger : Node2D
 
 	#region ————————————————————————————————————————————————————————  节点
 	public SoundMnger sound_mnger;
+	public Main main;
 
 	//  子节点
 	public MyCamera camera;
@@ -158,6 +159,7 @@ public class GameMnger : Node2D
 	public override void _Ready()
 	{
 		sound_mnger = GetNode<SoundMnger>("/root/SoundMnger");
+		main = GetNode<Main>("..");
 
 		camera = GetNode<MyCamera>("MyCamera");
 		pieces_mnger = GetNode<PiecesMnger>("PiecesMnger");
@@ -255,6 +257,13 @@ public class GameMnger : Node2D
 		}
 	}
 
+	//  暂停按钮。实际游戏并没有停止运算
+	private void _on_PauseBtn_pressed()
+	{
+		gui.pause_panel.Visible = true;
+	}
+
+
 	private void _on_HintTimer_timeout()
 	{
 		// gui.floating_piece_info_bar.Show(mouse_screen_pos);
@@ -284,6 +293,13 @@ public class GameMnger : Node2D
 		camera.Zoom = new Vector2(zoom_, zoom_);
 		camera.Position += (mou_pos - GetGlobalMousePosition());
 		camera.ForceUpdateScroll();
+	}
+
+	//  退出游戏
+	public void ExitGame()
+	{
+		network_handler.ExitGameQ();
+		main.ExitGame();
 	}
 
 	#region  —————————————————————————————————————————————————————————————————————————————  GUI

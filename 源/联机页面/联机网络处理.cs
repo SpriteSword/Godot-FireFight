@@ -81,6 +81,8 @@ public class 联机网络处理 : NetworkHandler      //  问了没答怎么办�
     //  处理客户端退出
     void HandleClientCloseS(int id)
     {
+        online_page.main.players_name_id.Remove(id);
+
         foreach (PlayerLabel it in online_page.player_label_container.GetChildren())
             if (it.Id == id)
             {
@@ -89,19 +91,15 @@ public class 联机网络处理 : NetworkHandler      //  问了没答怎么办�
             }
     }
 
-
     //  客户端关闭，客户端用
     void CloseC()
     {
         network_mnger.DeleteComponent();
+        online_page.main.players_name_id.Clear();
+
+        online_page.UpdatePlayerLabels();
         online_page.ShowUIByState(false);
         online_page.host_btn.Visible = true;
-
-        foreach (Node it in online_page.player_label_container.GetChildren())
-        {
-            it.Disconnect("SelectMe", online_page, "_SelectPlayer");
-            it.QueueFree();
-        }
     }
 
     //  让对方注册我的姓名。Q发送
@@ -116,30 +114,39 @@ public class 联机网络处理 : NetworkHandler      //  问了没答怎么办�
     void RegisterA(int id, Array _params)
     {
         if (_params.Count < 1) return;
-
         var name = _params[0] as string;
 
-        var l = online_page.scn_player_label.Instance<PlayerLabel>();
-        l.PlayerName = name;
-        l.Id = id;
+        online_page.main.players_name_id[id] = name;
 
-        online_page.DisplayInfo(l.Text + " 加入");
-        online_page.player_label_container.AddChild(l);
-        l.Connect("SelectMe", online_page, "_SelectPlayer");
+        online_page.AddPlayerLabel(id, name);
+        // online_page.DisplayInfo(l.Text + " 加入");
     }
 
-    //  加载游戏准备开始。客户端
+
+    //  加载游戏一起开始。服务端使用
+    public void Ready2StartS()
+    {
+        Global.opposite_player_peer_id = online_page.opposite_player_peer_id;       //  .Instance<GameMnger>() 与正式游戏实例的不是同一个？
+        Global.player_name = online_page.player_name_box.Text;
+
+        // PackedScene game = GD.Load<PackedScene>("res://源/游戏主管/GameMnger.tscn");
+        // GetTree().ChangeSceneTo(game);      //  可以通过viewport来更换！
+
+        network_mnger.Send(online_page.opposite_player_peer_id, NetworkMnger.Data2JSON("Ready2StartC", new Array()));       //  Array 写null不知可否？
+        DisconnectSgnlFromNetworkMnger();
+        online_page.main.EnterGame();
+    }
+    //  客户端
     void Ready2StartC(int id)
     {
         if (network_mnger.IsAsServer()) return;     //  不写也可？
-        PackedScene game = GD.Load<PackedScene>("res://源/游戏主管/GameMnger.tscn");
-        // GameMnger game_mnger = game.Instance<GameMnger>();
 
         Global.opposite_player_peer_id = 1;
         Global.player_name = online_page.player_name_box.Text;
 
-
-        GetTree().ChangeSceneTo(game);
+        // PackedScene game = GD.Load<PackedScene>("res://源/游戏主管/GameMnger.tscn");
+        // GetTree().ChangeSceneTo(game);
+        DisconnectSgnlFromNetworkMnger();
+        online_page.main.EnterGame();
     }
-
 }

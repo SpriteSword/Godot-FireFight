@@ -11,15 +11,16 @@ public class NetworkHandler : Node
     public override void _Ready()
     {
         network_mnger = GetNode<NetworkMnger>("/root/NetworkMnger");
-        network_mnger.Connect("Receive", this, "_Receive");
+        ConnectSgnlFromNetworkMnger();
     }
 
     public override void _ExitTree()
     {
-        GD.Print("duan kai xin hao");
-        network_mnger.Disconnect("Receive", this, "_Receive");
+        if (network_mnger.IsConnected("Receive", this, "_Receive"))
+            DisconnectSgnlFromNetworkMnger();
     }
 
+    //————————————————————————————————————————————————————————————————信号
     //  处理 log、err、data（就是调用函数）。{type:"data", func:"say_hello", params:[]}。log、err后面就是一个普通str
     protected virtual void _Receive(int id, string data)
     {
@@ -39,6 +40,16 @@ public class NetworkHandler : Node
             case "data":
                 HandleData(id, decode_json); break;
         }
+    }
+
+    //  与 NetworkMnger 信号
+    protected void DisconnectSgnlFromNetworkMnger()
+    {
+        network_mnger.Disconnect("Receive", this, "_Receive");
+    }
+    public void ConnectSgnlFromNetworkMnger()
+    {
+        network_mnger.Connect("Receive", this, "_Receive");
     }
 
     //------------------------------------------- content 必不为 null

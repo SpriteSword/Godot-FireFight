@@ -26,7 +26,7 @@ public class 想定 : 游戏阶段
 
     public override void _Ready()
     {
-        deploy_system = GetNode<棋子部署系统>("/root/GameMnger/画布层/GUI/棋子部署系统");
+        deploy_system = GetNode<棋子部署系统>("../../画布层/GUI/棋子部署系统");
         deploy_system.controller = this;
     }
 

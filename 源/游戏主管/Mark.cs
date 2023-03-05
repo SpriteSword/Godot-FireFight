@@ -31,13 +31,16 @@ public class Mark : HexTileMap
 
     }
 
-    public override void _Process(float delta)
+    public override void _UnhandledInput(InputEvent @event)
     {
-        mouse_pos = GetGlobalMousePosition();
+        if (@event is InputEventMouse)
+        {
+            mouse_pos = GetGlobalMousePosition();
 
-        DrawMouseHex();
+            DrawMouseHex();
 
-        Update();
+            Update();
+        }
     }
 
     public override void _Draw()
@@ -74,7 +77,7 @@ public class Mark : HexTileMap
                 //  绘制直线
                 var f_cell_pos = Math.Hex2CellCoord(hex_pos);       //   from
                 var t_cell_pos = DetermineCellOfHexGrid(mouse_pos);     //  to
-                DrwaLineByCellCoord(f_cell_pos, t_cell_pos,  Color.Color8(50, 0, 255));       //  青色。好像还没用数字直观
+                DrwaLineByCellCoord(f_cell_pos, t_cell_pos, Color.Color8(50, 0, 255));       //  青色。好像还没用数字直观
 
                 //  绘制距离数字
                 var t_hex_pos = Math.Cell2HexCoord(t_cell_pos);

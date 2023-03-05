@@ -65,6 +65,7 @@ public class 客户端 : 网络组件
 
     void _server_close_request(int code, string reason)
     {
+        GD.Print("与主机断开，原因: " + reason);
         Notice(-1, NetworkMnger.Log2JSON("server_close_request"));
     }
     void _connection_closed(bool was_clean_close)       //  服务端关闭时

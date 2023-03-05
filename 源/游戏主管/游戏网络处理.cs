@@ -52,19 +52,19 @@ public class 游戏网络处理 : NetworkHandler
 
         switch (message)
         {
-            //  服务端
+            //  服务端判断
             case "client_connected": break;
             case "client_close_request": break;
             case "client_disconnected":
+                HandleClientCloseS(id);
                 break;
 
-            //  客户端
+            //  客户端判断
             case "connection_established": break;
             case "server_close_request": break;
             case "connection_closed":
-                // CloseC();
+                CloseC();
                 break;
-
         }
     }
 
@@ -81,6 +81,9 @@ public class 游戏网络处理 : NetworkHandler
                 break;
             case "StartC":
                 StartC();
+                break;
+            case "ExitGameA":
+                ExitGameA();
                 break;
             default:
                 EmitSignal("Give2External", id, content);
@@ -115,6 +118,23 @@ public class 游戏网络处理 : NetworkHandler
         ShowLoadingScreen(false);
     }
 
+    //  处理客户端退出，服务器调用
+    void HandleClientCloseS(int id)
+    {
+        GD.Print("与客户端断开！");
+        game_mnger.main.players_name_id.Remove(id);
+        game_mnger.main.ExitGame();
+    }
+    //  连接断开，客户端调用
+    void CloseC()
+    {
+        GD.Print("与主机断开！");
+        game_mnger.main.players_name_id.Remove(1);
+        game_mnger.main.ExitGameAbnormally();
+        network_mnger.DeleteComponent();
+    }
+
+
     //  ————————————————————————————————————————————————————————————————————————————————————————————————
 
     //  显示加载页面
@@ -123,7 +143,7 @@ public class 游戏网络处理 : NetworkHandler
         loading_screen.Visible = show;
         progress_bar.Show(show, txt);
 
-  //+++++++++++++++++++++++degug
+        //+++++++++++++++++++++++degug
     }
 
     //  自己准备好后尝试开始
@@ -137,6 +157,17 @@ public class 游戏网络处理 : NetworkHandler
         }
         //  客户端
         network_mnger.Send(1, NetworkMnger.Data2JSON("ClientReady", new Array()));
+    }
+
+    //  通知退出游戏。Q 问，A 答
+    public void ExitGameQ()
+    {
+        Array _params = new Array();
+        game_mnger.Send(Global.opposite_player_peer_id, NetworkMnger.Data2JSON("ExitGameA", _params));
+    }
+    void ExitGameA()
+    {
+        game_mnger.main.ExitGame();
     }
 
 }

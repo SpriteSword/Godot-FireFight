@@ -204,6 +204,8 @@ public class 射击阶段Base : 游戏阶段
     //  棋子信息卡被关闭时调用，由game_mnger调用。多选的棋子可以通过关闭选到自己想选的。
     public override void PieceInfoCardClosed(Piece p_selected)
     {
+        MarkPiecesSelected();
+
         if (game_mnger.pieces_selected.Count == 0)
         {
             DrawSightLine(false);

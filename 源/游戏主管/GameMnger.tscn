@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://源/格/45x52.tres" type="TileSet" id=1]
 [ext_resource path="res://源/棋子主管/PiecesMnger.cs" type="Script" id=2]
@@ -34,6 +34,8 @@
 [ext_resource path="res://assets/效果/火焰摧毁.png" type="Texture" id=32]
 [ext_resource path="res://assets/GUI/Panel/panel.stylebox" type="StyleBox" id=33]
 [ext_resource path="res://assets/GUI/Panel/Panel01.jpg" type="Texture" id=34]
+[ext_resource path="res://assets/GUI/icon/bell.svg" type="Texture" id=35]
+[ext_resource path="res://源/GUI/暂停页面/PausePanel.tscn" type="PackedScene" id=36]
 
 [sub_resource type="StyleBoxTexture" id=13]
 resource_local_to_scene = true
@@ -210,6 +212,19 @@ margin_top = -48.0
 margin_right = 48.0
 margin_bottom = 48.0
 
+[node name="PauseBtn" type="Button" parent="画布层/GUI"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -18.0
+margin_bottom = 35.0
+grow_horizontal = 0
+hint_tooltip = "暂停"
+icon = ExtResource( 35 )
+icon_align = 1
+
+[node name="PausePanel" parent="画布层/GUI" instance=ExtResource( 36 )]
+visible = false
+
 [node name="GameMngerStateMachine" type="Node" parent="."]
 script = ExtResource( 5 )
 
@@ -262,5 +277,6 @@ animation = "explosion"
 offset = Vector2( 0, -30 )
 
 [connection signal="Warn" from="." to="画布层/GUI/警告框" method="_PopUp"]
+[connection signal="pressed" from="画布层/GUI/PauseBtn" to="." method="_on_PauseBtn_pressed"]
 [connection signal="timeout" from="HintTimer" to="." method="_on_HintTimer_timeout"]
 [connection signal="animation_finished" from="Effect" to="." method="_on_Effect_animation_finished"]

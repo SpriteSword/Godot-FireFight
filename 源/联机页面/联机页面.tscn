@@ -1,21 +1,17 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/GUI/theme/默认.theme" type="Theme" id=1]
 [ext_resource path="res://源/联机页面/联机页面.cs" type="Script" id=2]
 [ext_resource path="res://源/联机页面/联机网络处理.cs" type="Script" id=3]
 [ext_resource path="res://源/GUI/询问框/询问框.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/GUI/Panel/MiniPanel01.jpg" type="Texture" id=5]
-[ext_resource path="res://assets/字体/Deng.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://assets/字体/黄18px.res" type="DynamicFont" id=6]
 
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 5 )
 region_rect = Rect2( 4, 3, 191, 205 )
 margin_left = 66.0
 margin_top = 43.0
-
-[sub_resource type="DynamicFont" id=2]
-size = 18
-font_data = ExtResource( 6 )
 
 [node name="联机页面" type="Control"]
 anchor_right = 1.0
@@ -41,7 +37,7 @@ margin_right = 20.0
 margin_bottom = 34.0
 custom_colors/font_color = Color( 0.960784, 0.639216, 0.219608, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = ExtResource( 6 )
 text = "菜单"
 align = 1
 
@@ -70,7 +66,7 @@ margin_right = 20.0
 margin_bottom = 34.0
 custom_colors/font_color = Color( 0.960784, 0.639216, 0.219608, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = ExtResource( 6 )
 text = "设备"
 align = 1
 

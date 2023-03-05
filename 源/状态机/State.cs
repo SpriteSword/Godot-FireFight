@@ -86,6 +86,8 @@ public abstract class 游戏阶段 : State
     //  添加棋子被选到时的标记，标记在所在格。pieces_mnger绘制，图层在比棋子低，比地图高。
     public void MarkPiecesSelected()
     {
+        game_mnger.pieces_mnger.Clear();
+
         foreach (Piece p in game_mnger.pieces_selected)
         {
             game_mnger.pieces_mnger.SetCellv(p.CellPos, 1);

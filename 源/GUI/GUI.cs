@@ -8,7 +8,8 @@ public class GUI : Control		//  人类的所有输入都经这里分发！并负
     public 回合显示栏 round_display_bar;
     public 棋子信息栏 piece_info_bar;
     public 悬浮棋子信息栏 floating_piece_info_bar;
-    public 棋子部署系统  piece_deployment_system;
+    public 棋子部署系统 piece_deployment_system;
+    public PausePanel pause_panel;
     public RichTextLabel info_box;
 
     Font default_font;
@@ -22,23 +23,25 @@ public class GUI : Control		//  人类的所有输入都经这里分发！并负
         round_display_bar = GetNode<回合显示栏>("回合显示栏");
         piece_info_bar = GetNode<棋子信息栏>("棋子信息栏");
         floating_piece_info_bar = GetNode<悬浮棋子信息栏>("悬浮棋子信息栏");
-        piece_deployment_system  =GetNode<棋子部署系统>("棋子部署系统");
+        piece_deployment_system = GetNode<棋子部署系统>("棋子部署系统");
+        pause_panel = GetNode<PausePanel>("PausePanel");
         info_box = GetNode<RichTextLabel>("InfoBox");
 
         default_font = GetFont("font");
 
     }
-
     public override void _Process(float delta)
     {
-        Update();
+        // Update();
     }
-
     //  只处理最开始输入！
     public override void _Input(InputEvent @event)
     {
+        if (@event is InputEventMouse) { Update(); }        //++++++++++++++++++有没bug？
     }
-
+    public override void _UnhandledInput(InputEvent @event)
+    {
+    }
     public override void _Draw()
     {
         //  绘制 HUD字符串
@@ -50,7 +53,6 @@ public class GUI : Control		//  人类的所有输入都经这里分发！并负
             }
             hud_str_buffer.Clear();
         }
-
     }
 
 
