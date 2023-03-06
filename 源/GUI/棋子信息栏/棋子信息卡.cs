@@ -11,10 +11,6 @@ public class 棋子信息卡 : PieceCard
     Label state_label;
 
     bool selected = false;
-    // public Piece piece;     //  指向的棋子
-
-    //  棋子信息
-    // uint p_id;
 
     //  是否正在被选，即点选棋子会反应到信息卡上
     public bool Selected
@@ -56,26 +52,6 @@ public class 棋子信息卡 : PieceCard
         id_label = GetNode<Label>("IdLabel");
         state_label = GetNode<Label>("StateLabel");
     }
-
-
-    //  被选中后的效果。同时玩家视角会回到棋子上
-    // public void ChangeStyle()
-    // {
-    //     if (selected)
-    //     {
-    //         style.BorderColor = new Color(1, 1, 0);
-    //         style.BorderWidthBottom = 3;
-    //         style.BorderWidthLeft = 3;
-    //         style.BorderWidthRight = 3;
-    //         style.BorderWidthTop = 3;
-    //         return;
-    //     }
-    //     style.BorderColor = new Color(1, 1, 1);
-    //     style.BorderWidthBottom = 1;
-    //     style.BorderWidthLeft = 1;
-    //     style.BorderWidthRight = 1;
-    //     style.BorderWidthTop = 1;
-    // }
 
     //  更新棋子信息
     public void UpdatePieceInfo(Piece p)

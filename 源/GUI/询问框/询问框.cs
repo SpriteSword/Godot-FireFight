@@ -7,9 +7,7 @@ public class 询问框 : ConfirmationDialog
 	[Signal] delegate void No(IC command);        //  -> _InquiryBoxNo
 
 
-	// public Node controller;		//  控制者
 	IC command;		//  命令
-
 	Vector2 center_pos;
 
 	//  子节点
@@ -52,7 +50,6 @@ public class 询问框 : ConfirmationDialog
 	{
 		EmitSignal("Yes", command);
 	}
-
 	void _PressedNo()
 	{
 		EmitSignal("No", command);

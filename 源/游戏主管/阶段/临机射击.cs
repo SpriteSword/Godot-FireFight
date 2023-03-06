@@ -41,17 +41,6 @@ public class 临机射击 : 射击阶段Base
         if (!IsSightLineQualified()) { GD.Print("视线不合格"); return; }
 
         HandleSelectedEnemySide(game_mnger.mover);
-
-
-
-        // if (game_mnger.pieces_mnger.pieces_focused.Count > 0 && game_mnger.pieces_selected.Count > 0)
-        // {
-        //     if (!IsSightLineQualified()) { GD.Print("视线不合格"); return; }
-
-        //     var stack = game_mnger.pieces_mnger.GetPieceStackByRectPos(mouse_pos);
-
-        //     if (stack.pieces.Contains(game_mnger.mover)) { HandleSelectedEnemySide(game_mnger.mover); }
-        // }
     }
 
     //  临机射击询问Yes。询问框返回的

@@ -7,8 +7,6 @@ public class 移动动画 : 游戏阶段
 {
     Vector2 next_cell_pos;
     Vector2 next_pos;
-    // bool anim_finished;     //  担心对方已完成了我还没完成
-    ///+++++++++++++++++++++++++++++++++++++++++++++临机射击被击毁又如何？
 
     public override void Enter()
     {
@@ -51,12 +49,8 @@ public class 移动动画 : 游戏阶段
         next_pos = game_mnger.mark.HexGridCenter(next_cell_pos);
 
 
-
         //  同步下一位置
         MovePieceQ();     //  反正没联机也不会发出去
-
-        // anim_finished = false;
-
     }
 
     //  临机询问发送给询问框。若本地已经结束阶段了，不需要临机询问！
@@ -118,7 +112,6 @@ public class 移动动画 : 游戏阶段
     //  补间动画完成
     void _TweenAllCompleted()
     {
-        // anim_finished = true;
         game_mnger.mover.CellPos = next_cell_pos;
         game_mnger.pieces_mnger.AddPieceInStack(game_mnger.mover);        //  z index 自动为1。
 
@@ -136,7 +129,6 @@ public class 移动动画 : 游戏阶段
         }
         //  移动方
         GD.Print("等待对方确定是否临机射击...");
-
     }
 
 

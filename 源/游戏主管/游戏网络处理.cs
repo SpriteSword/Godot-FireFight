@@ -38,7 +38,7 @@ public class 游戏网络处理 : NetworkHandler
 
 
         if (!content.Contains("msg")) return;
-        //  保存游戏退出！
+        //  ++++++++++保存游戏退出！
         // online_page.DisplayInfo(content["msg"] as string);
     }
 
@@ -142,8 +142,6 @@ public class 游戏网络处理 : NetworkHandler
     {
         loading_screen.Visible = show;
         progress_bar.Show(show, txt);
-
-        //+++++++++++++++++++++++degug
     }
 
     //  自己准备好后尝试开始

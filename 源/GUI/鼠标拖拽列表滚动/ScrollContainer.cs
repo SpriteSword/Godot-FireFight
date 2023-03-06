@@ -38,8 +38,6 @@ public class MyScrollContainer : Godot.ScrollContainer
 			start_pos = @event.Position.y;
 		}
 	}
-
-
 }
 
 

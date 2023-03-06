@@ -6,7 +6,7 @@ public class 移动阶段 : 游戏阶段
 {
     public const GameMnger.Stage stage_index = GameMnger.Stage.移动;
 
-    bool start = false;
+    bool start = false;     //  在转入游戏下一阶段时设置为false
 
 
     public override void Enter()
@@ -19,9 +19,8 @@ public class 移动阶段 : 游戏阶段
 
         if (!start)
         {
-            start = true;       //  ++++++++++在转入游戏下一阶段时设置为false
+            start = true;
             game_mnger.end_stage_side = GameMnger.Side.无;
-            //++++++++++++++++++++++++++++将所有棋子的状态恢复
 
             //  主机确定先手并发送给客户端
             if (Global.联机调试)
@@ -362,7 +361,6 @@ public class 移动阶段 : 游戏阶段
     }
 
     //----------------------------------------------------------  交互
-
     //  临机射击询问Yes。询问框返回的
     public override void InquiryBoxYes(IC command)
     {
@@ -404,7 +402,6 @@ public class 移动阶段 : 游戏阶段
     }
 
     #endregion
-
 
 
     //————————————————————————————————————————————————————————————————————————————————————————————————————————————  网络

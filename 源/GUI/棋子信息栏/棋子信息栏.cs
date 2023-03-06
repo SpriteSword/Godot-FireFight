@@ -12,7 +12,6 @@ public class 棋子信息栏 : Panel		//+++++++++++++++++++++++++++++= 虽然不
 	ScrollContainer scroll;
 	VBoxContainer container;
 
-	// Vector2 card_size;      //  卡片大小
 	int card_separation;        //  卡片的间隔
 
 
@@ -62,7 +61,6 @@ public class 棋子信息栏 : Panel		//+++++++++++++++++++++++++++++= 虽然不
 
 			container_h += card.RectSize.y + card_separation;
 		}
-		// container_h -= card_separation;
 
 		AdjustHeight(container_h);
 	}
@@ -93,9 +91,7 @@ public class 棋子信息栏 : Panel		//+++++++++++++++++++++++++++++= 虽然不
 			card.Connect("Close", this, "_ACardClose");
 
 			container_h += card.RectSize.y + card_separation;
-			// card_size = card.RectSize;
 		}
-		// container_h -= card_separation;
 
 		AdjustHeight(container_h);
 	}
@@ -142,11 +138,6 @@ public class 棋子信息栏 : Panel		//+++++++++++++++++++++++++++++= 虽然不
 		float container_h = count * (card.RectSize.y + card_separation);      //  容器高
 		AdjustHeight(container_h);
 
-		// scroll.RectSize = new Vector2(scroll.RectSize.x, scroll.RectSize.y - card.RectSize.y - card_separation);
 		gui.game_mnger.PieceInfoCardClosed(card.piece);
 	}
-
-
-
-
 }

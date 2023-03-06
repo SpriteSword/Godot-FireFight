@@ -94,9 +94,6 @@ public class GameMnger : Node2D
 
 	//-----------------------------------------------------------
 	//  鼠标
-	// Vector2 mouse_pos;
-	// Vector2 mouse_screen_pos;
-	// Vector2 mouse_screen_old_pos;
 	public Vector2 mouse_cell_pos;
 	public Vector2 mouse_cell_old_pos;
 

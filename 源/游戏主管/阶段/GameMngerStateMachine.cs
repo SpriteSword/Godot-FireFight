@@ -58,7 +58,6 @@ public class GameMngerStateMachine : Node       //  懒得继承了，反正也�
             itm.game_mnger = game_mnger;
         }
 
-        // current_state = GetNode<移动阶段>("移动阶段");
         if (Global.联机调试) { current_state = GetNode<想定>("想定"); }
         else { current_state = GetNode<直射阶段>("直射阶段"); }
 
